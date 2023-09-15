@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core;
 
-public class UserGameOwnership
+public sealed class UserGameOwnership
 {
     [Key]
     public Guid OwnershipId { get; } = Guid.NewGuid();
