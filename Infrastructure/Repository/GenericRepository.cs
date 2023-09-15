@@ -7,32 +7,32 @@ namespace Infrastructure.Repository;
 public class GenericRepository<TEntity> : IRepository<TEntity>
     where TEntity : class
 {
+    private readonly ApplicationContext _context;
+    
     protected GenericRepository(ApplicationContext dbContext) => 
-        Context = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        _context = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
-    private ApplicationContext Context { get; init; }
+    public Task<List<TEntity>> GetAllEntitiesAsync() =>
+         _context.Set<TEntity>().ToListAsync();
 
-    public async Task<IEnumerable<TEntity>> GetAllEntitiesAsync() =>
-        await Context.Set<TEntity>().ToListAsync();
-
-    public async Task<TEntity> GetSingleEntityBySpecificationAsync(Func<TEntity, bool> predicate) =>
-        (await Context.Set<TEntity>().SingleOrDefaultAsync())!;
+    public Task<TEntity> GetSingleEntityBySpecificationAsync(Func<TEntity, bool> predicate) =>
+        _context.Set<TEntity>().SingleOrDefaultAsync()!;
 
     public async Task AddNewEntityAsync(TEntity entity)
     {
-        await Context.Set<TEntity>().AddAsync(entity);
-        await Context.SaveChangesAsync();
+        await _context.Set<TEntity>().AddAsync(entity);
+        await _context.SaveChangesAsync();
     }
     
     public void UpdateExistingEntity(TEntity updatedEntity)
     {
-        Context.Set<TEntity>().Update(updatedEntity);
-        Context.SaveChanges();
+        _context.Set<TEntity>().Update(updatedEntity);
+        _context.SaveChanges();
     }
 
-    public virtual void RemoveExistingEntity(TEntity removedEntity)
+    public void RemoveExistingEntity(TEntity removedEntity)
     {
-        Context.Set<TEntity>().Remove(removedEntity);
-        Context.SaveChanges();
+        _context.Set<TEntity>().Remove(removedEntity);
+        _context.SaveChanges();
     }
 }

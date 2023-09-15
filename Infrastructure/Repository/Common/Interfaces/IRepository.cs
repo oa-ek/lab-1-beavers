@@ -3,7 +3,7 @@
 public interface IRepository<TEntity> 
     where TEntity : class
 {
-    Task<IEnumerable<TEntity>> GetAllEntitiesAsync();
+    Task<List<TEntity>> GetAllEntitiesAsync();
 
     Task<TEntity> GetSingleEntityBySpecificationAsync(Func<TEntity, bool> predicate);
 
