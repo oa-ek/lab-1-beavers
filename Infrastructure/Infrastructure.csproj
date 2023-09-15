@@ -8,6 +8,8 @@
 
     <ItemGroup>
       <Folder Include="Data\Migrations\" />
+      <Folder Include="Repository\Common\Classes\" />
+      <Folder Include="Repository\Common\Interfaces\" />
     </ItemGroup>
 
     <ItemGroup>
