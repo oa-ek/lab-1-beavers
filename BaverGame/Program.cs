@@ -1,3 +1,6 @@
+using Infrastructure.Data.Contexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace BaverGame
 {
     public class Program
@@ -8,6 +11,11 @@ namespace BaverGame
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             var app = builder.Build();
 
