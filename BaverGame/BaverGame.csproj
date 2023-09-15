@@ -8,6 +8,30 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="BaverGame\bin\Debug\net7.0\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\bin\Debug\net7.0\appsettings.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\bin\Debug\net7.0\BaverGame.deps.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\bin\Debug\net7.0\BaverGame.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\bin\Debug\net7.0\BaverGame.staticwebassets.runtime.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\BaverGame.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\Debug\net7.0\staticwebassets.build.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\Debug\net7.0\staticwebassets.development.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\Debug\net7.0\staticwebassets.pack.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\project.packagespec.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
   </ItemGroup>
 
 </Project>
