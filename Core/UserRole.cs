@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core;
 
-public class UserRole
+public sealed class UserRole
 {
     [Key]
     public Guid RoleId { get; } = Guid.NewGuid();
-    [StringLength(255)]
+    [MaxLength(255)]
     public string RoleName { get; set; }
     public ICollection<User> Users { get; set; }
 }

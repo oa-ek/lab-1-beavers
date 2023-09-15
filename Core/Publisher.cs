@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core;
 
-public class Publisher
+public sealed class Publisher
 {
     [Key]
     public Guid PublisherId { get; } = Guid.NewGuid();

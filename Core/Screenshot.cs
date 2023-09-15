@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core;
 
-public sealed class GameTag
+public sealed class Screenshot
 {
     [Key]
-    public Guid GameTagId { get; } = Guid.NewGuid();
+    public Guid ScreenshotId { get; } = Guid.NewGuid();
     public Guid GameId { get; set; }
-    public Guid TagId { get; set; }
+    [MaxLength(255)]
+    public string ImageUrl { get; set; }
     public Game Game { get; set; }
-    public Tag Tag { get; set; }
 }
