@@ -1,0 +1,19 @@
+@model dynamic
+
+@{
+    ViewBag.Title = "Admin-panel";
+    Layout = "_Layout";
+}
+
+<h1>Admin panel</h1>
+
+<h3 class="mt-3">Sections:</h3>
+
+<ul class="mt-3 flex-column">
+    <li>
+        <a class="text-dark" asp-area="" asp-controller="Developer" asp-action="Index">"Developer" section</a>
+    </li>
+    <li>
+        <a class="text-dark" asp-area="" asp-controller="Publisher" asp-action="Index">"Publisher" section</a>
+    </li>
+</ul>
