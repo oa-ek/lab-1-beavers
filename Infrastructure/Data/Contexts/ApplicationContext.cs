@@ -21,37 +21,50 @@ public class ApplicationContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder) // Configuration of database's context
     {
+        AddKeyNavigations(modelBuilder);
+        AddAutoIncludes(modelBuilder);
+    }
+
+    private static void AddKeyNavigations(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Developer>()
             .HasKey(d => d.DeveloperId);
-        
+
         modelBuilder.Entity<Game>()
             .HasKey(g => g.GameId);
-        
+
         modelBuilder.Entity<Store>()
             .HasKey(d => d.StoreId);
-        
+
         modelBuilder.Entity<GameTag>()
             .HasKey(g => g.GameTagId);
-        
+
         modelBuilder.Entity<Price>()
             .HasKey(d => d.PriceId);
-        
+
         modelBuilder.Entity<Publisher>()
             .HasKey(g => g.PublisherId);
-        
+
         modelBuilder.Entity<Tag>()
             .HasKey(d => d.TagId);
-        
+
         modelBuilder.Entity<User>()
             .HasKey(g => g.UserId);
-        
+
         modelBuilder.Entity<UserGameOwnership>()
             .HasKey(d => d.OwnershipId);
-        
+
         modelBuilder.Entity<UserRole>()
             .HasKey(g => g.RoleId);
-        
+
         modelBuilder.Entity<Screenshot>()
             .HasKey(g => g.ScreenshotId);
+
+        modelBuilder.Entity<Developer>().Navigation(d => d.Games).AutoInclude();
+    }
+
+    private static void AddAutoIncludes(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>().Navigation(u => u.UserRole).AutoInclude();
     }
 }

@@ -8,5 +8,4 @@ public sealed class UserRole
     public Guid RoleId { get; } = Guid.NewGuid();
     [MaxLength(255)]
     public string RoleName { get; set; }
-    public ICollection<User> Users { get; set; }
 }

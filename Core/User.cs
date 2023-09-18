@@ -11,7 +11,7 @@ public sealed class User
     [MaxLength(255)]
     public string Password { get; set; }
     public string Email { get; set; }
-    public Guid? RoleId { get; set; }
+    
+    public Guid UserRoleId { get; set; }
     public UserRole UserRole { get; set; }
-    public ICollection<UserGameOwnership> UserGameOwnerships { get; set; }
 }
