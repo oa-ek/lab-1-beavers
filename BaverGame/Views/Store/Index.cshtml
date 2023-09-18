@@ -1,0 +1,50 @@
+@using Microsoft.IdentityModel.Tokens
+@model IEnumerable<Core.Store>
+
+@{
+    ViewData["Title"] = "Storegs";
+}
+
+<h1>Stores</h1>
+
+<div class="mt-3">
+    <div class="flex-row mb-2">
+        <button>
+            <a class="text-decoration-none" asp-area="" asp-controller="Store" asp-action="Create">Create</a>
+        </button>
+        @if (!Model.IsNullOrEmpty())
+        {
+            <button>
+                <a class="text-decoration-none" asp-area="" asp-controller="Store" asp-action="Update">Update</a>
+            </button>
+            <button>
+                <a class="text-decoration-none" asp-area="" asp-controller="Store" asp-action="Delete">Delete</a>
+            </button>
+        }
+    </div>
+    @if (!Model.IsNullOrEmpty())
+    {
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Store's ID</th>
+                <th>Store's name</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var store in Model)
+            {
+                <tr>
+                    <td>@store.StoreId</td>
+                    <td>@store.StoreName</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No stores were found!</p>
+    }
+</div>
+<a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>
