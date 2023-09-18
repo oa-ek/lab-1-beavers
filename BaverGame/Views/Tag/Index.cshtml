@@ -1,0 +1,50 @@
+@using Microsoft.IdentityModel.Tokens
+@model IEnumerable<Core.Tag>
+
+@{
+    ViewData["Title"] = "Tags";
+}
+
+<h1>Tags</h1>
+
+<div class="mt-3">
+    <div class="flex-row mb-2">
+        <button>
+            <a class="text-decoration-none" asp-area="" asp-controller="Tag" asp-action="Create">Create</a>
+        </button>
+        @if (!Model.IsNullOrEmpty())
+        {
+            <button>
+                <a class="text-decoration-none" asp-area="" asp-controller="Tag" asp-action="Update">Update</a>
+            </button>
+            <button>
+                <a class="text-decoration-none" asp-area="" asp-controller="Tag" asp-action="Delete">Delete</a>
+            </button>
+        }
+    </div>
+    @if (!Model.IsNullOrEmpty())
+    {
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Tag's ID</th>
+                <th>Tag's name</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var tag in Model)
+            {
+                <tr>
+                    <td>@tag.TagId</td>
+                    <td>@tag.TagName</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No tags were found!</p>
+    }
+</div>
+<a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>

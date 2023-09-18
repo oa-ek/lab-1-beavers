@@ -1,0 +1,16 @@
+@model BaverGame.DTOs.TagDto
+
+@{
+    ViewData["Title"] = "Delete particular tag";
+}
+
+<h1>Delete particular tag</h1>
+
+<form asp-action="Delete" method="post">
+    <div class="form-group">
+        <label asp-for="TagName">Removed tag's ID</label>
+        <input type="text" asp-for="TagName" class="form-control w-50" />
+    </div>
+    <button type="submit" class="btn btn-danger mt-2">Delete</button>
+</form>
+<a asp-action="Index" class="mt-2">Back to List</a>

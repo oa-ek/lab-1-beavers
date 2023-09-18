@@ -11,36 +11,26 @@ namespace BaverGame
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
+            
             builder.Services.AddControllersWithViews();
-
             builder.Services.AddDbContext<ApplicationContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddScoped<IRepository<Developer>>(provider =>
-                new GenericRepository<Developer>(provider.GetService<ApplicationContext>()!));
-            
-            builder.Services.AddScoped<IRepository<Publisher>>(provider =>
-                new GenericRepository<Publisher>(provider.GetService<ApplicationContext>()!));
-            
+            AddRepositories(builder);
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.MapControllerRoute(
@@ -49,5 +39,17 @@ namespace BaverGame
 
             app.Run();
         }
+
+        private static void AddRepositories(WebApplicationBuilder builder)
+        {
+            AddRepository<Developer>(builder);
+            AddRepository<Publisher>(builder);
+            AddRepository<Tag>(builder);
+        }
+
+        private static void AddRepository<T>(WebApplicationBuilder builder) 
+            where T : class =>
+            builder.Services.AddScoped<IRepository<T>>(provider =>
+                new GenericRepository<T>(provider.GetService<ApplicationContext>()!));
     }
 }
