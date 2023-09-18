@@ -1,4 +1,7 @@
+using Core;
 using Infrastructure.Data.Contexts;
+using Infrastructure.Repository;
+using Infrastructure.Repository.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace BaverGame
@@ -17,6 +20,12 @@ namespace BaverGame
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            builder.Services.AddScoped<IRepository<Developer>>(provider =>
+                new GenericRepository<Developer>(provider.GetService<ApplicationContext>()!));
+            
+            builder.Services.AddScoped<IRepository<Publisher>>(provider =>
+                new GenericRepository<Publisher>(provider.GetService<ApplicationContext>()!));
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
