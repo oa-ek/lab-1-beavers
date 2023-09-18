@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BaverGame.Controllers;
 
-internal sealed class TagController : Controller
+public sealed class TagController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IRepository<Tag> _tagsRepository;

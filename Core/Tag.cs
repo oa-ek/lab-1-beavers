@@ -8,5 +8,4 @@ public sealed class Tag
     public Guid TagId { get; } = Guid.NewGuid();
     [MaxLength(255)]
     public string TagName { get; set; }
-    public ICollection<GameTag> GameTags { get; set; }
 }
