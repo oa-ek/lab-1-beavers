@@ -1,0 +1,16 @@
+@model BaverGame.DTOs.StoreDto
+
+@{
+    ViewBag.Title = "Create new store";
+    Layout = "_Layout";
+}
+
+<h1>Create a new store</h1>
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="StoreName">Store's name</label>
+        <input asp-for="StoreName" class="form-control w-50" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Create</button>
+</form>
+<a asp-action="Index" class="mt-2">Back to List</a>
