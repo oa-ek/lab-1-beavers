@@ -38,6 +38,7 @@
   <ItemGroup>
     <AdditionalFiles Include="Views\Developer\Index.cshtml" />
     <AdditionalFiles Include="Views\Publisher\Create.cshtml" />
+    <AdditionalFiles Include="Views\Store\Index.cshtml" />
     <AdditionalFiles Include="Views\Tag\Create.cshtml" />
     <AdditionalFiles Include="Views\Tag\Delete.cshtml" />
     <AdditionalFiles Include="Views\Tag\Update.cshtml" />
