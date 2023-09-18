@@ -45,6 +45,8 @@ namespace BaverGame
             AddRepository<Developer>(builder);
             AddRepository<Publisher>(builder);
             AddRepository<Tag>(builder);
+            AddRepository<UserRole>(builder);
+            AddRepository<User>(builder);
             AddRepository<Store>(builder);
         }
 
