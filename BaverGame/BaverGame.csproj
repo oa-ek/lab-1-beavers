@@ -41,6 +41,7 @@
     <AdditionalFiles Include="Views\Tag\Create.cshtml" />
     <AdditionalFiles Include="Views\Tag\Delete.cshtml" />
     <AdditionalFiles Include="Views\Tag\Update.cshtml" />
+    <AdditionalFiles Include="Views\UserRole\Index.cshtml" />
   </ItemGroup>
 
 

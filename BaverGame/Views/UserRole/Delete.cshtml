@@ -1,0 +1,16 @@
+@model BaverGame.DTOs.UserRoleDto
+
+@{
+    ViewData["Title"] = "Delete particular user role";
+}
+
+<h1>Delete particular user role</h1>
+
+<form asp-action="Delete" method="post">
+    <div class="form-group">
+        <label asp-for="RoleId">Removed role's ID</label>
+        <input type="text" asp-for="RoleId" class="form-control w-50" />
+    </div>
+    <button type="submit" class="btn btn-danger mt-2">Delete</button>
+</form>
+<a asp-action="Index" class="mt-2">Back to List</a>
