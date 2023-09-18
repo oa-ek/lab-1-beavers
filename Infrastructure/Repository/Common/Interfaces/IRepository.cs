@@ -5,7 +5,7 @@ public interface IRepository<TEntity>
 {
     Task<List<TEntity>> GetAllEntitiesAsync();
 
-    Task<TEntity> GetSingleEntityBySpecificationAsync(Func<TEntity, bool> predicate);
+    Task<TEntity?> GetEntityByIdAsync(Guid id);
 
     Task AddNewEntityAsync(TEntity entity);
 
