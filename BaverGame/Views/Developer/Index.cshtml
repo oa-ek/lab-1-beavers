@@ -1,0 +1,50 @@
+@using Microsoft.IdentityModel.Tokens
+@model IEnumerable<Core.Developer>
+
+@{
+    ViewData["Title"] = "Developers";
+}
+
+<h1>Developers</h1>
+
+<div class="mt-3">
+    <div class="flex-row mb-2">
+        <button>
+            <a class="text-decoration-none" asp-area="" asp-controller="Developer" asp-action="Create">Create</a>
+        </button>
+        @if (!Model.IsNullOrEmpty())
+        {
+            <button>
+                <a class="text-decoration-none" asp-area="" asp-controller="Developer" asp-action="Update">Update</a>
+            </button>
+            <button>
+                <a class="text-decoration-none" asp-area="" asp-controller="Developer" asp-action="Delete">Delete</a>
+            </button>
+        }
+    </div>
+    @if (!Model.IsNullOrEmpty())
+    {
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Developer's ID</th>
+                <th>Developer's name</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var developer in Model)
+            {
+                <tr>
+                    <td>@developer.DeveloperId</td>
+                    <td>@developer.DeveloperName</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No developers were found!</p>
+    }
+</div>
+<a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>

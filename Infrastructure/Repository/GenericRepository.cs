@@ -9,14 +9,14 @@ public class GenericRepository<TEntity> : IRepository<TEntity>
 {
     private readonly ApplicationContext _context;
     
-    protected GenericRepository(ApplicationContext dbContext) => 
+    public GenericRepository(ApplicationContext dbContext) => 
         _context = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
     public Task<List<TEntity>> GetAllEntitiesAsync() =>
          _context.Set<TEntity>().ToListAsync();
 
-    public Task<TEntity> GetSingleEntityBySpecificationAsync(Func<TEntity, bool> predicate) =>
-        _context.Set<TEntity>().SingleOrDefaultAsync()!;
+    public async Task<TEntity?> GetEntityByIdAsync(Guid id) =>
+        await _context.Set<TEntity>().FindAsync(id);
 
     public async Task AddNewEntityAsync(TEntity entity)
     {
