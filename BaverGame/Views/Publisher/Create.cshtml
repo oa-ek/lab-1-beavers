@@ -1,0 +1,16 @@
+@model BaverGame.DTOs.PublisherDto
+
+@{
+    ViewBag.Title = "Create new publisher";
+    Layout = "_Layout";
+}
+
+<h1>Create a new publisher</h1>
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="PublisherName">Publisher's name</label>
+        <input asp-for="PublisherName" class="form-control w-50" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Create</button>
+</form>
+<a asp-action="Index" class="mt-2">Back to List</a>
