@@ -1,0 +1,16 @@
+@model BaverGame.DTOs.DeveloperDto
+
+@{
+    ViewBag.Title = "Create new developer";
+    Layout = "_Layout";
+}
+
+<h1>Create a new developer</h1>
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="DeveloperName">Developer's name</label>
+        <input asp-for="DeveloperName" class="form-control w-50" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Create</button>
+</form>
+<a asp-action="Index" class="mt-2">Back to List</a>
