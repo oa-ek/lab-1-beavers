@@ -29,9 +29,6 @@ public sealed class PriceController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(PriceDto dto)
     {
-        if (!ModelState.IsValid)
-            return View(dto);
-                
         await _pricesRepository.AddNewEntityAsync(new Price
         {
             GameId = Guid.Parse(dto.GameId),
@@ -61,6 +58,8 @@ public sealed class PriceController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(PriceDto dto)
     {
+        if (!ModelState.IsValid) return View(dto);
+        
         var price = await _pricesRepository.GetEntityByIdAsync(Guid.Parse(dto.PriceId));
         
         if (price is null) 

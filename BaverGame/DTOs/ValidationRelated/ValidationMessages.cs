@@ -6,4 +6,5 @@ public static class ValidationMessages
     public const string InvalidGuidFormat = "{0} must be a 36-character GUID.";
     public const string InvalidUrlFormat = "Invalid URL format.";
     public const string InvalidNumericValue = "Invalid {0} numeric value.";
+    public const string InvalidValue = "Invalid {0} value.";
 }
