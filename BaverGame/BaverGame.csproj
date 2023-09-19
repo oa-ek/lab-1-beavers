@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <AdditionalFiles Include="Views\Developer\Index.cshtml" />
+    <AdditionalFiles Include="Views\GameTag\Index.cshtml" />
     <AdditionalFiles Include="Views\Publisher\Create.cshtml" />
     <AdditionalFiles Include="Views\Screenshot\Create.cshtml" />
     <AdditionalFiles Include="Views\Screenshot\Delete.cshtml" />
