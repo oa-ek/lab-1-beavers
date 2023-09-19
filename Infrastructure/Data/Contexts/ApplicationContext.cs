@@ -65,6 +65,7 @@ public class ApplicationContext : DbContext
 
     private static void AddAutoIncludes(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().Navigation(u => u.UserRole).AutoInclude();
+        modelBuilder.Entity<User>().Navigation(user => user.UserRole).AutoInclude();
+        modelBuilder.Entity<Screenshot>().Navigation(screenshot => screenshot.Game).AutoInclude();
     }
 }

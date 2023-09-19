@@ -1,0 +1,20 @@
+@model BaverGame.DTOs.ScreenshotDto
+
+@{
+    ViewBag.Title = "Create new screenshot";
+    Layout = "_Layout";
+}
+
+<h1>Create a new screenshot</h1>
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="GameId">GameId</label>
+        <input asp-for="GameId" class="form-control w-50" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ImageUrl">Image url</label>
+        <input asp-for="ImageUrl" class="form-control w-50"/>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Create</button>
+</form>
+<a asp-action="Index" class="mt-2">Back to List</a>
