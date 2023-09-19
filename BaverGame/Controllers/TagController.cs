@@ -28,6 +28,10 @@ public sealed class TagController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(TagDto dto)
     {
+        if (string.IsNullOrWhiteSpace(dto.TagName) 
+            || string.IsNullOrEmpty(dto.TagName))
+            return View(dto);
+        
         await _tagsRepository.AddNewEntityAsync(new Tag
         {
             TagName = dto.TagName
@@ -42,7 +46,7 @@ public sealed class TagController : Controller
         if (!ModelState.IsValid) 
             return View(dto);
         
-        var tag = await _tagsRepository.GetEntityByIdAsync(dto.TagId);
+        var tag = await _tagsRepository.GetEntityByIdAsync(Guid.Parse(dto.TagId));
         if (tag is null) 
             return NotFound();
         
@@ -54,7 +58,9 @@ public sealed class TagController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(TagDto dto)
     {
-        var tag = await _tagsRepository.GetEntityByIdAsync(dto.TagId);
+        if (!Guid.TryParse(dto.TagId, out var id)) return View(dto);
+        
+        var tag = await _tagsRepository.GetEntityByIdAsync(id);
         if (tag is null) 
             return NotFound();
         
