@@ -9,7 +9,8 @@
 <form asp-action="Create">
     <div class="form-group">
         <label asp-for="StoreName">Store's name</label>
-        <input asp-for="StoreName" class="form-control w-50" />
+        <input asp-for="StoreName" class="form-control w-50" required="required" minlength="3"/>
+        <span asp-validation-for="StoreName" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary mt-2">Create</button>
 </form>

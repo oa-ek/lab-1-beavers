@@ -1,4 +1,6 @@
+using System.Text.RegularExpressions;
 using BaverGame.DTOs;
+using BaverGame.DTOs.ValidationRelated;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -6,10 +8,16 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BaverGame.Controllers;
 
-public sealed class PriceController : Controller
+public sealed partial class PriceController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IRepository<Price> _pricesRepository;
+    
+    [GeneratedRegex(RegexPatterns.UrlPattern)]
+    private static partial Regex UrlRegex();
+    
+    [GeneratedRegex(RegexPatterns.GuidPattern)]
+    private static partial Regex GuidRegex();
     
     public PriceController(IRepository<Price> pricesRepository, ILogger<HomeController> logger)
     {
@@ -29,9 +37,12 @@ public sealed class PriceController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(PriceDto dto)
     {
-        if (!ModelState.IsValid)
+        if (!UrlRegex().IsMatch(dto.PriceUrl) || !GuidRegex().IsMatch(dto.GameId) 
+                                              || !GuidRegex().IsMatch(dto.StoreId)
+                                              || string.IsNullOrEmpty(dto.PriceValue.ToString())
+                                              || string.IsNullOrWhiteSpace(dto.PriceValue.ToString()))
             return View(dto);
-                
+        
         await _pricesRepository.AddNewEntityAsync(new Price
         {
             GameId = Guid.Parse(dto.GameId),
@@ -53,6 +64,11 @@ public sealed class PriceController : Controller
         
         if (price is null) 
             return NotFound();
+
+        price.GameId = Guid.Parse(dto.GameId);
+        price.StoreId = Guid.Parse(dto.StoreId);
+        price.PriceValue = dto.PriceValue;
+        price.PriceUrl = dto.PriceUrl;
         
         _pricesRepository.UpdateExistingEntity(price); 
         return RedirectToAction("Index");
@@ -61,7 +77,9 @@ public sealed class PriceController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(PriceDto dto)
     {
-        var price = await _pricesRepository.GetEntityByIdAsync(Guid.Parse(dto.PriceId));
+        if (!Guid.TryParse(dto.PriceId, out var id)) return View(dto);
+        
+        var price = await _pricesRepository.GetEntityByIdAsync(id);
         
         if (price is null) 
             return NotFound();

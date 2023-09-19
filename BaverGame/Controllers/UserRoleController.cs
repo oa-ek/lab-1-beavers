@@ -28,6 +28,10 @@ public sealed class UserRoleController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(UserRoleDto dto)
     {
+        if (string.IsNullOrWhiteSpace(dto.RoleName) 
+            || string.IsNullOrEmpty(dto.RoleName))
+            return View(dto);
+        
         await _tagsRepository.AddNewEntityAsync(new UserRole
         {
             RoleName = dto.RoleName
@@ -42,7 +46,7 @@ public sealed class UserRoleController : Controller
         if (!ModelState.IsValid) 
             return View(dto);
         
-        var role = await _tagsRepository.GetEntityByIdAsync(dto.RoleId);
+        var role = await _tagsRepository.GetEntityByIdAsync(Guid.Parse(dto.RoleId));
         if (role is null) 
             return NotFound();
         
@@ -54,7 +58,9 @@ public sealed class UserRoleController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(UserRoleDto dto)
     {
-        var role = await _tagsRepository.GetEntityByIdAsync(dto.RoleId);
+        if (!Guid.TryParse(dto.RoleId, out var id)) return View(dto);
+        
+        var role = await _tagsRepository.GetEntityByIdAsync(id);
         if (role is null) 
             return NotFound();
         

@@ -1,8 +1,22 @@
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using BaverGame.DTOs.ValidationRelated;
+
 namespace BaverGame.DTOs;
 
 public sealed class ScreenshotDto
 {
-    public Guid ScreenshotId { get; } = Guid.NewGuid();
-    public Guid GameId { get; set; }
+    [Required(ErrorMessage = ValidationMessages.RequiredField)]
+    [StringLength(36, MinimumLength = 36, ErrorMessage = ValidationMessages.InvalidGuidFormat)]
+    [RegularExpression(RegexPatterns.GuidPattern, ErrorMessage = ValidationMessages.InvalidGuidFormat)]
+    public string ScreenshotId { get; set; }
+    
+    [Required(ErrorMessage = ValidationMessages.RequiredField)]
+    [StringLength(36, MinimumLength = 36, ErrorMessage = ValidationMessages.InvalidGuidFormat)]
+    [RegularExpression(RegexPatterns.GuidPattern, ErrorMessage = ValidationMessages.InvalidGuidFormat)]
+    public string GameId { get; set; }
+    
+    [Required(ErrorMessage = ValidationMessages.RequiredField)]
+    [RegularExpression(RegexPatterns.UrlPattern, ErrorMessage = ValidationMessages.InvalidUrlFormat)]
     public string ImageUrl { get; set; }
 }

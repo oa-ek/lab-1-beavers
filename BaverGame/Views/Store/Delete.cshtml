@@ -9,7 +9,8 @@
 <form asp-action="Delete" method="post">
     <div class="form-group">
         <label asp-for="StoreId">Removed store's ID</label>
-        <input type="text" asp-for="StoreId" class="form-control w-50" />
+        <input type="text" asp-for="StoreId" class="form-control w-50" required="required"/>
+        <span asp-validation-for="StoreId" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-danger mt-2">Delete</button>
 </form>

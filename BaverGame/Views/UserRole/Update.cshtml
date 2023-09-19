@@ -10,13 +10,13 @@
 
     <div class="form-group">
         <label asp-for="RoleId"></label>
-        <input type="text" asp-for="RoleId" class="form-control w-50" />
+        <input type="text" asp-for="RoleId" class="form-control w-50" required="required"/>
         <span asp-validation-for="RoleId" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="RoleName"></label>
-        <input asp-for="RoleName" class="form-control w-50" />
+        <input asp-for="RoleName" class="form-control w-50" required="required" minlength="3"/>
         <span asp-validation-for="RoleName" class="text-danger"></span>
     </div>
 

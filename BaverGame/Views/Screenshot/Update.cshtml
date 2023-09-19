@@ -9,17 +9,20 @@
 <form asp-action="Update" method="post">
     <div class="form-group">
         <label asp-for="ScreenshotId">Screenshot's ID</label>
-        <input asp-for="ScreenshotId" class="form-control w-50" />
+        <input asp-for="ScreenshotId" class="form-control w-50" required="required"/>
+        <span asp-validation-for="ScreenshotId" class="text-danger"></span>
     </div>
     
     <div class="form-group">
-        <label asp-for="GameId">Game's id</label>
-        <input asp-for="GameId" class="form-control w-50" />
+        <label asp-for="GameId">GameId</label>
+        <input asp-for="GameId" class="form-control w-50" required="required"/>
+        <span asp-validation-for="GameId" class="text-danger"></span>
     </div>
     
     <div class="form-group">
         <label asp-for="ImageUrl">Image url</label>
-        <input asp-for="ImageUrl" class="form-control w-50"/>
+        <input asp-for="ImageUrl" class="form-control w-50" required="required"/>
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary mt-2">Save</button>

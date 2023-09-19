@@ -1,4 +1,6 @@
+using System.Text.RegularExpressions;
 using BaverGame.DTOs;
+using BaverGame.DTOs.ValidationRelated;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -6,10 +8,16 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BaverGame.Controllers;
 
-public sealed class ScreenshotController : Controller
+public sealed partial class ScreenshotController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IRepository<Screenshot> _screenshotsRepository;
+    
+    [GeneratedRegex(RegexPatterns.UrlPattern)]
+    private static partial Regex UrlRegex();
+    
+    [GeneratedRegex(RegexPatterns.GuidPattern)]
+    private static partial Regex GuidRegex();
     
     public ScreenshotController(IRepository<Screenshot> screenshotsRepository, ILogger<HomeController> logger)
     {
@@ -29,9 +37,12 @@ public sealed class ScreenshotController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(ScreenshotDto dto)
     {
+        if (!UrlRegex().IsMatch(dto.ImageUrl) || !GuidRegex().IsMatch(dto.GameId))
+            return View(dto);
+        
         await _screenshotsRepository.AddNewEntityAsync(new Screenshot
         {
-            GameId = dto.GameId,
+            GameId = Guid.Parse(dto.GameId),
             ImageUrl = dto.ImageUrl,
         });
 
@@ -44,24 +55,21 @@ public sealed class ScreenshotController : Controller
         if (!ModelState.IsValid) 
             return View(dto);
         
-        var screenshot = await _screenshotsRepository.GetEntityByIdAsync(dto.ScreenshotId);
+        var screenshot = await _screenshotsRepository.GetEntityByIdAsync(Guid.Parse(dto.ScreenshotId));
         if (screenshot is null) 
             return NotFound();
         
-        if (!dto.GameId.ToString().IsNullOrEmpty())
-            screenshot.GameId = dto.GameId;
-        
-        if (!dto.ImageUrl.IsNullOrEmpty())
-            screenshot.ImageUrl = dto.ImageUrl;
-        
         _screenshotsRepository.UpdateExistingEntity(screenshot); 
+        
         return RedirectToAction("Index");
     }
 
     [HttpPost]
     public async Task<IActionResult> Delete(ScreenshotDto dto)
     {
-        var screenshot = await _screenshotsRepository.GetEntityByIdAsync(dto.ScreenshotId);
+        if (!Guid.TryParse(dto.ScreenshotId, out var id)) return View(dto);
+        
+        var screenshot = await _screenshotsRepository.GetEntityByIdAsync(id);
         if (screenshot is null) 
             return NotFound();
         

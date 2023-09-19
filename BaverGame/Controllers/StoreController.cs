@@ -28,6 +28,10 @@ public sealed class StoreController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(StoreDto dto)
     {
+        if (string.IsNullOrWhiteSpace(dto.StoreName) 
+            || string.IsNullOrEmpty(dto.StoreName))
+            return View(dto);
+        
         await _storeRepository.AddNewEntityAsync(new Store
         {
             StoreName = dto.StoreName
@@ -42,7 +46,7 @@ public sealed class StoreController : Controller
         if (!ModelState.IsValid) 
             return View(dto);
         
-        var store = await _storeRepository.GetEntityByIdAsync(dto.StoreId);
+        var store = await _storeRepository.GetEntityByIdAsync(Guid.Parse(dto.StoreId));
         if (store is null) 
             return NotFound();
         
@@ -54,7 +58,9 @@ public sealed class StoreController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(StoreDto dto)
     {
-        var store = await _storeRepository.GetEntityByIdAsync(dto.StoreId);
+        if (!Guid.TryParse(dto.StoreId, out var id)) return View(dto);
+        
+        var store = await _storeRepository.GetEntityByIdAsync(id);
         if (store is null) 
             return NotFound();
         

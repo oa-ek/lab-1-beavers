@@ -27,6 +27,10 @@ public class PublisherController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(PublisherDto publisher)
     {
+        if (string.IsNullOrWhiteSpace(publisher.PublisherName) 
+            || string.IsNullOrEmpty(publisher.PublisherName))
+            return View(publisher);
+        
         await _publisherRepository.AddNewEntityAsync(new Publisher
         {
             PublisherName = publisher.PublisherName
@@ -40,7 +44,7 @@ public class PublisherController : Controller
     {
         if (!ModelState.IsValid) return View(dto);
         
-        var publisher = await _publisherRepository.GetEntityByIdAsync(dto.PublisherId);
+        var publisher = await _publisherRepository.GetEntityByIdAsync(Guid.Parse(dto.PublisherId));
 
         if (publisher == null) return NotFound();
         
@@ -54,7 +58,9 @@ public class PublisherController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(PublisherDto dto)
     {
-        var publisher = await _publisherRepository.GetEntityByIdAsync(dto.PublisherId);
+        if (!Guid.TryParse(dto.PublisherId, out var id)) return View(dto);
+        
+        var publisher = await _publisherRepository.GetEntityByIdAsync(id);
 
         if (publisher == null) return NotFound();
         

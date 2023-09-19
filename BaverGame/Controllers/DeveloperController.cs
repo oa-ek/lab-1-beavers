@@ -27,6 +27,10 @@ public class DeveloperController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(DeveloperDto developer)
     {
+        if (string.IsNullOrWhiteSpace(developer.DeveloperName) 
+            || string.IsNullOrEmpty(developer.DeveloperName))
+            return View(developer);
+        
         await _developerRepository.AddNewEntityAsync(new Developer()
         {
             DeveloperName = developer.DeveloperName
@@ -40,7 +44,7 @@ public class DeveloperController : Controller
     {
         if (!ModelState.IsValid) return View(dto);
         
-        var developer = await _developerRepository.GetEntityByIdAsync(dto.DeveloperId);
+        var developer = await _developerRepository.GetEntityByIdAsync(Guid.Parse(dto.DeveloperId));
 
         if (developer == null) return NotFound();
         
@@ -54,7 +58,9 @@ public class DeveloperController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(DeveloperDto dto)
     {
-        var developer = await _developerRepository.GetEntityByIdAsync(dto.DeveloperId);
+        if (!Guid.TryParse(dto.DeveloperId, out var id)) return View(dto);
+        
+        var developer = await _developerRepository.GetEntityByIdAsync(id);
         
         if (developer == null) return NotFound();
         
