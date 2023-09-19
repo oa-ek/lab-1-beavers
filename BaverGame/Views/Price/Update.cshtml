@@ -1,0 +1,39 @@
+@model BaverGame.DTOs.PriceDto
+
+@{
+    ViewData["Title"] = "Update particular price";
+}
+
+<h1>Update particular price</h1>
+
+<form asp-action="Update" method="post">
+    <div asp-validation-summary="All" class="form-group">
+        <label asp-for="PriceId">PriceId</label>
+        <input asp-for="PriceId" class="form-control w-50" required="required"/>
+        <span asp-validation-for="PriceId" class="text-danger"></span>
+    </div>
+    <div asp-validation-summary="All" class="form-group">
+        <label asp-for="GameId">GameId</label>
+        <input asp-for="GameId" class="form-control w-50" required="required"/>
+        <span asp-validation-for="GameId" class="text-danger"></span>
+    </div>
+    <div asp-validation-summary="All" class="form-group">
+        <label asp-for="StoreId">StoreId</label>
+        <input asp-for="StoreId" class="form-control w-50" required="required"/>
+        <span asp-validation-for="StoreId" class="text-danger"></span>
+    </div>
+    <div asp-validation-summary="All" class="form-group">
+        <label asp-for="PriceValue">Price</label>
+        <input asp-for="PriceValue" class="form-control w-50" required="required"/>
+        <span asp-validation-for="PriceValue" class="text-danger"></span>
+    </div>
+    <div asp-validation-summary="All" class="form-group">
+        <label asp-for="PriceUrl">Price url</label>
+        <input asp-for="PriceUrl" class="form-control w-50" required="required"/>
+        <span asp-validation-for="PriceUrl" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Save</button>
+</form>
+
+<a asp-action="Index" class="mt-2">Back to List</a>
