@@ -13,6 +13,5 @@ public sealed class DeveloperDto
 
     [Required(ErrorMessage = ValidationMessages.RequiredField)]
     [StringLength(255, MinimumLength = 3, ErrorMessage = ValidationMessages.InvalidValue)]
-    [DisallowNull]
     public string DeveloperName { get; set; }
 }

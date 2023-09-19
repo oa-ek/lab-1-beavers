@@ -9,7 +9,8 @@
 <form asp-action="Create">
     <div class="form-group">
         <label asp-for="PublisherName">Publisher's name</label>
-        <input asp-for="PublisherName" class="form-control w-50" />
+        <input asp-for="PublisherName" class="form-control w-50" required="required" minlength="3"/>
+        <span asp-validation-for="PublisherName" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary mt-2">Create</button>
 </form>
