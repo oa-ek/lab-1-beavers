@@ -1,0 +1,32 @@
+@model BaverGame.DTOs.PriceDto
+
+@{
+    ViewBag.Title = "Create new price";
+    Layout = "_Layout";
+}
+
+<h1>Create a new price</h1>
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="GameId">GameId</label>
+        <input asp-for="GameId" class="form-control w-50" required="required"/>
+        <span asp-validation-for="GameId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="StoreId">StoreId</label>
+        <input asp-for="StoreId" class="form-control w-50" required="required"/>
+        <span asp-validation-for="StoreId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PriceValue">Price</label>
+        <input asp-for="PriceValue" class="form-control w-50" required="required"/>
+        <span asp-validation-for="PriceValue" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PriceUrl">Price url</label>
+        <input asp-for="PriceUrl" class="form-control w-50" required="required"/>
+        <span asp-validation-for="PriceUrl" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Create</button>
+</form>
+<a asp-action="Index" class="mt-2">Back to List</a>
