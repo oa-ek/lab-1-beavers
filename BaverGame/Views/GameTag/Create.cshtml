@@ -1,0 +1,23 @@
+@model BaverGame.DTOs.GameTagDto
+
+@{
+    ViewBag.Title = "Create new tag";
+    Layout = "_Layout";
+}
+
+<h1>Create a new tag</h1>
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="GameId">Game's ID</label>
+        <input asp-for="GameId" class="form-control w-50" required="required"/>
+        <span asp-validation-for="GameId" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+            <label asp-for="TagId">Tag's ID</label>
+            <input asp-for="TagId" class="form-control w-50" required="required"/>
+            <span asp-validation-for="TagId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Create</button>
+</form>
+<a asp-action="Index" class="mt-2">Back to List</a>
