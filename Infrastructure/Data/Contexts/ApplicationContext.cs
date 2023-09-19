@@ -67,5 +67,7 @@ public class ApplicationContext : DbContext
     {
         modelBuilder.Entity<User>().Navigation(user => user.UserRole).AutoInclude();
         modelBuilder.Entity<Screenshot>().Navigation(screenshot => screenshot.Game).AutoInclude();
+        modelBuilder.Entity<UserGameOwnership>().Navigation(ownership => ownership.Game).AutoInclude();
+        modelBuilder.Entity<UserGameOwnership>().Navigation(ownership => ownership.User).AutoInclude();
     }
 }
