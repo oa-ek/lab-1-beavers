@@ -50,6 +50,10 @@
     <AdditionalFiles Include="Views\Tag\Create.cshtml" />
     <AdditionalFiles Include="Views\Tag\Delete.cshtml" />
     <AdditionalFiles Include="Views\Tag\Update.cshtml" />
+    <AdditionalFiles Include="Views\UserGameOwnership\Create.cshtml" />
+    <AdditionalFiles Include="Views\UserGameOwnership\Delete.cshtml" />
+    <AdditionalFiles Include="Views\UserGameOwnership\Index.cshtml" />
+    <AdditionalFiles Include="Views\UserGameOwnership\Update.cshtml" />
     <AdditionalFiles Include="Views\UserRole\Index.cshtml" />
 
   </ItemGroup>

@@ -71,5 +71,9 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<GameTag>().Navigation(gameTag => gameTag.Tag).AutoInclude();
         modelBuilder.Entity<Game>().Navigation(game => game.Developer).AutoInclude();
         modelBuilder.Entity<Game>().Navigation(game => game.Publisher).AutoInclude();
+        modelBuilder.Entity<UserGameOwnership>().Navigation(ownership => ownership.Game).AutoInclude();
+        modelBuilder.Entity<UserGameOwnership>().Navigation(ownership => ownership.User).AutoInclude();
+        modelBuilder.Entity<GameTag>().Navigation(screenshot => screenshot.Game).AutoInclude();
+        modelBuilder.Entity<GameTag>().Navigation(screenshot => screenshot.Tag).AutoInclude();
     }
 }

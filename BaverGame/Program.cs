@@ -50,6 +50,7 @@ namespace BaverGame
             AddRepository<Store>(builder);
             AddRepository<Screenshot>(builder);
             AddRepository<Price>(builder);
+            AddRepository<UserGameOwnership>(builder);
             AddRepository<GameTag>(builder);
             AddRepository<Game>(builder);
         }
