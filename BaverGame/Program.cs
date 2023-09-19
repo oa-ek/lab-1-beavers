@@ -48,6 +48,7 @@ namespace BaverGame
             AddRepository<UserRole>(builder);
             AddRepository<User>(builder);
             AddRepository<Store>(builder);
+            AddRepository<Screenshot>(builder);
         }
 
         private static void AddRepository<T>(WebApplicationBuilder builder) 

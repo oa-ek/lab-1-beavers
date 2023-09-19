@@ -1,0 +1,52 @@
+@using Microsoft.IdentityModel.Tokens
+@model IEnumerable<Core.Screenshot>
+
+@{
+    ViewData["Title"] = "Screenshots";
+}
+
+<h1>Screenshots</h1>
+
+<div class="mt-3">
+    <div class="flex-row mb-2">
+        <button>
+            <a class="text-decoration-none" asp-area="" asp-controller="Screenshot" asp-action="Create">Create</a>
+        </button>
+        @if (!Model.IsNullOrEmpty())
+        {
+            <button>
+                <a class="text-decoration-none" asp-area="" asp-controller="Screenshot" asp-action="Update">Update</a>
+            </button>
+            <button>
+                <a class="text-decoration-none" asp-area="" asp-controller="Screenshot" asp-action="Delete">Delete</a>
+            </button>
+        }
+    </div>
+    @if (!Model.IsNullOrEmpty())
+    {
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Screenshot's ID</th>
+                <th>Game</th>
+                <th>Ulr</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var screenshot in Model)
+            {
+                <tr>
+                    <td>@screenshot.ScreenshotId</td>
+                    <td>@screenshot.Game.GameId</td> <!--TODO: replace with name-->
+                    <td>@screenshot.ImageUrl</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Screenshots were found!</p>
+    }
+</div>
+<a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>

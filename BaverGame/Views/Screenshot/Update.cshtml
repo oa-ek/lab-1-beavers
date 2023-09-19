@@ -1,0 +1,28 @@
+@model BaverGame.DTOs.ScreenshotDto
+
+@{
+    ViewData["Title"] = "Update particular user screenshot";
+}
+
+<h1>Update particular user screenshot</h1>
+
+<form asp-action="Update" method="post">
+    <div class="form-group">
+        <label asp-for="ScreenshotId">Screenshot's ID</label>
+        <input asp-for="ScreenshotId" class="form-control w-50" />
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="GameId">Game's id</label>
+        <input asp-for="GameId" class="form-control w-50" />
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="ImageUrl">Image url</label>
+        <input asp-for="ImageUrl" class="form-control w-50"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Save</button>
+</form>
+
+<a asp-action="Index" class="mt-2">Back to List</a>
