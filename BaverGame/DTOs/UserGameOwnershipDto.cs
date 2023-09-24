@@ -19,4 +19,7 @@ public sealed class UserGameOwnershipDto
     [StringLength(36, MinimumLength = 36, ErrorMessage = ValidationMessages.InvalidGuidFormat)]
     [RegularExpression(RegexPatterns.GuidPattern, ErrorMessage = ValidationMessages.InvalidGuidFormat)]
     public string GameId { get; set; }
+    
+    public string GameName { get; set; }
+    public string UserName { get; set; }
 }

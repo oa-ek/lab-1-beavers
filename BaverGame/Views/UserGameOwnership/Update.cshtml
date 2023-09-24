@@ -7,21 +7,25 @@
 <h1>Update particular userGameOwnership</h1>
 
 <form asp-action="Update" method="post">
-    <div class="form-group">
+    <div class="form-group" hidden="hidden">
         <label asp-for="GameOwnershipId">GameOwnershipId</label>
         <input asp-for="GameOwnershipId" class="form-control w-50" required="required" minlength="3"/>
         <span asp-validation-for="GameOwnershipId" class="text-danger"></span>
     </div>
+    
+    <div class="form-group">
+            <label asp-for="UserId">User</label>
+            <select asp-for="UserId" asp-items="@(ViewData["Users"] as SelectList)" class="form-control w-50" required="required">
+                <option value="">Select value</option>
+            </select>
+            <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
 
     <div class="form-group">
-        <label asp-for="UserId">UserId</label>
-        <input asp-for="UserId" class="form-control w-50" required="required"/>
-        <span asp-validation-for="UserId" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="GameId">GameId</label>
-        <input asp-for="GameId" class="form-control w-50" required="required" minlength="3"/>
+        <label asp-for="GameId">Game</label>
+        <select asp-for="GameId" asp-items="@(ViewData["Games"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="GameId" class="text-danger"></span>
     </div>
 

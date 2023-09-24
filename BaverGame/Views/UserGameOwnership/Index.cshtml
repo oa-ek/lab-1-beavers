@@ -1,4 +1,5 @@
 @using Microsoft.IdentityModel.Tokens
+@using Core
 @model IEnumerable<Core.UserGameOwnership>
 
 @{
@@ -12,33 +13,34 @@
         <button>
             <a class="text-decoration-none" asp-area="" asp-controller="UserGameOwnership" asp-action="Create">Create</a>
         </button>
-        @if (!Model.IsNullOrEmpty())
-        {
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="UserGameOwnership" asp-action="Update">Update</a>
-            </button>
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="UserGameOwnership" asp-action="Delete">Delete</a>
-            </button>
-        }
     </div>
     @if (!Model.IsNullOrEmpty())
     {
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th>UserGameOwnership's ID</th>
                 <th>User</th>
                 <th>Game</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             @foreach (var ownership in Model)
             {
                 <tr>
-                    <td>@ownership.OwnershipId</td>
-                    <td>@ownership.User</td>
-                    <td>@ownership.Game</td>
+                    <td>@ownership.User.Username</td>
+                    <td>@ownership.Game.Name</td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="UserGameOwnership" asp-route-id="@ownership.OwnershipId" asp-action="Update">Update</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="UserGameOwnership" asp-route-id="@ownership.OwnershipId" asp-action="Delete">Delete</a>
+                        </button>
+                    </td>
                 </tr>
             }
             </tbody>
