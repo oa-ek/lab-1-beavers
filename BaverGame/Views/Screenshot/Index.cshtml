@@ -12,33 +12,34 @@
         <button>
             <a class="text-decoration-none" asp-area="" asp-controller="Screenshot" asp-action="Create">Create</a>
         </button>
-        @if (!Model.IsNullOrEmpty())
-        {
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Screenshot" asp-action="Update">Update</a>
-            </button>
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Screenshot" asp-action="Delete">Delete</a>
-            </button>
-        }
     </div>
     @if (!Model.IsNullOrEmpty())
     {
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th>Screenshot's ID</th>
                 <th>Game</th>
                 <th>Ulr</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             @foreach (var screenshot in Model)
             {
                 <tr>
-                    <td>@screenshot.ScreenshotId</td>
-                    <td>@screenshot.Game.GameId</td> <!--TODO: replace with name-->
+                    <td>@screenshot.Game.Name</td>
                     <td>@screenshot.ImageUrl</td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Screenshot" asp-route-id="@screenshot.ScreenshotId" asp-action="Update">Update</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Screenshot" asp-route-id="@screenshot.ScreenshotId" asp-action="Delete">Delete</a>
+                        </button>
+                    </td>
                 </tr>
             }
             </tbody>
