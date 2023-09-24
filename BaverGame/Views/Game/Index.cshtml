@@ -12,40 +12,42 @@
         <button>
             <a class="text-decoration-none" asp-area="" asp-controller="Game" asp-action="Create">Create</a>
         </button>
-        @if (!Model.IsNullOrEmpty())
-        {
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Game" asp-action="Update">Update</a>
-            </button>
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Game" asp-action="Delete">Delete</a>
-            </button>
-        }
     </div>
     @if (!Model.IsNullOrEmpty())
     {
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th>Game's ID</th>
-                <th>Developer's name</th>
-                <th>Publisher's name</th>
                 <th>Game's name</th>
                 <th>Description</th>
                 <th>System requirements</th>
+                <th>Developer's name</th>
+                <th>Publisher's name</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             @foreach (var game in Model)
             {
                 <tr>
-                    <td>@game.GameId</td>
-                    <td>@game.Developer.DeveloperName</td> 
-                    <td>@game.Publisher.PublisherName</td>
                     <td>@game.Name</td>
-                    <td>@game.Description</td> 
+                    <td>@game.Description</td>
                     <td>@game.SystemRequirements</td>
+                    <td>@game.Developer.DeveloperName</td>
+                    <td>@game.Publisher.PublisherName</td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Game" asp-route-id="@game.GameId" asp-action="Update">Update</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Game" asp-route-id="@game.GameId" asp-action="Delete">Delete</a>
+                        </button>
+                    </td>
                 </tr>
+                
             }
             </tbody>
         </table>
