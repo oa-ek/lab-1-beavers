@@ -7,9 +7,12 @@
 <h1>Update particular user role</h1>
 
 <form asp-action="Update" method="post">
+
     <div class="form-group">
-        <label asp-for="UserId">User's ID</label>
-        <input asp-for="UserId" class="form-control w-50" required="required"/>
+        <label asp-for="UserId">User</label>
+        <select asp-for="UserId" asp-items="@(ViewData["Users"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="UserId" class="text-danger"></span>
     </div>
     
@@ -30,10 +33,12 @@
         <input asp-for="Password" class="form-control w-50" required="required" minlength="3"/>
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
-    
+
     <div class="form-group">
-        <label asp-for="RoleId">User's role ID</label>
-        <input asp-for="RoleId" class="form-control w-50" required="required"/>
+        <label asp-for="RoleId">User's role</label>
+        <select asp-for="RoleId" asp-items="@(ViewData["UserRoleId"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="RoleId" class="text-danger"></span>
     </div>
 
