@@ -5,14 +5,13 @@ using Core;
 using Infrastructure.Repository.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.IdentityModel.Tokens;
 
 namespace BaverGame.Controllers;
 
 public sealed partial class UserController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IRepository<User> _usersRepository;
+    private readonly IRepository<Core.User> _usersRepository;
     private readonly IRepository<UserRole> _userRolesRepository;
 
     [GeneratedRegex(RegexPatterns.GuidPattern)]
@@ -21,7 +20,7 @@ public sealed partial class UserController : Controller
     [GeneratedRegex(RegexPatterns.EmailPattern)]
     private static partial Regex EmailRegex();
     
-    public UserController(IRepository<User> usersRepository, IRepository<UserRole> userRolesRepository, ILogger<HomeController> logger)
+    public UserController(IRepository<Core.User> usersRepository, IRepository<UserRole> userRolesRepository, ILogger<HomeController> logger)
     {
         _usersRepository = usersRepository;
         _userRolesRepository = userRolesRepository;
@@ -37,14 +36,36 @@ public sealed partial class UserController : Controller
         return View();
     }
 
-    public IActionResult Update()
+    public async Task<IActionResult> Update(Guid id)
     {
         PopulateDropdowns();
-        return View();
+
+        var user = await _usersRepository.GetEntityByIdAsync(id);
+        var dto = new UserDto()
+        {
+            UserId = user.UserId.ToString(),
+            Password = user.Password,
+            RoleId = user.UserRoleId.ToString(),
+            Username = user.Username,
+            Email = user.Email,
+        };
+        return View(dto);
     }
 
-    public IActionResult Delete() => View();
-    
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var user = await _usersRepository.GetEntityByIdAsync(id);
+        
+        return View(new UserDto()
+        {
+            UserId = user.UserId.ToString(),
+            Username = user.Username,
+            Email = user.Email,
+            Password = user.Password,
+            RoleId = user.UserRoleId.ToString(),
+        });
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(UserDto dto)
     {
