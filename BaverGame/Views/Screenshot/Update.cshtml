@@ -7,18 +7,20 @@
 <h1>Update particular user screenshot</h1>
 
 <form asp-action="Update" method="post">
-    <div class="form-group">
+    <div class="form-group" hidden="hidden">
         <label asp-for="ScreenshotId">Screenshot's ID</label>
         <input asp-for="ScreenshotId" class="form-control w-50" required="required"/>
         <span asp-validation-for="ScreenshotId" class="text-danger"></span>
     </div>
-    
+
     <div class="form-group">
-        <label asp-for="GameId">GameId</label>
-        <input asp-for="GameId" class="form-control w-50" required="required"/>
+        <label asp-for="GameId">Game</label>
+        <select asp-for="GameId" asp-items="@(ViewData["Games"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="GameId" class="text-danger"></span>
     </div>
-    
+
     <div class="form-group">
         <label asp-for="ImageUrl">Image url</label>
         <input asp-for="ImageUrl" class="form-control w-50" required="required"/>
