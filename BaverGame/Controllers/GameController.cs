@@ -52,8 +52,17 @@ public sealed partial class GameController : Controller
         return View(dto);
     }
 
-    public IActionResult Delete() => View();
-    
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var game = await _gamesRepository.GetEntityByIdAsync(id);
+        
+        return View(new GameDto
+        {
+            GameId = game.GameId.ToString(),
+            Name = game.Name,
+        });
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(GameDto dto)
     {
