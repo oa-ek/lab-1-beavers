@@ -26,8 +26,21 @@ public sealed partial class GameController : Controller
     
     public IActionResult Create() => View();
     
-    public IActionResult Update() => View();
-    
+    public async Task<IActionResult> Update(Guid id)
+    {
+        var game = await _gamesRepository.GetEntityByIdAsync(id);
+
+        var dto = new GameDto
+        {
+            GameId = game.GameId.ToString(),
+            Name = game.Name,
+            Description = game.Description,
+            SystemRequirements = game.SystemRequirements,
+        };
+        
+        return View(dto);
+    }
+
     public IActionResult Delete() => View();
     
     [HttpPost]
