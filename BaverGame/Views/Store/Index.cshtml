@@ -12,31 +12,32 @@
         <button>
             <a class="text-decoration-none" asp-area="" asp-controller="Store" asp-action="Create">Create</a>
         </button>
-        @if (!Model.IsNullOrEmpty())
-        {
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Store" asp-action="Update">Update</a>
-            </button>
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Store" asp-action="Delete">Delete</a>
-            </button>
-        }
     </div>
     @if (!Model.IsNullOrEmpty())
     {
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th>Store's ID</th>
                 <th>Store's name</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             @foreach (var store in Model)
             {
                 <tr>
-                    <td>@store.StoreId</td>
                     <td>@store.StoreName</td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Store" asp-route-id="@store.StoreId" asp-action="Update">Update</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Store" asp-route-id="@store.StoreId" asp-action="Delete">Delete</a>
+                        </button>
+                    </td>
                 </tr>
             }
             </tbody>

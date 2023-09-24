@@ -8,23 +8,41 @@ namespace BaverGame.Controllers;
 public sealed class StoreController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IRepository<Store> _storeRepository;
+    private readonly IRepository<Store> _storesRepository;
     
-    public StoreController(IRepository<Store> storeRepository, ILogger<HomeController> logger)
+    public StoreController(IRepository<Store> storesRepository, ILogger<HomeController> logger)
     {
-        _storeRepository = storeRepository;
+        _storesRepository = storesRepository;
         _logger = logger;
     }
 
     public async Task<IActionResult> Index() => 
-        View(await _storeRepository.GetAllEntitiesAsync());
+        View(await _storesRepository.GetAllEntitiesAsync());
     
     public IActionResult Create() => View();
-    
-    public IActionResult Update() => View();
-    
-    public IActionResult Delete() => View();
-    
+
+    public async Task<IActionResult> Update(Guid id)
+    {
+        var store = await _storesRepository.GetEntityByIdAsync(id);
+
+        return View(new StoreDto
+        {
+            StoreId = id.ToString(),
+            StoreName = store.StoreName
+        });
+    }
+
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var store = await _storesRepository.GetEntityByIdAsync(id);
+        
+        return View(new StoreDto
+        {
+            StoreId = id.ToString(),
+            StoreName = store.StoreName
+        });
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(StoreDto dto)
     {
@@ -32,7 +50,7 @@ public sealed class StoreController : Controller
             || string.IsNullOrEmpty(dto.StoreName))
             return View(dto);
         
-        await _storeRepository.AddNewEntityAsync(new Store
+        await _storesRepository.AddNewEntityAsync(new Store
         {
             StoreName = dto.StoreName
         });
@@ -46,12 +64,12 @@ public sealed class StoreController : Controller
         if (!ModelState.IsValid) 
             return View(dto);
         
-        var store = await _storeRepository.GetEntityByIdAsync(Guid.Parse(dto.StoreId));
+        var store = await _storesRepository.GetEntityByIdAsync(Guid.Parse(dto.StoreId));
         if (store is null) 
             return NotFound();
         
         store.StoreName = dto.StoreName;
-        _storeRepository.UpdateExistingEntity(store); 
+        _storesRepository.UpdateExistingEntity(store); 
         return RedirectToAction("Index");
     }
 
@@ -60,11 +78,11 @@ public sealed class StoreController : Controller
     {
         if (!Guid.TryParse(dto.StoreId, out var id)) return View(dto);
         
-        var store = await _storeRepository.GetEntityByIdAsync(id);
+        var store = await _storesRepository.GetEntityByIdAsync(id);
         if (store is null) 
             return NotFound();
         
-        _storeRepository.RemoveExistingEntity(store); 
+        _storesRepository.RemoveExistingEntity(store); 
         return RedirectToAction("Index");
     }
 }

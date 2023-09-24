@@ -8,9 +8,9 @@
 
 <form asp-action="Update" method="post">
 
-    <div class="form-group">
+    <div class="form-group" hidden="hidden">
         <label asp-for="StoreId"></label>
-        <input type="text" asp-for="StoreId" class="form-control w-50" required="required"/>
+        <input type="text" asp-for="StoreId" class="form-control w-50" required="required" value="@Model.StoreId"/>
         <span asp-validation-for="StoreId" class="text-danger"></span>
     </div>
 
