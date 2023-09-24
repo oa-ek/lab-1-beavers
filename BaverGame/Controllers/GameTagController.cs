@@ -4,6 +4,7 @@ using BaverGame.DTOs.ValidationRelated;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BaverGame.Controllers;
 
@@ -11,25 +12,57 @@ public sealed partial class GameTagController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IRepository<GameTag> _gameTagsRepository;
+    private readonly IRepository<Game> _gamesRepository;
+    private readonly IRepository<Tag> _tagsRepository;
     
     [GeneratedRegex(RegexPatterns.GuidPattern)]
     private static partial Regex GuidRegex();
     
-    public GameTagController(IRepository<GameTag> gameTagsRepository, ILogger<HomeController> logger)
+    public GameTagController(
+        IRepository<GameTag> gameTagsRepository,
+        IRepository<Game> gamesRepository, 
+        IRepository<Tag> tagsRepository,
+        ILogger<HomeController> logger)
     {
         _gameTagsRepository = gameTagsRepository;
         _logger = logger;
+        _gamesRepository = gamesRepository;
+        _tagsRepository = tagsRepository;
     }
 
     public async Task<IActionResult> Index() => 
         View(await _gameTagsRepository.GetAllEntitiesAsync());
     
-    public IActionResult Create() => View();
-    
-    public IActionResult Update() => View();
-    
-    public IActionResult Delete() => View();
-    
+    public IActionResult Create()
+    {
+        PopulateDropdowns();
+        return View();
+    }
+
+    public async Task<IActionResult> Update(Guid id)
+    {
+        PopulateDropdowns();
+        
+        var tag = await _gameTagsRepository.GetEntityByIdAsync(id);
+        
+        return View(new GameTagDto
+        {
+            GameId = tag.GameId.ToString(),
+            TagId = tag.TagId.ToString(),
+            GameTagId = id.ToString()
+        });
+    }
+
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var tag = await _gameTagsRepository.GetEntityByIdAsync(id);
+        
+        return View(new GameTagDto
+        {
+            GameTagId = id.ToString()
+        });
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(GameTagDto dto)
     {
@@ -73,5 +106,18 @@ public sealed partial class GameTagController : Controller
         
         _gameTagsRepository.RemoveExistingEntity(tag); 
         return RedirectToAction("Index");
+    }
+    
+    private void PopulateDropdowns()
+    {
+        ViewData["Games"] = new SelectList(
+            _gamesRepository.GetAllEntities(), 
+            nameof(Game.GameId),
+            nameof(Game.Name));
+
+        ViewData["Tags"] = new SelectList(
+            _tagsRepository.GetAllEntities(),
+            nameof(Tag.TagId),
+            nameof(Tag.TagName));
     }
 }

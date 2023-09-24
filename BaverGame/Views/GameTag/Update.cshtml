@@ -8,21 +8,25 @@
 
 <form asp-action="Update" method="post">
 
-    <div class="form-group">
+    <div class="form-group" hidden="hidden">
         <label asp-for="GameTagId"></label>
-        <input type="text" asp-for="GameTagId" class="form-control w-50" required="required"/>
+        <input type="text" asp-for="GameTagId" class="form-control w-50" required="required" value="@Model.GameTagId"/>
         <span asp-validation-for="GameTagId" class="text-danger"></span>
     </div>
     
     <div class="form-group">
-        <label asp-for="TagId"></label>
-        <input type="text" asp-for="TagId" class="form-control w-50" required="required"/>
+        <label asp-for="TagId">Tag</label>
+        <select asp-for="TagId" asp-items="@(ViewData["Tags"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="TagId" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="GameId"></label>
-        <input type="text" asp-for="GameId" class="form-control w-50" required="required"/>
+        <label asp-for="GameId">Game</label>
+        <select asp-for="GameId" asp-items="@(ViewData["Games"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="GameId" class="text-danger"></span>
     </div>
 

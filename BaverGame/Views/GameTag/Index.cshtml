@@ -12,33 +12,34 @@
         <button>
             <a class="text-decoration-none" asp-area="" asp-controller="GameTag" asp-action="Create">Create</a>
         </button>
-        @if (!Model.IsNullOrEmpty())
-        {
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="GameTag" asp-action="Update">Update</a>
-            </button>
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="GameTag" asp-action="Delete">Delete</a>
-            </button>
-        }
     </div>
     @if (!Model.IsNullOrEmpty())
     {
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th>Game Tag's ID</th>
-                <th>Tag's name</th>
-                <th>Game's name</th>
+                <th>Tag</th>
+                <th>Game</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             @foreach (var tag in Model)
             {
                 <tr>
-                    <td>@tag.TagId</td>
-                    <td>@tag.Tag.TagName</td> 
-                    <td>@tag.Game.GameId</td> <!--TODO: replace with name-->
+                    <td>@tag.Tag.TagName</td>
+                    <td>@tag.Game.Name</td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="GameTag" asp-route-id="@tag.GameTagId" asp-action="Update">Update</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="GameTag" asp-route-id="@tag.GameTagId" asp-action="Delete">Delete</a>
+                        </button>
+                    </td>
                 </tr>
             }
             </tbody>
