@@ -4,6 +4,7 @@ using BaverGame.DTOs.ValidationRelated;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BaverGame.Controllers;
@@ -12,26 +13,36 @@ public sealed partial class UserController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IRepository<User> _usersRepository;
-    
+    private readonly IRepository<UserRole> _userRolesRepository;
+
     [GeneratedRegex(RegexPatterns.GuidPattern)]
     private static partial Regex GuidRegex();
     
     [GeneratedRegex(RegexPatterns.EmailPattern)]
     private static partial Regex EmailRegex();
     
-    public UserController(IRepository<User> usersRepository, ILogger<HomeController> logger)
+    public UserController(IRepository<User> usersRepository, IRepository<UserRole> userRolesRepository, ILogger<HomeController> logger)
     {
         _usersRepository = usersRepository;
+        _userRolesRepository = userRolesRepository;
         _logger = logger;
     }
 
     public async Task<IActionResult> Index() => 
         View(await _usersRepository.GetAllEntitiesAsync());
     
-    public IActionResult Create() => View();
-    
-    public IActionResult Update() => View();
-    
+    public IActionResult Create()
+    {
+        PopulateDropdowns();
+        return View();
+    }
+
+    public IActionResult Update()
+    {
+        PopulateDropdowns();
+        return View();
+    }
+
     public IActionResult Delete() => View();
     
     [HttpPost]
@@ -81,5 +92,18 @@ public sealed partial class UserController : Controller
         
         _usersRepository.RemoveExistingEntity(user); 
         return RedirectToAction("Index");
+    }
+
+    private void PopulateDropdowns()
+    {
+        ViewData["UserRoleId"] = new SelectList(
+            _userRolesRepository.GetAllEntities(), 
+            nameof(UserRole.RoleId),
+            nameof(UserRole.RoleName));
+
+        ViewData["Users"] = new SelectList(
+            _usersRepository.GetAllEntities(),
+            nameof(Core.User.UserId),
+            nameof(Core.User.Username));
     }
 }
