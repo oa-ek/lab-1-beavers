@@ -4,6 +4,7 @@ using BaverGame.DTOs.ValidationRelated;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BaverGame.Controllers;
@@ -12,28 +13,61 @@ public sealed partial class PriceController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IRepository<Price> _pricesRepository;
-    
+    private readonly IRepository<Game> _gamesRepository;
+    private readonly IRepository<Store> _storesRepository;
+
     [GeneratedRegex(RegexPatterns.UrlPattern)]
     private static partial Regex UrlRegex();
     
     [GeneratedRegex(RegexPatterns.GuidPattern)]
     private static partial Regex GuidRegex();
     
-    public PriceController(IRepository<Price> pricesRepository, ILogger<HomeController> logger)
+    public PriceController(IRepository<Price> pricesRepository, IRepository<Game> gamesRepository, IRepository<Store> storesRepository, ILogger<HomeController> logger)
     {
         _pricesRepository = pricesRepository;
+        _gamesRepository = gamesRepository;
+        _storesRepository = storesRepository;
         _logger = logger;
     }
 
     public async Task<IActionResult> Index() => 
         View(await _pricesRepository.GetAllEntitiesAsync());
     
-    public IActionResult Create() => View();
-    
-    public IActionResult Update() => View();
-    
-    public IActionResult Delete() => View();
-    
+    public IActionResult Create()
+    {
+        PopulateDropdowns();
+        return View();
+    }
+
+    public async Task<IActionResult> Update(Guid id)
+    {
+        PopulateDropdowns();
+        var price = await _pricesRepository.GetEntityByIdAsync(id);
+        var dto = new PriceDto()
+        {
+            PriceUrl = price.PriceUrl,
+            PriceValue = price.PriceValue,
+            GameId = price.GameId.ToString(),
+            StoreId = price.StoreId.ToString(),
+            PriceId = price.PriceId.ToString(),
+        };
+        return View(dto);
+    }
+
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var price = await _pricesRepository.GetEntityByIdAsync(id);
+        var dto = new PriceDto()
+        {
+            PriceUrl = price.PriceUrl,
+            PriceValue = price.PriceValue,
+            GameId = price.GameId.ToString(),
+            PriceId = price.PriceId.ToString(),
+            StoreId = price.StoreId.ToString(),
+        };
+        return View(dto);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(PriceDto dto)
     {
@@ -87,4 +121,18 @@ public sealed partial class PriceController : Controller
         _pricesRepository.RemoveExistingEntity(price); 
         return RedirectToAction("Index");
     }
+    
+    private void PopulateDropdowns()
+    {
+        ViewData["Games"] = new SelectList(
+            _gamesRepository.GetAllEntities(), 
+            nameof(Game.GameId),
+            nameof(Game.Name));
+
+        ViewData["Stores"] = new SelectList(
+            _storesRepository.GetAllEntities(),
+            nameof(Store.StoreId),
+            nameof(Store.StoreName));
+    }
+
 }

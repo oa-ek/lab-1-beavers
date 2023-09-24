@@ -12,15 +12,6 @@
         <button>
             <a class="text-decoration-none" asp-area="" asp-controller="Price" asp-action="Create">Create</a>
         </button>
-        @if (!Model.IsNullOrEmpty())
-        {
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Price" asp-action="Update">Update</a>
-            </button>
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Price" asp-action="Delete">Delete</a>
-            </button>
-        }
     </div>
     @if (!Model.IsNullOrEmpty())
     {
@@ -31,16 +22,27 @@
                 <th>Game's name</th>
                 <th>Price</th>
                 <th>URL</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             @foreach (var price in Model)
             {
                 <tr>
-                    <td>@price.PriceId</td>
-                    <td>@price.Game.GameId</td> <!--TODO: replace with name-->
+                    <td>@price.Game.Name</td>
                     <td>@price.PriceValue</td>
                     <td>@price.PriceUrl</td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Price" asp-route-id="@price.PriceId" asp-action="Update">Update</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Price" asp-route-id="@price.PriceId" asp-action="Delete">Delete</a>
+                        </button>
+                    </td>
                 </tr>
             }
             </tbody>
