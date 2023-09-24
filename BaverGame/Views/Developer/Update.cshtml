@@ -8,9 +8,9 @@
 
 <form asp-action="Update" method="post">
 
-    <div class="form-group">
+    <div class="form-group" hidden="hidden">
         <label asp-for="DeveloperId">Developer's ID</label>
-        <input type="text" asp-for="DeveloperId" class="form-control w-50" required="required"/>
+        <input type="text" asp-for="DeveloperId" class="form-control w-50" required="required" value="@Model.DeveloperId"/>
         <span asp-validation-for="DeveloperId" class="text-danger"></span>
     </div>
 
