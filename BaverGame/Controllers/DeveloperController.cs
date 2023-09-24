@@ -2,28 +2,47 @@ using BaverGame.DTOs;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BaverGame.Controllers;
 
 public class DeveloperController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IRepository<Developer> _developerRepository;
+    private readonly IRepository<Developer> _developersRepository;
     
-    public DeveloperController(IRepository<Developer> developerRepository, ILogger<HomeController> logger)
+    public DeveloperController(IRepository<Developer> developersRepository, ILogger<HomeController> logger)
     {
-        _developerRepository = developerRepository;
+        _developersRepository = developersRepository;
         _logger = logger;
     }
 
-    public async Task<IActionResult> Index() => View(await _developerRepository.GetAllEntitiesAsync());
+    public async Task<IActionResult> Index() => View(await _developersRepository.GetAllEntitiesAsync());
     
     public IActionResult Create() => View();
     
-    public IActionResult Update() => View();
-    
-    public IActionResult Delete() => View();
-    
+    public async Task<IActionResult> Update(Guid id)
+    {
+        var dev = await _developersRepository.GetEntityByIdAsync(id);
+        
+        return View(new DeveloperDto
+        {
+            DeveloperId = id.ToString(),
+            DeveloperName = dev.DeveloperName
+        });
+    }
+
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var dev = await _developersRepository.GetEntityByIdAsync(id);
+        
+        return View(new DeveloperDto
+        {
+            DeveloperId = id.ToString(),
+            DeveloperName = dev.DeveloperName
+        });
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(DeveloperDto developer)
     {
@@ -31,7 +50,7 @@ public class DeveloperController : Controller
             || string.IsNullOrEmpty(developer.DeveloperName))
             return View(developer);
         
-        await _developerRepository.AddNewEntityAsync(new Developer()
+        await _developersRepository.AddNewEntityAsync(new Developer()
         {
             DeveloperName = developer.DeveloperName
         });
@@ -44,13 +63,13 @@ public class DeveloperController : Controller
     {
         if (!ModelState.IsValid) return View(dto);
         
-        var developer = await _developerRepository.GetEntityByIdAsync(Guid.Parse(dto.DeveloperId));
+        var developer = await _developersRepository.GetEntityByIdAsync(Guid.Parse(dto.DeveloperId));
 
         if (developer == null) return NotFound();
         
         developer.DeveloperName = dto.DeveloperName;
         
-        _developerRepository.UpdateExistingEntity(developer); 
+        _developersRepository.UpdateExistingEntity(developer); 
 
         return RedirectToAction("Index");
     }
@@ -60,11 +79,11 @@ public class DeveloperController : Controller
     {
         if (!Guid.TryParse(dto.DeveloperId, out var id)) return View(dto);
         
-        var developer = await _developerRepository.GetEntityByIdAsync(id);
+        var developer = await _developersRepository.GetEntityByIdAsync(id);
         
         if (developer == null) return NotFound();
         
-        _developerRepository.RemoveExistingEntity(developer); 
+        _developersRepository.RemoveExistingEntity(developer); 
         
         return RedirectToAction("Index");
     }

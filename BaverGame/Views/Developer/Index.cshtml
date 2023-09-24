@@ -12,15 +12,6 @@
         <button>
             <a class="text-decoration-none" asp-area="" asp-controller="Developer" asp-action="Create">Create</a>
         </button>
-        @if (!Model.IsNullOrEmpty())
-        {
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Developer" asp-action="Update">Update</a>
-            </button>
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Developer" asp-action="Delete">Delete</a>
-            </button>
-        }
     </div>
     @if (!Model.IsNullOrEmpty())
     {
@@ -29,14 +20,25 @@
             <tr>
                 <th>Developer's ID</th>
                 <th>Developer's name</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             @foreach (var developer in Model)
             {
                 <tr>
-                    <td>@developer.DeveloperId</td>
                     <td>@developer.DeveloperName</td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Developer" asp-route-id="@developer.DeveloperId" asp-action="Update">Update</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Developer" asp-route-id="@developer.DeveloperId" asp-action="Delete">Delete</a>
+                        </button>
+                    </td>
                 </tr>
             }
             </tbody>
