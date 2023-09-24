@@ -8,22 +8,40 @@ namespace BaverGame.Controllers;
 public class PublisherController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IRepository<Publisher> _publisherRepository;
+    private readonly IRepository<Publisher> _publishersRepository;
     
-    public PublisherController(IRepository<Publisher> publisherRepository, ILogger<HomeController> logger)
+    public PublisherController(IRepository<Publisher> publishersRepository, ILogger<HomeController> logger)
     {
-        _publisherRepository = publisherRepository;
+        _publishersRepository = publishersRepository;
         _logger = logger;
     }
 
-    public async Task<IActionResult> Index() => View(await _publisherRepository.GetAllEntitiesAsync());
+    public async Task<IActionResult> Index() => View(await _publishersRepository.GetAllEntitiesAsync());
     
     public IActionResult Create() => View();
     
-    public IActionResult Update() => View();
-    
-    public IActionResult Delete() => View();
-    
+    public async Task<IActionResult> Update(Guid id)
+    {
+        var publisher = await _publishersRepository.GetEntityByIdAsync(id);
+        
+        return View(new PublisherDto
+        {
+            PublisherName = publisher.PublisherName,
+            PublisherId = id.ToString()
+        });
+    }
+
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var publisher = await _publishersRepository.GetEntityByIdAsync(id);
+        
+        return View(new PublisherDto
+        {
+            PublisherName = publisher.PublisherName,
+            PublisherId = id.ToString()
+        });
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(PublisherDto publisher)
     {
@@ -31,7 +49,7 @@ public class PublisherController : Controller
             || string.IsNullOrEmpty(publisher.PublisherName))
             return View(publisher);
         
-        await _publisherRepository.AddNewEntityAsync(new Publisher
+        await _publishersRepository.AddNewEntityAsync(new Publisher
         {
             PublisherName = publisher.PublisherName
         });
@@ -44,13 +62,13 @@ public class PublisherController : Controller
     {
         if (!ModelState.IsValid) return View(dto);
         
-        var publisher = await _publisherRepository.GetEntityByIdAsync(Guid.Parse(dto.PublisherId));
+        var publisher = await _publishersRepository.GetEntityByIdAsync(Guid.Parse(dto.PublisherId));
 
         if (publisher == null) return NotFound();
         
         publisher.PublisherName = dto.PublisherName;
         
-        _publisherRepository.UpdateExistingEntity(publisher); 
+        _publishersRepository.UpdateExistingEntity(publisher); 
 
         return RedirectToAction("Index");
     }
@@ -60,11 +78,11 @@ public class PublisherController : Controller
     {
         if (!Guid.TryParse(dto.PublisherId, out var id)) return View(dto);
         
-        var publisher = await _publisherRepository.GetEntityByIdAsync(id);
+        var publisher = await _publishersRepository.GetEntityByIdAsync(id);
 
         if (publisher == null) return NotFound();
         
-        _publisherRepository.RemoveExistingEntity(publisher); 
+        _publishersRepository.RemoveExistingEntity(publisher); 
         
         return RedirectToAction("Index");
     }

@@ -12,31 +12,32 @@
         <button>
             <a class="text-decoration-none" asp-area="" asp-controller="Publisher" asp-action="Create">Create</a>
         </button>
-        @if (!Model.IsNullOrEmpty())
-        {
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Publisher" asp-action="Update">Update</a>
-            </button>
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="Publisher" asp-action="Delete">Delete</a>
-            </button>
-        }
     </div>
     @if (!Model.IsNullOrEmpty())
     {
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th>Publisher's ID</th>
                 <th>Publisher's name</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             @foreach (var publisher in Model)
             {
                 <tr>
-                    <td>@publisher.PublisherId</td>
                     <td>@publisher.PublisherName</td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Publisher" asp-route-id="@publisher.PublisherId" asp-action="Update">Update</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="Publisher" asp-route-id="@publisher.PublisherId" asp-action="Delete">Delete</a>
+                        </button>
+                    </td>
                 </tr>
             }
             </tbody>
