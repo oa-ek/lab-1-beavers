@@ -29,16 +29,20 @@
         <span asp-validation-for="SystemRequirements" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="DeveloperId">Developer's ID</label>
-        <input asp-for="DeveloperId" class="form-control w-50" required="required"/>
+        <label asp-for="DeveloperId">Developer</label>
+        <select asp-for="DeveloperId" asp-items="@(ViewData["Developers"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="DeveloperId" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="PublisherId">Publisher's ID</label>
-        <input asp-for="PublisherId" class="form-control w-50" required="required"/>
+        <label asp-for="PublisherId">Publisher</label>
+        <select asp-for="PublisherId" asp-items="@(ViewData["Publishers"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="PublisherId" class="text-danger"></span>
     </div>
-    
+
     <button type="submit" class="btn btn-primary mt-2">Save</button>
 </form>
 
