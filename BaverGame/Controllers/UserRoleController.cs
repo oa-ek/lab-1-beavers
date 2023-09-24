@@ -8,23 +8,41 @@ namespace BaverGame.Controllers;
 public sealed class UserRoleController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IRepository<UserRole> _tagsRepository;
+    private readonly IRepository<UserRole> _rolesRepository;
     
-    public UserRoleController(IRepository<UserRole> tagsRepository, ILogger<HomeController> logger)
+    public UserRoleController(IRepository<UserRole> rolesRepository, ILogger<HomeController> logger)
     {
-        _tagsRepository = tagsRepository;
+        _rolesRepository = rolesRepository;
         _logger = logger;
     }
 
     public async Task<IActionResult> Index() => 
-        View(await _tagsRepository.GetAllEntitiesAsync());
+        View(await _rolesRepository.GetAllEntitiesAsync());
     
     public IActionResult Create() => View();
     
-    public IActionResult Update() => View();
-    
-    public IActionResult Delete() => View();
-    
+    public async Task<IActionResult> Update(Guid id)
+    {
+        var role = await _rolesRepository.GetEntityByIdAsync(id);
+        
+        return View(new UserRoleDto
+        {
+            RoleId = id.ToString(),
+            RoleName = role.RoleName
+        });
+    }
+
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var role = await _rolesRepository.GetEntityByIdAsync(id);
+        
+        return View(new UserRoleDto
+        {
+            RoleId = id.ToString(),
+            RoleName = role.RoleName
+        });
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(UserRoleDto dto)
     {
@@ -32,7 +50,7 @@ public sealed class UserRoleController : Controller
             || string.IsNullOrEmpty(dto.RoleName))
             return View(dto);
         
-        await _tagsRepository.AddNewEntityAsync(new UserRole
+        await _rolesRepository.AddNewEntityAsync(new UserRole
         {
             RoleName = dto.RoleName
         });
@@ -46,12 +64,12 @@ public sealed class UserRoleController : Controller
         if (!ModelState.IsValid) 
             return View(dto);
         
-        var role = await _tagsRepository.GetEntityByIdAsync(Guid.Parse(dto.RoleId));
+        var role = await _rolesRepository.GetEntityByIdAsync(Guid.Parse(dto.RoleId));
         if (role is null) 
             return NotFound();
         
         role.RoleName = dto.RoleName;
-        _tagsRepository.UpdateExistingEntity(role); 
+        _rolesRepository.UpdateExistingEntity(role); 
         return RedirectToAction("Index");
     }
 
@@ -60,11 +78,11 @@ public sealed class UserRoleController : Controller
     {
         if (!Guid.TryParse(dto.RoleId, out var id)) return View(dto);
         
-        var role = await _tagsRepository.GetEntityByIdAsync(id);
+        var role = await _rolesRepository.GetEntityByIdAsync(id);
         if (role is null) 
             return NotFound();
         
-        _tagsRepository.RemoveExistingEntity(role); 
+        _rolesRepository.RemoveExistingEntity(role); 
         return RedirectToAction("Index");
     }
 }

@@ -12,31 +12,32 @@
         <button>
             <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-action="Create">Create</a>
         </button>
-        @if (!Model.IsNullOrEmpty())
-        {
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-action="Update">Update</a>
-            </button>
-            <button>
-                <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-action="Delete">Delete</a>
-            </button>
-        }
     </div>
     @if (!Model.IsNullOrEmpty())
     {
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th>Role's ID</th>
                 <th>Role's name</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             @foreach (var role in Model)
             {
                 <tr>
-                    <td>@role.RoleId</td>
                     <td>@role.RoleName</td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-route-id="@role.RoleId" asp-action="Update">Update</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button>
+                            <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-route-id="@role.RoleId" asp-action="Delete">Delete</a>
+                        </button>
+                    </td>
                 </tr>
             }
             </tbody>
