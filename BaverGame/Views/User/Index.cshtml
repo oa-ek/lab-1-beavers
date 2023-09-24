@@ -27,7 +27,6 @@
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th>User's ID</th>
                 <th>Username</th>
                 <th>Role</th>
             </tr>
@@ -36,7 +35,6 @@
             @foreach (var user in Model)
             {
                 <tr>
-                    <td>@user.UserId</td>
                     <td>@user.Username</td>
                     <td>@user.UserRole.RoleName</td>
                 </tr>
