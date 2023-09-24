@@ -75,5 +75,6 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<UserGameOwnership>().Navigation(ownership => ownership.User).AutoInclude();
         modelBuilder.Entity<GameTag>().Navigation(screenshot => screenshot.Game).AutoInclude();
         modelBuilder.Entity<GameTag>().Navigation(screenshot => screenshot.Tag).AutoInclude();
+        modelBuilder.Entity<Price>().Navigation(price => price.Game).AutoInclude();
     }
 }

@@ -7,19 +7,23 @@
 <h1>Update particular price</h1>
 
 <form asp-action="Update" method="post">
-    <div asp-validation-summary="All" class="form-group">
+    <div asp-validation-summary="All" class="form-group" hidden="hidden">
         <label asp-for="PriceId">PriceId</label>
         <input asp-for="PriceId" class="form-control w-50" required="required"/>
         <span asp-validation-for="PriceId" class="text-danger"></span>
     </div>
-    <div asp-validation-summary="All" class="form-group">
-        <label asp-for="GameId">GameId</label>
-        <input asp-for="GameId" class="form-control w-50" required="required"/>
+    <div class="form-group">
+        <label asp-for="GameId">Game</label>
+        <select asp-for="GameId" asp-items="@(ViewData["Games"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="GameId" class="text-danger"></span>
     </div>
-    <div asp-validation-summary="All" class="form-group">
-        <label asp-for="StoreId">StoreId</label>
-        <input asp-for="StoreId" class="form-control w-50" required="required"/>
+    <div class="form-group">
+        <label asp-for="StoreId">Store</label>
+        <select asp-for="StoreId" asp-items="@(ViewData["Stores"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="StoreId" class="text-danger"></span>
     </div>
     <div asp-validation-summary="All" class="form-group">

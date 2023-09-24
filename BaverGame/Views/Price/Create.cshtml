@@ -8,13 +8,17 @@
 <h1>Create a new price</h1>
 <form asp-action="Create">
     <div class="form-group">
-        <label asp-for="GameId">GameId</label>
-        <input asp-for="GameId" class="form-control w-50" required="required"/>
+        <label asp-for="GameId">Game</label>
+        <select asp-for="GameId" asp-items="@(ViewData["Games"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="GameId" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="StoreId">StoreId</label>
-        <input asp-for="StoreId" class="form-control w-50" required="required"/>
+        <label asp-for="StoreId">Store</label>
+        <select asp-for="StoreId" asp-items="@(ViewData["Stores"] as SelectList)" class="form-control w-50" required="required">
+            <option value="">Select value</option>
+        </select>
         <span asp-validation-for="StoreId" class="text-danger"></span>
     </div>
     <div class="form-group">
