@@ -1,35 +1,36 @@
 @model BaverGame.DTOs.UserGameOwnershipDto
 
 @{
-    ViewData["Title"] = "Update particular userGameOwnership";
+    ViewData["Title"] = "Update particular ownership";
 }
 
-<h1>Update particular userGameOwnership</h1>
+<div class="mx-4 h-auto my-4 w-100 text-center d-flex flex-column justify-content-center align-items-center">
+    <h1>Update particular ownership</h1>
 
-<form asp-action="Update" method="post">
-    <div class="form-group" hidden="hidden">
-        <label asp-for="GameOwnershipId">GameOwnershipId</label>
-        <input asp-for="GameOwnershipId" class="form-control w-50" required="required" minlength="3"/>
-        <span asp-validation-for="GameOwnershipId" class="text-danger"></span>
-    </div>
-    
-    <div class="form-group">
+    <form asp-action="Update" method="post">
+        <div class="form-group" hidden="hidden">
+            <label asp-for="GameOwnershipId">GameOwnershipId</label>
+            <input asp-for="GameOwnershipId" class="form-control w-100 my-2" required="required" value="@Model.GameOwnershipId"/>
+            <span asp-validation-for="GameOwnershipId" class="text-danger my-2"></span>
+        </div>
+        
+        <div class="form-group">
             <label asp-for="UserId">User</label>
-            <select asp-for="UserId" asp-items="@(ViewData["Users"] as SelectList)" class="form-control w-50" required="required">
+            <select asp-for="UserId" asp-items="@(ViewData["Users"] as SelectList)" class="form-select w-100 my-2" required="required">
                 <option value="">Select value</option>
             </select>
-            <span asp-validation-for="UserId" class="text-danger"></span>
+            <span asp-validation-for="UserId" class="text-danger my-2"></span>
         </div>
 
-    <div class="form-group">
-        <label asp-for="GameId">Game</label>
-        <select asp-for="GameId" asp-items="@(ViewData["Games"] as SelectList)" class="form-control w-50" required="required">
-            <option value="">Select value</option>
-        </select>
-        <span asp-validation-for="GameId" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="GameId">Game</label>
+            <select asp-for="GameId" asp-items="@(ViewData["Games"] as SelectList)" class="form-select w-100 my-2" required="required">
+                <option value="">Select value</option>
+            </select>
+            <span asp-validation-for="GameId" class="text-danger my-2"></span>
+        </div>
 
-    <button type="submit" class="btn btn-primary mt-2">Save</button>
-</form>
-
-<a asp-action="Index" class="mt-2">Back to List</a>
+        <button type="submit" class="btn btn-primary my-2">Save</button>
+    </form>
+    <a asp-action="Index" class="mt-2">Back to List</a>
+</div>
