@@ -70,7 +70,10 @@ public sealed partial class GameController : Controller
                                                   || string.IsNullOrWhiteSpace(dto.Name)
                                                   || string.IsNullOrWhiteSpace(dto.Description)
                                                   || string.IsNullOrWhiteSpace(dto.SystemRequirements))
+        {
+            PopulateDropdowns();
             return View(dto);
+        }
         
         await _gamesRepository.AddNewEntityAsync(new Game
         {
@@ -87,8 +90,11 @@ public sealed partial class GameController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(GameDto dto)
     {
-        if (!ModelState.IsValid) 
+        if (!ModelState.IsValid)
+        {
+            PopulateDropdowns();
             return View(dto);
+        }
         
         var game = await _gamesRepository.GetEntityByIdAsync(Guid.Parse(dto.GameId));
         

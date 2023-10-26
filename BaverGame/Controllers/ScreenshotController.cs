@@ -66,7 +66,10 @@ public sealed partial class ScreenshotController : Controller
     public async Task<IActionResult> Create(ScreenshotDto dto)
     {
         if (!UrlRegex().IsMatch(dto.ImageUrl) || !GuidRegex().IsMatch(dto.GameId))
+        {
+            PopulateDropdowns();
             return View(dto);
+        }
         
         await _screenshotsRepository.AddNewEntityAsync(new Screenshot
         {

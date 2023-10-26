@@ -2,6 +2,7 @@ using BaverGame.DTOs;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BaverGame.Controllers;
 
@@ -19,11 +20,35 @@ public sealed class TagController : Controller
     public async Task<IActionResult> Index() => 
         View(await _tagsRepository.GetAllEntitiesAsync());
     
+    public async Task<IActionResult> Update(Guid id)
+    {
+        PopulateDropdowns();
+        
+        var tag = await _tagsRepository.GetEntityByIdAsync(id);
+        
+        return View(new TagDto
+        {
+            TagId = tag.TagId.ToString(),
+            TagName = tag.TagName
+        });
+    }
+
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var tag = await _tagsRepository.GetEntityByIdAsync(id);
+        
+        return View(new TagDto
+        {
+            TagId = tag.TagId.ToString(),
+            TagName = tag.TagName
+        });
+    }
+    
     public IActionResult Create() => View();
     
-    public IActionResult Update() => View();
-    
-    public IActionResult Delete() => View();
+    // public IActionResult Update() => View();
+    //
+    // public IActionResult Delete() => View();
     
     [HttpPost]
     public async Task<IActionResult> Create(TagDto dto)
@@ -66,5 +91,13 @@ public sealed class TagController : Controller
         
         _tagsRepository.RemoveExistingEntity(tag); 
         return RedirectToAction("Index");
+    }
+    
+    private void PopulateDropdowns()
+    {
+        ViewData["Tags"] = new SelectList(
+            _tagsRepository.GetAllEntities(),
+            nameof(Tag.TagId),
+            nameof(Tag.TagName));
     }
 }

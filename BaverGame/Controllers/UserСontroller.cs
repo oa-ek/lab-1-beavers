@@ -70,7 +70,10 @@ public sealed partial class UserController : Controller
     public async Task<IActionResult> Create(UserDto dto)
     {
         if (!GuidRegex().IsMatch(dto.RoleId) || !EmailRegex().IsMatch(dto.Email))
+        {
+            PopulateDropdowns();
             return View(dto);
+        }
         
         await _usersRepository.AddNewEntityAsync(new User
         {
@@ -86,8 +89,11 @@ public sealed partial class UserController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(UserDto dto)
     {
-        if (!ModelState.IsValid) 
+        if (!ModelState.IsValid)
+        {
+            PopulateDropdowns();
             return View(dto);
+        }
         
         var user = await _usersRepository.GetEntityByIdAsync(Guid.Parse(dto.UserId));
         if (user is null) 
