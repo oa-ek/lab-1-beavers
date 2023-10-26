@@ -1,48 +1,49 @@
 @model BaverGame.DTOs.UserDto
 
 @{
-    ViewData["Title"] = "Update particular user role";
+    ViewData["Title"] = "Update particular user";
 }
 
-<h1>Update particular user role</h1>
+<div class="mx-4 h-auto my-4 w-100 text-center d-flex flex-column justify-content-center align-items-center">
+    <h1>Update particular user</h1>
 
-<form asp-action="Update" method="post">
+    <form asp-action="Update" method="post">
+        <div class="form-group" hidden="hidden">
+            <label asp-for="UserId" class="my-2">User</label>
+            <select asp-for="UserId" asp-items="@(ViewData["Users"] as SelectList)" class="form-control w-100 my-2" required="required">
+                <option value="">Select value</option>
+            </select>
+            <span asp-validation-for="UserId" class="text-danger my-2"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="UserId">User</label>
-        <select asp-for="UserId" asp-items="@(ViewData["Users"] as SelectList)" class="form-control w-50" required="required">
-            <option value="">Select value</option>
-        </select>
-        <span asp-validation-for="UserId" class="text-danger"></span>
-    </div>
-    
-    <div class="form-group">
-        <label asp-for="Username">Username</label>
-        <input asp-for="Username" class="form-control w-50" required="required" minlength="3"/>
-        <span asp-validation-for="Username" class="text-danger"></span>
-    </div>
-    
-    <div class="form-group">
-        <label asp-for="Email">Email</label>
-        <input asp-for="Email" class="form-control w-50" required="required"/>
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    
-    <div class="form-group">
-        <label asp-for="Password">Password</label>
-        <input asp-for="Password" class="form-control w-50" required="required" minlength="3"/>
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Username" class="my-2">Username</label>
+            <input asp-for="Username" class="form-control w-100 my-2" required="required" minlength="3"/>
+            <span asp-validation-for="Username" class="text-danger my-2"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="RoleId">User's role</label>
-        <select asp-for="RoleId" asp-items="@(ViewData["UserRoleId"] as SelectList)" class="form-control w-50" required="required">
-            <option value="">Select value</option>
-        </select>
-        <span asp-validation-for="RoleId" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Email" class="my-2">Email</label>
+            <input asp-for="Email" class="form-control w-100 my-2" required="required"/>
+            <span asp-validation-for="Email" class="text-danger my-2"></span>
+        </div>
 
-    <button type="submit" class="btn btn-primary mt-2">Save</button>
-</form>
+        <div class="form-group">
+            <label asp-for="Password" class="my-2">Password</label>
+            <input asp-for="Password" class="form-control w-100 my-2" required="required" minlength="3"/>
+            <span asp-validation-for="Password" class="text-danger my-2"></span>
+        </div>
 
-<a asp-action="Index" class="mt-2">Back to List</a>
+        <div class="form-group">
+            <label asp-for="RoleId" class="my-2">User's role</label>
+            <select asp-for="RoleId" asp-items="@(ViewData["UserRoleId"] as SelectList)" class="form-select w-100 my-2" required="required">
+                <option value="">Select value</option>
+            </select>
+            <span asp-validation-for="RoleId" class="text-danger my-2"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary my-2">Save</button>
+    </form>
+
+    <a asp-action="Index" class="mt-2">Back to List</a>
+</div>
