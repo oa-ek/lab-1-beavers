@@ -2,35 +2,42 @@
 
 @{
     ViewBag.Title = "Create new price";
-    Layout = "_Layout";
 }
 
-<h1>Create a new price</h1>
-<form asp-action="Create">
-    <div class="form-group">
-        <label asp-for="GameId">Game</label>
-        <select asp-for="GameId" asp-items="@(ViewData["Games"] as SelectList)" class="form-control w-50" required="required">
-            <option value="">Select value</option>
-        </select>
-        <span asp-validation-for="GameId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="StoreId">Store</label>
-        <select asp-for="StoreId" asp-items="@(ViewData["Stores"] as SelectList)" class="form-control w-50" required="required">
-            <option value="">Select value</option>
-        </select>
-        <span asp-validation-for="StoreId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="PriceValue">Price</label>
-        <input asp-for="PriceValue" class="form-control w-50" required="required"/>
-        <span asp-validation-for="PriceValue" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="PriceUrl">Price url</label>
-        <input asp-for="PriceUrl" class="form-control w-50" required="required"/>
-        <span asp-validation-for="PriceUrl" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary mt-2">Create</button>
-</form>
-<a asp-action="Index" class="mt-2">Back to List</a>
+<div class="mx-4 h-auto my-4 w-100 text-center d-flex flex-column justify-content-center align-items-center">
+    <h1>Create a new price</h1>
+
+    <form asp-action="Create">
+        <div class="form-group">
+            <label asp-for="GameId">Game</label>
+            <select asp-for="GameId" asp-items="@(ViewData["Games"] as SelectList)" class="form-select w-100 my-2" required="required">
+                <option value="">Select value</option>
+            </select>
+            <span asp-validation-for="GameId" class="text-danger my-2"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="StoreId">Store</label>
+            <select asp-for="StoreId" asp-items="@(ViewData["Stores"] as SelectList)" class="form-select w-100 my-2" required="required">
+                <option value="">Select value</option>
+            </select>
+            <span asp-validation-for="StoreId" class="text-danger my-2"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PriceValue">Price</label>
+            <input asp-for="PriceValue" class="form-control w-100 my-2" required="required"/>
+            <span asp-validation-for="PriceValue" class="text-danger my-2"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PriceUrl">Price url</label>
+            <input asp-for="PriceUrl" class="form-control w-100 my-2" required="required"/>
+            <span asp-validation-for="PriceUrl" class="text-danger my-2"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary my-2">Create</button>
+    </form>
+
+    <a asp-action="Index" class="mt-2">Back to List</a>
+</div>
