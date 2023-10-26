@@ -67,7 +67,10 @@ public sealed partial class GameTagController : Controller
     public async Task<IActionResult> Create(GameTagDto dto)
     {
         if (!GuidRegex().IsMatch(dto.TagId) || !GuidRegex().IsMatch(dto.GameId))
+        {
+            PopulateDropdowns();
             return View(dto);
+        }
         
         await _gameTagsRepository.AddNewEntityAsync(new GameTag
         {
@@ -81,8 +84,11 @@ public sealed partial class GameTagController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(GameTagDto dto)
     {
-        if (!ModelState.IsValid) 
+        if (!ModelState.IsValid)
+        {
+            PopulateDropdowns();
             return View(dto);
+        }
         
         var tag = await _gameTagsRepository.GetEntityByIdAsync(Guid.Parse(dto.GameTagId));
         

@@ -2,16 +2,17 @@
 
 @{
     ViewBag.Title = "Create new store";
-    Layout = "_Layout";
 }
 
-<h1>Create a new store</h1>
-<form asp-action="Create">
-    <div class="form-group">
-        <label asp-for="StoreName">Store's name</label>
-        <input asp-for="StoreName" class="form-control w-50" required="required" minlength="3"/>
-        <span asp-validation-for="StoreName" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary mt-2">Create</button>
-</form>
-<a asp-action="Index" class="mt-2">Back to List</a>
+<div class="mx-4 h-auto my-4 w-100 text-center d-flex flex-column justify-content-center align-items-center">
+    <h1>Create a new store</h1>
+    <form asp-action="Create">
+        <div class="form-group">
+            <label asp-for="StoreName" class="my-2">Store's name</label>
+            <input asp-for="StoreName" class="form-control w-100 my-2" required="required" minlength="3" />
+            <span asp-validation-for="StoreName" class="text-danger my-2"></span>
+        </div>
+        <button type="submit" class="btn btn-primary my-2">Create</button>
+    </form>
+    <a asp-action="Index" class="mt-2">Back to List</a>
+</div>

@@ -3,52 +3,57 @@
 @model IEnumerable<Core.UserGameOwnership>
 
 @{
-    ViewData["Title"] = "UserGameOwnership";
+    ViewData["Title"] = "Ownerships";
 }
 
-<h1>UserGameOwnership</h1>
+<div class="mx-4 h-auto my-4 w-100 text-center">
+    <h1>Ownerships</h1>
 
-<div class="mt-3">
-    <div class="flex-row mb-2">
-        <button>
-            <a class="text-decoration-none" asp-area="" asp-controller="UserGameOwnership" asp-action="Create">Create</a>
-        </button>
+    <div class="mt-3">
+        <div class="flex-row mb-2">
+            <button type="button" class="btn btn-dark m-2">
+                <a class="text-decoration-none" asp-area="" asp-controller="UserGameOwnership" asp-action="Create">Create</a>
+            </button>
+        </div>
+
+        @if (!Model.IsNullOrEmpty())
+        {
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>User</th>
+                        <th>Game</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ownership in Model)
+                    {
+                        <tr>
+                            <td>@ownership.User.Username</td>
+                            <td>@ownership.Game.Name</td>
+                            <td>
+                                <button type="button" class="btn btn-dark">
+                                    <a class="text-decoration-none" asp-area="" asp-controller="UserGameOwnership"
+                                       asp-route-id="@ownership.OwnershipId" asp-action="Update">Update</a>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-dark">
+                                    <a class="text-decoration-none" asp-area="" asp-controller="UserGameOwnership"
+                                       asp-route-id="@ownership.OwnershipId" asp-action="Delete">Delete</a>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No ownerships were found!</p>
+        }
     </div>
-    @if (!Model.IsNullOrEmpty())
-    {
-        <table class="table table-striped">
-            <thead class="thead-dark">
-            <tr>
-                <th>User</th>
-                <th>Game</th>
-                <th></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var ownership in Model)
-            {
-                <tr>
-                    <td>@ownership.User.Username</td>
-                    <td>@ownership.Game.Name</td>
-                    <td>
-                        <button>
-                            <a class="text-decoration-none" asp-area="" asp-controller="UserGameOwnership" asp-route-id="@ownership.OwnershipId" asp-action="Update">Update</a>
-                        </button>
-                    </td>
-                    <td>
-                        <button>
-                            <a class="text-decoration-none" asp-area="" asp-controller="UserGameOwnership" asp-route-id="@ownership.OwnershipId" asp-action="Delete">Delete</a>
-                        </button>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No gameOwnerShips were found!</p>
-    }
+    <a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>
 </div>
-<a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>

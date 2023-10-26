@@ -5,47 +5,49 @@
     ViewData["Title"] = "Publishers";
 }
 
-<h1>Publishers</h1>
-
-<div class="mt-3">
-    <div class="flex-row mb-2">
-        <button>
-            <a class="text-decoration-none" asp-area="" asp-controller="Publisher" asp-action="Create">Create</a>
-        </button>
-    </div>
-    @if (!Model.IsNullOrEmpty())
-    {
-        <table class="table table-striped">
-            <thead class="thead-dark">
-            <tr>
-                <th>Publisher's name</th>
-                <th></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var publisher in Model)
-            {
+<div class="mx-4 h-auto my-4 w-100 text-center">
+    <h1>Publishers</h1>
+    
+    <div class="mt-3">
+        <div class="flex-row mb-2">
+            <button type="button" class="btn btn-dark m-2">
+                <a class="text-decoration-none" asp-area="" asp-controller="Publisher" asp-action="Create">Create</a>
+            </button>
+        </div>
+        @if (!Model.IsNullOrEmpty())
+        {
+            <table class="table table-striped">
+                <thead class="thead-dark">
                 <tr>
-                    <td>@publisher.PublisherName</td>
-                    <td>
-                        <button>
-                            <a class="text-decoration-none" asp-area="" asp-controller="Publisher" asp-route-id="@publisher.PublisherId" asp-action="Update">Update</a>
-                        </button>
-                    </td>
-                    <td>
-                        <button>
-                            <a class="text-decoration-none" asp-area="" asp-controller="Publisher" asp-route-id="@publisher.PublisherId" asp-action="Delete">Delete</a>
-                        </button>
-                    </td>
+                    <th>Publisher's name</th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No publishers were found!</p>
-    }
+                </thead>
+                <tbody>
+                @foreach (var publisher in Model)
+                {
+                    <tr>
+                        <td>@publisher.PublisherName</td>
+                        <td>
+                            <button type="button" class="btn btn-dark">
+                                <a class="text-decoration-none" asp-area="" asp-controller="Publisher" asp-route-id="@publisher.PublisherId" asp-action="Update">Update</a>
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-dark">
+                                <a class="text-decoration-none" asp-area="" asp-controller="Publisher" asp-route-id="@publisher.PublisherId" asp-action="Delete">Delete</a>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No publishers were found!</p>
+        }
+    </div>
+    <a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>
 </div>
-<a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>

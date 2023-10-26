@@ -21,7 +21,8 @@ public sealed partial class UserGameOwnershipController : Controller
     [GeneratedRegex(RegexPatterns.EmailPattern)]
     private static partial Regex EmailRegex();
     
-    public UserGameOwnershipController(IRepository<UserGameOwnership> userGameOwnershipRepository, IRepository<Game> gamesRepository, IRepository<User> usersRepository, ILogger<HomeController> logger)
+    public UserGameOwnershipController(IRepository<UserGameOwnership> userGameOwnershipRepository,
+        IRepository<Game> gamesRepository, IRepository<User> usersRepository, ILogger<HomeController> logger)
     {
         _userGameOwnershipRepository = userGameOwnershipRepository;
         _gamesRepository = gamesRepository;
@@ -72,7 +73,10 @@ public sealed partial class UserGameOwnershipController : Controller
     public async Task<IActionResult> Create(UserGameOwnershipDto dto)
     {
         if (!GuidRegex().IsMatch(dto.UserId) || !GuidRegex().IsMatch(dto.GameId))
+        {
+            PopulateDropdowns();
             return View(dto);
+        }
         
         await _userGameOwnershipRepository.AddNewEntityAsync(new UserGameOwnership
         {
@@ -86,7 +90,14 @@ public sealed partial class UserGameOwnershipController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(UserGameOwnershipDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            PopulateDropdowns();
+            return View(dto);
+        }
+        
         var ownership = await _userGameOwnershipRepository.GetEntityByIdAsync(Guid.Parse(dto.GameOwnershipId));
+        
         if (ownership is null) 
             return NotFound();
 

@@ -5,47 +5,50 @@
     ViewData["Title"] = "User roles";
 }
 
-<h1>User roles</h1>
-
-<div class="mt-3">
-    <div class="flex-row mb-2">
-        <button>
-            <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-action="Create">Create</a>
-        </button>
+<div class="mx-4 h-auto my-4 w-100 text-center">
+    <h1>User Roles</h1>
+    
+    <div class="mt-3">
+        <div class="flex-row mb-2">
+            <button type="button" class="btn btn-dark m-2">
+                <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-action="Create">Create</a>
+            </button>
+        </div>
+        @if (!Model.IsNullOrEmpty())
+        {
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Role's name</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var role in Model)
+                    {
+                        <tr>
+                            <td>@role.RoleName</td>
+                            <td>
+                                <button type="button" class="btn btn-dark">
+                                    <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-route-id="@role.RoleId" asp-action="Update">Update</a>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-dark">
+                                    <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-route-id="@role.RoleId" asp-action="Delete">Delete</a>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No tags were found!</p>
+        }
     </div>
-    @if (!Model.IsNullOrEmpty())
-    {
-        <table class="table table-striped">
-            <thead class="thead-dark">
-            <tr>
-                <th>Role's name</th>
-                <th></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var role in Model)
-            {
-                <tr>
-                    <td>@role.RoleName</td>
-                    <td>
-                        <button>
-                            <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-route-id="@role.RoleId" asp-action="Update">Update</a>
-                        </button>
-                    </td>
-                    <td>
-                        <button>
-                            <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-route-id="@role.RoleId" asp-action="Delete">Delete</a>
-                        </button>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No tags were found!</p>
-    }
+    <a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>
 </div>
-<a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>
+

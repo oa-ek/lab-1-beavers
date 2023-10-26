@@ -71,11 +71,14 @@ public sealed partial class PriceController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(PriceDto dto)
     {
-        if (!UrlRegex().IsMatch(dto.PriceUrl) || !GuidRegex().IsMatch(dto.GameId) 
+        if (!UrlRegex().IsMatch(dto.PriceUrl) || !GuidRegex().IsMatch(dto.GameId)
                                               || !GuidRegex().IsMatch(dto.StoreId)
                                               || string.IsNullOrEmpty(dto.PriceValue.ToString())
                                               || string.IsNullOrWhiteSpace(dto.PriceValue.ToString()))
+        {
+            PopulateDropdowns();
             return View(dto);
+        }
         
         await _pricesRepository.AddNewEntityAsync(new Price
         {
@@ -91,8 +94,11 @@ public sealed partial class PriceController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(PriceDto dto)
     {
-        if (!ModelState.IsValid) 
+        if (!ModelState.IsValid)
+        {
+            PopulateDropdowns();
             return View(dto);
+        }
         
         var price = await _pricesRepository.GetEntityByIdAsync(Guid.Parse(dto.PriceId));
         

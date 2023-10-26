@@ -2,45 +2,67 @@
 
 @{
     ViewBag.Title = "Admin-panel";
-    Layout = "_Layout";
+    Layout = "_BeaverGamesLayout";
 }
 
-<h1>Admin panel</h1>
-
-<h3 class="mt-3">Sections:</h3>
-
-<ul class="mt-3 flex-column">
-    <li>
-        <a class="text-dark" asp-area="" asp-controller="Developer" asp-action="Index">"Developer" section</a>
-    </li>
-    <li>
-        <a class="text-dark" asp-area="" asp-controller="Publisher" asp-action="Index">"Publisher" section</a>
-    </li>
-    <li>
-        <a class="text-dark" asp-area="" asp-controller="Tag" asp-action="Index">"Tag" section</a>
-    </li>
-    <li>
-        <a class="text-dark" asp-area="" asp-controller="UserRole" asp-action="Index">"User role" section</a>
-    </li>
-    <li>
-        <a class="text-dark" asp-area="" asp-controller="User" asp-action="Index">"User" section</a>
-    </li>
-    <li>
-        <a class="text-dark" asp-area="" asp-controller="Store" asp-action="Index">"Store" section</a>
-    </li>
-    <li>
-        <a class="text-dark" asp-area="" asp-controller="Screenshot" asp-action="Index">"Screenshot" section</a>
-    </li>
-    <li>
-        <a class="text-dark" asp-area="" asp-controller="Price" asp-action="Index">"Price" section</a>
-    </li>
-    <li>
-        <a class="text-dark" asp-area="" asp-controller="UserGameOwnership" asp-action="Index">"UserGameOwnership" section</a>
-    </li>
-    <li>
-        <a class="text-dark" asp-area="" asp-controller="GameTag" asp-action="Index">"Game tag" section</a>
-    </li>
-    <li>
-        <a class="text-dark" asp-area="" asp-controller="Game" asp-action="Index">"Game" section</a>
-    </li>
-</ul>
+<div class="mx-4 h-auto my-4 w-100">
+    <h1>Admin panel</h1>
+    <h3 class="my-3">Available sections</h3>
+    <div class="row justify-content-center align-items-center w-100 flex-nowrap">
+        <div class="col-md-4">
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-dark m-2">
+                    <a asp-area="" asp-controller="Developer" asp-action="Index">"Developer" section</a>
+                </button>
+                <button type="button" class="btn btn-dark m-2">
+                    <a asp-area="" asp-controller="Publisher" asp-action="Index">"Publisher" section</a>
+                </button>
+                <button type="button" class="btn btn-dark m-2">
+                    <a asp-area="" asp-controller="Tag" asp-action="Index">"Tag" section</a>
+                </button>
+                <!-- Add more items for the first column -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-dark m-2">
+                    <a asp-area="" asp-controller="UserRole" asp-action="Index">"User role" section</a>
+                </button>
+                <button type="button" class="btn btn-dark m-2">
+                    <a asp-area="" asp-controller="User" asp-action="Index">"User" section</a>
+                </button>
+                <button type="button" class="btn btn-dark m-2">
+                    <a asp-area="" asp-controller="Store" asp-action="Index">"Store" section</a>
+                </button>
+                <!-- Add more items for the second column -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-dark m-2">
+                    <a asp-area="" asp-controller="Screenshot" asp-action="Index">"Screenshot" section</a>
+                </button>
+                <button type="button" class="btn btn-dark m-2">
+                    <a asp-area="" asp-controller="Price" asp-action="Index">"Price" section</a>
+                </button>
+                <button type="button" class="btn btn-dark m-2">
+                    <a asp-area="" asp-controller="UserGameOwnership" asp-action="Index">"Ownership" section</a>
+                </button>
+                <!-- Add more items for the third column -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-dark m-2">
+                    <a asp-area="" asp-controller="Game" asp-action="Index">"Game" section</a>
+                </button>
+                <button type="button" class="btn btn-dark m-2">
+                    <a asp-area="" asp-controller="GameTag" asp-action="Index">"Game tag" section</a>
+                </button>
+                <button type="button" class="btn btn-dark m-2 invisible disabled">
+                    <a asp-area="" asp-controller="GameTag" asp-action="Index">"Game tag" section</a>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
