@@ -49,7 +49,7 @@ public sealed partial class UserGameOwnershipController : Controller
             UserId = ownership.UserId.ToString(),
             GameOwnershipId = ownership.OwnershipId.ToString(),
             GameName = ownership.Game.Name,
-            UserName = ownership.User.Username,
+            UserName = ownership.User.UserName,
         };
         return View(dto);
     }
@@ -64,7 +64,7 @@ public sealed partial class UserGameOwnershipController : Controller
             UserId = ownership.UserId.ToString(),
             GameOwnershipId = ownership.OwnershipId.ToString(),
             GameName = ownership.Game.Name,
-            UserName = ownership.User.Username,
+            UserName = ownership.User.UserName,
         };
         return View(dto);
     }
@@ -129,7 +129,7 @@ public sealed partial class UserGameOwnershipController : Controller
             nameof(Game.Name));
         ViewData["Users"] = new SelectList(
             _usersRepository.GetAllEntities(),
-            nameof(Core.User.UserId),
-            nameof(Core.User.Username));
+            nameof(Core.User.Id),
+            nameof(Core.User.UserName));
     }
 }

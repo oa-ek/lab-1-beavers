@@ -3,6 +3,7 @@ using BaverGame.DTOs;
 using BaverGame.DTOs.ValidationRelated;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -11,7 +12,7 @@ namespace BaverGame.Controllers;
 public sealed partial class UserController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IRepository<Core.User> _usersRepository;
+    private readonly IRepository<User> _usersRepository;
     private readonly IRepository<UserRole> _userRolesRepository;
 
     [GeneratedRegex(RegexPatterns.GuidPattern)]
@@ -20,7 +21,7 @@ public sealed partial class UserController : Controller
     [GeneratedRegex(RegexPatterns.EmailPattern)]
     private static partial Regex EmailRegex();
     
-    public UserController(IRepository<Core.User> usersRepository, IRepository<UserRole> userRolesRepository, ILogger<HomeController> logger)
+    public UserController(IRepository<User> usersRepository, IRepository<UserRole> userRolesRepository, ILogger<HomeController> logger)
     {
         _usersRepository = usersRepository;
         _userRolesRepository = userRolesRepository;
@@ -43,10 +44,8 @@ public sealed partial class UserController : Controller
         var user = await _usersRepository.GetEntityByIdAsync(id);
         var dto = new UserDto()
         {
-            UserId = user.UserId.ToString(),
-            Password = user.Password,
-            RoleId = user.UserRoleId.ToString(),
-            Username = user.Username,
+            UserId = user.Id.ToString(),
+            Username = user.UserName,
             Email = user.Email,
         };
         return View(dto);
@@ -58,30 +57,32 @@ public sealed partial class UserController : Controller
         
         return View(new UserDto()
         {
-            UserId = user.UserId.ToString(),
-            Username = user.Username,
-            Email = user.Email,
-            Password = user.Password,
-            RoleId = user.UserRoleId.ToString(),
+            UserId = user.Id.ToString(),
+            Username = user.UserName,
+            Email = user.Email
         });
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(UserDto dto)
     {
-        if (!GuidRegex().IsMatch(dto.RoleId) || !EmailRegex().IsMatch(dto.Email))
+        if (!EmailRegex().IsMatch(dto.Email))
         {
             PopulateDropdowns();
             return View(dto);
         }
-        
-        await _usersRepository.AddNewEntityAsync(new User
+
+        var user = new User
         {
-            Username = dto.Username,
-            Email = dto.Email,
-            UserRoleId = Guid.Parse(dto.RoleId),
-            Password = dto.Password
-        });
+            UserName = dto.Username,
+            Email = dto.Email
+        };
+
+        var passwordHasher = new PasswordHasher<User>();
+
+        user.PasswordHash = passwordHasher.HashPassword(user, dto.Password);
+        
+        await _usersRepository.AddNewEntityAsync(user);
 
         return RedirectToAction("Index");
     }
@@ -99,10 +100,8 @@ public sealed partial class UserController : Controller
         if (user is null) 
             return NotFound();
         
-        user.UserRoleId = Guid.Parse(dto.RoleId);
-        user.Username = dto.Username;
+        user.UserName = dto.Username;
         user.Email = dto.Email;
-        user.Password = dto.Password;
         
         _usersRepository.UpdateExistingEntity(user); 
         return RedirectToAction("Index");
@@ -125,12 +124,12 @@ public sealed partial class UserController : Controller
     {
         ViewData["UserRoleId"] = new SelectList(
             _userRolesRepository.GetAllEntities(), 
-            nameof(UserRole.RoleId),
-            nameof(UserRole.RoleName));
+            nameof(UserRole.Id),
+            nameof(UserRole.Name));
 
         ViewData["Users"] = new SelectList(
             _usersRepository.GetAllEntities(),
-            nameof(Core.User.UserId),
-            nameof(Core.User.Username));
+            nameof(Core.User.Id),
+            nameof(Core.User.UserName));
     }
 }

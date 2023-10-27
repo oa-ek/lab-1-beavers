@@ -28,7 +28,7 @@ public sealed class UserRoleController : Controller
         return View(new UserRoleDto
         {
             RoleId = id.ToString(),
-            RoleName = role.RoleName
+            RoleName = role.Name
         });
     }
 
@@ -39,7 +39,7 @@ public sealed class UserRoleController : Controller
         return View(new UserRoleDto
         {
             RoleId = id.ToString(),
-            RoleName = role.RoleName
+            RoleName = role.Name
         });
     }
 
@@ -52,7 +52,7 @@ public sealed class UserRoleController : Controller
         
         await _rolesRepository.AddNewEntityAsync(new UserRole
         {
-            RoleName = dto.RoleName
+            Name = dto.RoleName
         });
 
         return RedirectToAction("Index");
@@ -68,7 +68,7 @@ public sealed class UserRoleController : Controller
         if (role is null) 
             return NotFound();
         
-        role.RoleName = dto.RoleName;
+        role.Name = dto.RoleName;
         _rolesRepository.UpdateExistingEntity(role); 
         return RedirectToAction("Index");
     }
