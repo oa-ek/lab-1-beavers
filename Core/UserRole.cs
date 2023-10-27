@@ -1,11 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace Core;
 
-public sealed class UserRole
+public sealed class UserRole : IdentityRole<Guid>
 {
     [Key]
-    public Guid RoleId { get; } = Guid.NewGuid();
-    [MaxLength(255)]
-    public string RoleName { get; set; }
+    public override Guid Id { get; set; } = Guid.NewGuid();
 }
