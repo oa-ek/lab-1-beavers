@@ -28,15 +28,15 @@
                     @foreach (var role in Model)
                     {
                         <tr>
-                            <td>@role.RoleName</td>
+                            <td>@role.Name</td>
                             <td>
                                 <button type="button" class="btn btn-dark">
-                                    <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-route-id="@role.RoleId" asp-action="Update">Update</a>
+                                    <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-route-id="@role.Id" asp-action="Update">Update</a>
                                 </button>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-dark">
-                                    <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-route-id="@role.RoleId" asp-action="Delete">Delete</a>
+                                    <a class="text-decoration-none" asp-area="" asp-controller="UserRole" asp-route-id="@role.Id" asp-action="Delete">Delete</a>
                                 </button>
                             </td>
                         </tr>
