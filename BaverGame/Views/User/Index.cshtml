@@ -21,7 +21,6 @@
                     <tr>
                         <th>Username</th>
                         <th>Email</th>
-                        <th>Role</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -30,17 +29,16 @@
                     @foreach (var user in Model)
                     {
                         <tr>
-                            <td>@user.Username</td>
+                            <td>@user.UserName</td>
                             <td>@user.Email</td>
-                            <td>@user.UserRole.RoleName</td>
                             <td>
                                 <button type="button" class="btn btn-dark">
-                                    <a class="text-decoration-none" asp-area="" asp-controller="User" asp-route-id="@user.UserId" asp-action="Update">Update</a>
+                                    <a class="text-decoration-none" asp-area="" asp-controller="User" asp-route-id="@user.Id" asp-action="Update">Update</a>
                                 </button>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-dark">
-                                    <a class="text-decoration-none" asp-area="" asp-controller="User" asp-route-id="@user.UserId" asp-action="Delete">Delete</a>
+                                    <a class="text-decoration-none" asp-area="" asp-controller="User" asp-route-id="@user.Id" asp-action="Delete">Delete</a>
                                 </button>
                             </td>
                         </tr>
