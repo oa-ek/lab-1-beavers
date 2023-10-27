@@ -1,9 +1,10 @@
 using Core;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Contexts;
 
-public class ApplicationContext : DbContext
+public class ApplicationContext : IdentityDbContext<User, UserRole, Guid>
 {
     public DbSet<Developer> Developers { get; set; } = null!;
     public DbSet<Game> Games { get; set; } = null!;
@@ -12,15 +13,15 @@ public class ApplicationContext : DbContext
     public DbSet<Price> Prices { get; set; } = null!;
     public DbSet<Publisher> Publishers { get; set; } = null!;
     public DbSet<Tag> Tag { get; set; } = null!;
-    public DbSet<User> Users { get; set; } = null!;
     public DbSet<UserGameOwnership> UserGameOwnerships { get; set; } = null!;
-    public DbSet<UserRole> UserRoles { get; set; } = null!;
     public DbSet<Screenshot> Screenshots { get; set; } = null!;
     
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder) // Configuration of database's context
     {
+        base.OnModelCreating(modelBuilder);
+        
         AddKeyNavigations(modelBuilder);
         AddAutoIncludes(modelBuilder);
     }
@@ -48,14 +49,8 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<Tag>()
             .HasKey(d => d.TagId);
 
-        modelBuilder.Entity<User>()
-            .HasKey(g => g.UserId);
-
         modelBuilder.Entity<UserGameOwnership>()
             .HasKey(d => d.OwnershipId);
-
-        modelBuilder.Entity<UserRole>()
-            .HasKey(g => g.RoleId);
 
         modelBuilder.Entity<Screenshot>()
             .HasKey(g => g.ScreenshotId);
@@ -65,7 +60,6 @@ public class ApplicationContext : DbContext
 
     private static void AddAutoIncludes(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().Navigation(user => user.UserRole).AutoInclude();
         modelBuilder.Entity<Screenshot>().Navigation(screenshot => screenshot.Game).AutoInclude();
         modelBuilder.Entity<GameTag>().Navigation(gameTag => gameTag.Game).AutoInclude();
         modelBuilder.Entity<GameTag>().Navigation(gameTag => gameTag.Tag).AutoInclude();
