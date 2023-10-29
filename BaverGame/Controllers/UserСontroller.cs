@@ -3,17 +3,21 @@ using BaverGame.DTOs;
 using BaverGame.DTOs.ValidationRelated;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BaverGame.Controllers;
 
+[Authorize(Roles = "Administrator")]
 public sealed partial class UserController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IRepository<User> _usersRepository;
     private readonly IRepository<UserRole> _userRolesRepository;
+    private readonly RoleManager<UserRole> _roleManager;
+    private readonly UserManager<User> _userManager;
 
     [GeneratedRegex(RegexPatterns.GuidPattern)]
     private static partial Regex GuidRegex();
@@ -21,11 +25,17 @@ public sealed partial class UserController : Controller
     [GeneratedRegex(RegexPatterns.EmailPattern)]
     private static partial Regex EmailRegex();
     
-    public UserController(IRepository<User> usersRepository, IRepository<UserRole> userRolesRepository, ILogger<HomeController> logger)
+    public UserController(IRepository<User> usersRepository, 
+        IRepository<UserRole> userRolesRepository,
+        UserManager<User> userManager,
+        RoleManager<UserRole> roleManager,
+        ILogger<HomeController> logger)
     {
         _usersRepository = usersRepository;
         _userRolesRepository = userRolesRepository;
+        _userManager = userManager;
         _logger = logger;
+        _roleManager = roleManager;
     }
 
     public async Task<IActionResult> Index() => 
@@ -75,14 +85,19 @@ public sealed partial class UserController : Controller
         var user = new User
         {
             UserName = dto.Username,
-            Email = dto.Email
+            Email = dto.Email,
+            SecurityStamp = Guid.NewGuid().ToString()
         };
 
         var passwordHasher = new PasswordHasher<User>();
 
         user.PasswordHash = passwordHasher.HashPassword(user, dto.Password);
         
-        await _usersRepository.AddNewEntityAsync(user);
+        await _userManager.CreateAsync(user);
+        
+        var role = await _userRolesRepository.GetEntityByIdAsync(Guid.Parse(dto.RoleId));
+        
+        await _userManager.AddToRoleAsync(user, role.Name!);
 
         return RedirectToAction("Index");
     }
@@ -102,8 +117,8 @@ public sealed partial class UserController : Controller
         
         user.UserName = dto.Username;
         user.Email = dto.Email;
-        
-        _usersRepository.UpdateExistingEntity(user); 
+    
+        await _userManager.UpdateAsync(user);
         return RedirectToAction("Index");
     }
 
@@ -116,13 +131,13 @@ public sealed partial class UserController : Controller
         if (user is null) 
             return NotFound();
         
-        _usersRepository.RemoveExistingEntity(user); 
+        await _userManager.DeleteAsync(user); 
         return RedirectToAction("Index");
     }
 
     private void PopulateDropdowns()
     {
-        ViewData["UserRoleId"] = new SelectList(
+        ViewData["UserRoles"] = new SelectList(
             _userRolesRepository.GetAllEntities(), 
             nameof(UserRole.Id),
             nameof(UserRole.Name));
