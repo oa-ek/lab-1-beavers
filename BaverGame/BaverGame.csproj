@@ -24,6 +24,10 @@
     <_ContentIncludedByDefault Remove="BaverGame\obj\project.assets.json" />
     <_ContentIncludedByDefault Remove="BaverGame\obj\project.packagespec.json" />
     <_ContentIncludedByDefault Remove="Pages\Developer\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\RoleAssign\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\RoleAssign\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\RoleAssign\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\RoleAssign\Update.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,9 +48,6 @@
     <AdditionalFiles Include="Views\Game\Delete.cshtml" />
     <AdditionalFiles Include="Views\Game\Update.cshtml" />
     <AdditionalFiles Include="Views\Publisher\Create.cshtml" />
-    <AdditionalFiles Include="Views\RoleAssign\Create.cshtml" />
-    <AdditionalFiles Include="Views\RoleAssign\Delete.cshtml" />
-    <AdditionalFiles Include="Views\RoleAssign\Update.cshtml" />
     <AdditionalFiles Include="Views\Screenshot\Create.cshtml" />
     <AdditionalFiles Include="Views\Screenshot\Delete.cshtml" />
     <AdditionalFiles Include="Views\Screenshot\Index.cshtml" />
