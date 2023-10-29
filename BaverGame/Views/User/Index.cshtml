@@ -1,4 +1,6 @@
 @using Microsoft.IdentityModel.Tokens
+@using Core
+@inject Microsoft.AspNetCore.Identity.UserManager<User> UserManager
 @model IEnumerable<Core.User>
 
 @{
@@ -21,6 +23,7 @@
                     <tr>
                         <th>Username</th>
                         <th>Email</th>
+                        <th>Role</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -31,6 +34,12 @@
                         <tr>
                             <td>@user.UserName</td>
                             <td>@user.Email</td>
+                            <td>
+                                @{ 
+                                    var userRoles = (await UserManager.GetRolesAsync(user)).First();
+                                }
+                                @userRoles
+                            </td>
                             <td>
                                 <button type="button" class="btn btn-dark">
                                     <a class="text-decoration-none" asp-area="" asp-controller="User" asp-route-id="@user.Id" asp-action="Update">Update</a>
