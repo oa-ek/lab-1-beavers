@@ -1,5 +1,4 @@
 @using Microsoft.IdentityModel.Tokens
-@using Core
 @model IEnumerable<Core.UserGameOwnership>
 
 @{
@@ -31,7 +30,7 @@
                     @foreach (var ownership in Model)
                     {
                         <tr>
-                            <td>@ownership.User.Username</td>
+                            <td>@ownership.User.UserName</td>
                             <td>@ownership.Game.Name</td>
                             <td>
                                 <button type="button" class="btn btn-dark">

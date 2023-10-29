@@ -3,12 +3,13 @@ using BaverGame.DTOs;
 using BaverGame.DTOs.ValidationRelated;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.IdentityModel.Tokens;
 
 namespace BaverGame.Controllers;
 
+[Authorize(Roles = "Administrator")]
 public sealed partial class ScreenshotController : Controller
 {
     private readonly ILogger<HomeController> _logger;

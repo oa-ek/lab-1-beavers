@@ -1,10 +1,12 @@
 using BaverGame.DTOs;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaverGame.Controllers;
 
+[Authorize(Roles = "Administrator")]
 public sealed class StoreController : Controller
 {
     private readonly ILogger<HomeController> _logger;

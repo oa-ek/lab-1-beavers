@@ -1,4 +1,6 @@
 @using Microsoft.IdentityModel.Tokens
+@using Core
+@inject Microsoft.AspNetCore.Identity.UserManager<User> UserManager
 @model IEnumerable<Core.User>
 
 @{
@@ -30,17 +32,22 @@
                     @foreach (var user in Model)
                     {
                         <tr>
-                            <td>@user.Username</td>
+                            <td>@user.UserName</td>
                             <td>@user.Email</td>
-                            <td>@user.UserRole.RoleName</td>
+                            <td>
+                                @{ 
+                                    var userRoles = (await UserManager.GetRolesAsync(user)).First();
+                                }
+                                @userRoles
+                            </td>
                             <td>
                                 <button type="button" class="btn btn-dark">
-                                    <a class="text-decoration-none" asp-area="" asp-controller="User" asp-route-id="@user.UserId" asp-action="Update">Update</a>
+                                    <a class="text-decoration-none" asp-area="" asp-controller="User" asp-route-id="@user.Id" asp-action="Update">Update</a>
                                 </button>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-dark">
-                                    <a class="text-decoration-none" asp-area="" asp-controller="User" asp-route-id="@user.UserId" asp-action="Delete">Delete</a>
+                                    <a class="text-decoration-none" asp-area="" asp-controller="User" asp-route-id="@user.Id" asp-action="Delete">Delete</a>
                                 </button>
                             </td>
                         </tr>

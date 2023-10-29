@@ -1,17 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace Core;
 
-public sealed class User
+public sealed class User : IdentityUser<Guid>
 {
     [Key]
-    public Guid UserId { get; } = Guid.NewGuid();
-    [MaxLength(255)]
-    public string Username { get; set; }
-    [MaxLength(255)]
-    public string Password { get; set; }
-    public string Email { get; set; }
-    
-    public Guid UserRoleId { get; set; }
-    public UserRole UserRole { get; set; }
+    public override Guid Id { get; set; } = Guid.NewGuid();
 }

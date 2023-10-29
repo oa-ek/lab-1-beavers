@@ -2,6 +2,7 @@ using Core;
 using Infrastructure.Data.Contexts;
 using Infrastructure.Repository;
 using Infrastructure.Repository.Common.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BaverGame
@@ -17,6 +18,9 @@ namespace BaverGame
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddIdentity<User, UserRole>()
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
 
             AddRepositories(builder);
 

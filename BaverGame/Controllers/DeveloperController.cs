@@ -1,11 +1,12 @@
 using BaverGame.DTOs;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BaverGame.Controllers;
 
+[Authorize(Roles = "Administrator")]
 public class DeveloperController : Controller
 {
     private readonly ILogger<HomeController> _logger;
