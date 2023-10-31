@@ -15,6 +15,8 @@ public class ApplicationContext : IdentityDbContext<User, UserRole, Guid>
     public DbSet<Tag> Tag { get; set; } = null!;
     public DbSet<UserGameOwnership> UserGameOwnerships { get; set; } = null!;
     public DbSet<Screenshot> Screenshots { get; set; } = null!;
+    public DbSet<Like> Likes { get; set; } = null!;
+    public DbSet<Comment> Comments { get; set; } = null!;
     
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
     
@@ -55,6 +57,12 @@ public class ApplicationContext : IdentityDbContext<User, UserRole, Guid>
         modelBuilder.Entity<Screenshot>()
             .HasKey(g => g.ScreenshotId);
 
+        modelBuilder.Entity<Comment>()
+            .HasKey(g => g.CommentId);
+        
+        modelBuilder.Entity<Like>()
+            .HasKey(g => g.LikeId);
+
         modelBuilder.Entity<Developer>().Navigation(d => d.Games).AutoInclude();
     }
 
@@ -70,5 +78,6 @@ public class ApplicationContext : IdentityDbContext<User, UserRole, Guid>
         modelBuilder.Entity<GameTag>().Navigation(screenshot => screenshot.Game).AutoInclude();
         modelBuilder.Entity<GameTag>().Navigation(screenshot => screenshot.Tag).AutoInclude();
         modelBuilder.Entity<Price>().Navigation(price => price.Game).AutoInclude();
+        modelBuilder.Entity<Like>().Navigation(like => like.Comment).AutoInclude();
     }
 }
