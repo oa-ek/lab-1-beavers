@@ -1,3 +1,4 @@
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
 namespace Core;
@@ -16,4 +17,5 @@ public sealed class Game
     public ICollection<GameTag> GameTags { get; set; }
     public ICollection<Price> Prices { get; set; }
     public ICollection<Screenshot> Screenshots { get; set; }
+    public ICollection<Comment> Comments { get; set; }
 }
