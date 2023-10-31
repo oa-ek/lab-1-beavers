@@ -58,7 +58,7 @@ public sealed class ExamplePageController : Controller
             
             ICollection<Comment> replies = GetRepliesFor(allComments, comment);
             if(!replies.Any())
-                return;
+                continue;
             
             comment.Replies = replies;
             await GetRepliesForCollection(replies, allComments, dto);
@@ -101,8 +101,16 @@ public sealed class ExamplePageController : Controller
         {
             CommentId = commentId,
             IsLike = isLike,
+            UserId = _userManager.Users.First(user => user.UserName == User.Identity!.Name).Id,
         };
 
+        var likes = await _likeRepository.GetAllEntitiesAsync();
+        Like? previousLike = likes.FirstOrDefault(x => x.UserId == like.UserId && x.CommentId == like.CommentId);
+        if(previousLike is not null)
+        {
+            _likeRepository.RemoveExistingEntity(previousLike);
+        }
+        
         await _likeRepository.AddNewEntityAsync(like);
         var dto = await CreateDto();
         return RedirectToAction("Index", dto);
