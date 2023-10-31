@@ -61,7 +61,7 @@
             </div>
         </div>
         
-        @foreach(var innerComment in comment.Replies)
+        @foreach(var innerComment in comment.Replies.Reverse())
             {
                 <div class="d-flex align-items-center border-bottom py-3" style = "padding-left: 35px">
                     <img class="rounded-circle flex-shrink-0" src="https://static.thenounproject.com/png/994628-200.png" alt="" style="width: 40px; height: 40px;">
