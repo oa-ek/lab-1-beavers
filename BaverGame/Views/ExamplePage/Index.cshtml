@@ -10,7 +10,7 @@
     <p class="mb-0">@Model.Game.Description</p>
     <h3>Requirements:</h3>
     <p class="mb-0">@Model.Game.SystemRequirements</p>
-    
+
     <div class="d-flex align-items-center justify-content-between mb-2">
         <h6 class="mb-0">Comments for @Model.Game.Name</h6>
     </div>
@@ -33,31 +33,99 @@
 
                     <!-- Like Button -->
                     <form asp-action="LikeComment" method="post" class="d-inline">
-                        <input type="hidden" name="commentId" value="@comment.CommentId" />
-                        <input type="hidden" name="isLike" value="true" />
+                        <input type="hidden" name="commentId" value="@comment.CommentId"/>
+                        <input type="hidden" name="isLike" value="true"/>
                         <button type="submit" class="btn btn-success btn-sm">Like</button>
                     </form>
 
                     <!-- Dislike Button -->
                     <form asp-action="LikeComment" method="post" class="d-inline">
-                        <input type="hidden" name="commentId" value="@comment.CommentId" />
-                        <input type="hidden" name="isLike" value="false" />
+                        <input type="hidden" name="commentId" value="@comment.CommentId"/>
+                        <input type="hidden" name="isLike" value="false"/>
                         <button type="submit" class="btn btn-danger btn-sm">Dislike</button>
                     </form>
+
+                    <!-- Reply Button -->
+                    <button type="button" class="btn btn-info btn-sm" onclick="showReplyForm('@comment.CommentId')">Reply</button>
+
+                    <!-- Reply Area -->
+                    <div id="replyForm_@comment.CommentId" style="display: none;">
+                        <form asp-action="AddComment" method="post" class="d-flex align-items-center mt-3">
+                            <textarea name="CommentContent" placeholder="Write a reply..." class="form-control me-2"></textarea>
+                            <input type="hidden" name="ParentCommentId" value="@comment.CommentId"/>
+                            <input type="hidden" name="GameId" value="@game.GameId"/>
+                            <input type="submit" value="Post Reply" class="btn btn-primary btn-sm"/>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+        
+        @foreach(var innerComment in comment.Replies)
+            {
+                <div class="d-flex align-items-center border-bottom py-3" style = "padding-left: 35px">
+                    <img class="rounded-circle flex-shrink-0" src="https://static.thenounproject.com/png/994628-200.png" alt="" style="width: 40px; height: 40px;">
+                    <div class="w-100 ms-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-0">@innerComment.AuthorName</h6>
+                            <small>@innerComment.CreatedAt</small>
+                        </div>
+                        <span>@innerComment.Content</span>
+
+                        <!-- Like/Dislike Section -->
+                        <div class="mt-2">
+                            <span>@Model.GetLikesFor(innerComment.CommentId.ToString()) Likes</span>
+                            <span>@Model.GetDislikesFor(innerComment.CommentId.ToString()) Dislikes</span>
+
+                            <!-- Like Button -->
+                            <form asp-action="LikeComment" method="post" class="d-inline">
+                                <input type="hidden" name="commentId" value="@innerComment.CommentId"/>
+                                <input type="hidden" name="isLike" value="true"/>
+                                <button type="submit" class="btn btn-success btn-sm">Like</button>
+                            </form>
+
+                            <!-- Dislike Button -->
+                            <form asp-action="LikeComment" method="post" class="d-inline">
+                                <input type="hidden" name="commentId" value="@innerComment.CommentId"/>
+                                <input type="hidden" name="isLike" value="false"/>
+                                <button type="submit" class="btn btn-danger btn-sm">Dislike</button>
+                            </form>
+
+                            <!-- Reply Button -->
+                            <button type="button" class="btn btn-info btn-sm" onclick="showReplyForm('@innerComment.CommentId')">Reply</button>
+
+                            <!-- Reply Area -->
+                            <div id="replyForm_@innerComment.CommentId" style="display: none;">
+                                <form asp-action="AddComment" method="post" class="d-flex align-items-center">
+                                    <textarea minlength="10" required="required"  asp-for="@Model.CommentContent" placeholder="Add a comment" class="form-control me-2"></textarea>
+                                    <input type="hidden" asp-for="@Model.ParentCommentId" value="@comment.CommentId"/>
+                                    <input type="hidden" asp-for="@Model.GameId" value="@game.GameId"/>
+                                    <input type="submit" value="Post Comment" class="btn btn-primary"/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
     }
 
     @if(User.IsInRole("Administrator") || User.IsInRole("User"))
     {
         <div class="mt-3">
             <form asp-action="AddComment" method="post" class="d-flex align-items-center">
-                <textarea asp-for="@Model.CommentContent" placeholder="Add a comment" class="form-control me-2"></textarea>
+                <textarea minlength="10" required="required"  asp-for="@Model.CommentContent" placeholder="Add a comment" class="form-control me-2"></textarea>
                 <input type="hidden" asp-for="@Model.ParentCommentId" value="@null"/>
                 <input type="hidden" asp-for="@Model.GameId" value="@game.GameId"/>
                 <input type="submit" value="Post Comment" class="btn btn-primary"/>
             </form>
         </div>
     }
-</div>
+</div >
+
+<script>
+function showReplyForm(commentId)
+{
+var formId = 'replyForm_' + commentId;
+document.getElementById(formId).style.display = 'block';
+}
+</script>

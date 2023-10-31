@@ -57,10 +57,10 @@ public sealed class ExamplePageController : Controller
             dto.CommentsDislikesCount.Add(comment.CommentId.ToString(), await GetCommentDislikesCount(comment));
             
             ICollection<Comment> replies = GetRepliesFor(allComments, comment);
+            comment.Replies = replies;
             if(!replies.Any())
                 continue;
-            
-            comment.Replies = replies;
+
             await GetRepliesForCollection(replies, allComments, dto);
         }
     }
@@ -88,6 +88,7 @@ public sealed class ExamplePageController : Controller
             CreatedAt = DateTime.Now,
             CommentId = Guid.NewGuid(),
             AuthorName = User.Identity!.Name!,
+            ParentCommentId = Guid.Parse(dto.ParentCommentId),
         };
 
         await _commentRepository.AddNewEntityAsync(comment);

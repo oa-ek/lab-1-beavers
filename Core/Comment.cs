@@ -13,8 +13,6 @@ namespace Core
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<Like> Likes { get; set; }
-
-        [ForeignKey("ParentCommentId")]
         public ICollection<Comment> Replies { get; set; } // Child comments
 
         public string AuthorName { get; set; }
