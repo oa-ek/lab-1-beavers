@@ -55,6 +55,12 @@ public sealed partial class PriceController : Controller
         return View(dto);
     }
 
+    public async Task<IActionResult> ParseResult()
+    {
+        await Task.Yield();
+        return View(new ParsingPricesResultDto(5, TimeSpan.FromSeconds(1.45)));
+    }
+
     public async Task<IActionResult> Delete(Guid id)
     {
         var price = await _pricesRepository.GetEntityByIdAsync(id);
