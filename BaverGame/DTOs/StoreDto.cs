@@ -13,4 +13,5 @@ public sealed class StoreDto
     [Required(ErrorMessage = ValidationMessages.RequiredField)]
     [StringLength(255, MinimumLength = 3, ErrorMessage = ValidationMessages.InvalidValue)]
     public string StoreName { get; set; }
+    public string HtmlPriceElements { get; set; }
 }

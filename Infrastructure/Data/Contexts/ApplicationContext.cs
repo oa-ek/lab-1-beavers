@@ -77,6 +77,7 @@ public class ApplicationContext : IdentityDbContext<User, UserRole, Guid>
         modelBuilder.Entity<GameTag>().Navigation(gameTag => gameTag.Game).AutoInclude();
         modelBuilder.Entity<GameTag>().Navigation(gameTag => gameTag.Tag).AutoInclude();
         modelBuilder.Entity<Price>().Navigation(price => price.Game).AutoInclude();
+        modelBuilder.Entity<Price>().Navigation(price => price.Store).AutoInclude();
         modelBuilder.Entity<Vote>().Navigation(vote => vote.Comment).AutoInclude();
     }
 }

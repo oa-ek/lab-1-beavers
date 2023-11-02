@@ -1,0 +1,40 @@
+@model BaverGame.DTOs.ParsingPricesResultDto
+
+@{
+    ViewData["Title"] = "Prices";
+}
+
+<div class="mx-4 h-auto my-4 w-100 text-center">
+    <h1>Prices</h1>
+
+    <div class="mt-3">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Parsed prices</th>
+                        <th>Error prices</th>
+                        <th>Time spent</th>
+                        <th>Errors list</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td>@Model.ParsedCount</td>
+                            <td>@Model.ErrorsCount</td>
+                            <td>@Model.TimeSpent</td>
+                            <td>
+                                <ul class="list-unstyled mb-0">
+                                    @foreach(var price in Model.ErrorPrices)
+                                    {
+                                        <li>
+                                            @price.PriceUrl
+                                        </li>
+                                    }
+                                </ul>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+    </div>
+    <a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>
+</div>

@@ -1,4 +1,7 @@
+using System.Diagnostics;
 using System.Text.RegularExpressions;
+using BaverGame.Controllers.Parsing;
+using BaverGame.Controllers.Parsing.Core.Services;
 using BaverGame.DTOs;
 using BaverGame.DTOs.ValidationRelated;
 using Core;
@@ -51,8 +54,40 @@ public sealed partial class PriceController : Controller
             GameId = price.GameId.ToString(),
             StoreId = price.StoreId.ToString(),
             PriceId = price.PriceId.ToString(),
+            CurrencyPostfix = price.CurrencyPostfix,
         };
         return View(dto);
+    }
+
+    public async Task<IActionResult> ParseResult()
+    {
+        Stopwatch stopWatch = new();
+        stopWatch.Start();
+
+        List<Price> prices = await _pricesRepository.GetAllEntitiesAsync();
+        int priceParsed = 0;
+        List<Price> errorPrices = new();
+        
+        foreach(Price price in prices)
+        {
+            try
+            {
+                ParserWorker<decimal> parser = new(
+                    new PriceParser(),
+                    new PriceParserSettings(price.PriceUrl, price.Store.PriceElements.Split(';')));
+
+                price.PriceValue = await parser.StartAsync();
+                priceParsed++;
+                _pricesRepository.UpdateExistingEntity(price);
+            }
+            catch
+            {
+                errorPrices.Add(price);
+            }
+        }
+
+        stopWatch.Stop();
+        return View(new ParsingPricesResultDto(priceParsed, errorPrices, stopWatch.Elapsed));
     }
 
     public async Task<IActionResult> Delete(Guid id)
@@ -65,6 +100,7 @@ public sealed partial class PriceController : Controller
             GameId = price.GameId.ToString(),
             PriceId = price.PriceId.ToString(),
             StoreId = price.StoreId.ToString(),
+            CurrencyPostfix = price.CurrencyPostfix,
         };
         return View(dto);
     }
@@ -86,7 +122,8 @@ public sealed partial class PriceController : Controller
             GameId = Guid.Parse(dto.GameId),
             StoreId = Guid.Parse(dto.StoreId),
             PriceValue = dto.PriceValue,
-            PriceUrl = dto.PriceUrl
+            PriceUrl = dto.PriceUrl,
+            CurrencyPostfix = dto.CurrencyPostfix,
         });
 
         return RedirectToAction("Index");
@@ -110,6 +147,7 @@ public sealed partial class PriceController : Controller
         price.StoreId = Guid.Parse(dto.StoreId);
         price.PriceValue = dto.PriceValue;
         price.PriceUrl = dto.PriceUrl;
+        price.CurrencyPostfix = dto.CurrencyPostfix;
         
         _pricesRepository.UpdateExistingEntity(price); 
         return RedirectToAction("Index");

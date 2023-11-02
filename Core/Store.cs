@@ -9,4 +9,5 @@ public sealed class Store
     [MaxLength(255)]
     public string StoreName { get; set; }
     public ICollection<Price> Prices { get; set; }
+    public string PriceElements { get; set; }
 }
