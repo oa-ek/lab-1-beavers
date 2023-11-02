@@ -27,4 +27,6 @@ public sealed class PriceDto
     [Required(ErrorMessage = ValidationMessages.RequiredField)]
     [RegularExpression(RegexPatterns.UrlPattern, ErrorMessage = ValidationMessages.InvalidUrlFormat)]
     public string PriceUrl { get; set; }
+
+    public string CurrencyPostfix { get; set; }
 }

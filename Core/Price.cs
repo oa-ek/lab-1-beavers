@@ -9,6 +9,9 @@ public sealed class Price
     public Guid GameId { get; set; }
     public Guid StoreId { get; set; }
     public decimal PriceValue { get; set; }
+
+    public string CurrencyPostfix { get; set; }
+
     [MaxLength(255)]
     public string PriceUrl { get; set; }
     public Game Game { get; set; }

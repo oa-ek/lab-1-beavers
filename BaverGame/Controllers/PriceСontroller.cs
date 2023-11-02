@@ -54,6 +54,7 @@ public sealed partial class PriceController : Controller
             GameId = price.GameId.ToString(),
             StoreId = price.StoreId.ToString(),
             PriceId = price.PriceId.ToString(),
+            CurrencyPostfix = price.CurrencyPostfix,
         };
         return View(dto);
     }
@@ -99,6 +100,7 @@ public sealed partial class PriceController : Controller
             GameId = price.GameId.ToString(),
             PriceId = price.PriceId.ToString(),
             StoreId = price.StoreId.ToString(),
+            CurrencyPostfix = price.CurrencyPostfix,
         };
         return View(dto);
     }
@@ -120,7 +122,8 @@ public sealed partial class PriceController : Controller
             GameId = Guid.Parse(dto.GameId),
             StoreId = Guid.Parse(dto.StoreId),
             PriceValue = dto.PriceValue,
-            PriceUrl = dto.PriceUrl
+            PriceUrl = dto.PriceUrl,
+            CurrencyPostfix = dto.CurrencyPostfix,
         });
 
         return RedirectToAction("Index");
@@ -144,6 +147,7 @@ public sealed partial class PriceController : Controller
         price.StoreId = Guid.Parse(dto.StoreId);
         price.PriceValue = dto.PriceValue;
         price.PriceUrl = dto.PriceUrl;
+        price.CurrencyPostfix = dto.CurrencyPostfix;
         
         _pricesRepository.UpdateExistingEntity(price); 
         return RedirectToAction("Index");

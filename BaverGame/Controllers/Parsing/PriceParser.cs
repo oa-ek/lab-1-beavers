@@ -1,3 +1,4 @@
+using System.Globalization;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using BaverGame.Controllers.Parsing.Core.API;
@@ -7,7 +8,7 @@ namespace BaverGame.Controllers.Parsing;
 
 public sealed class PriceParser : IParser<decimal>
 {
-    private const string MoneyChar = "\u20b4";
+    private const string GryvnyaChar = "\u20b4";
 
     public decimal Parse(IHtmlDocument document, string[] priceElements)
     {
@@ -22,13 +23,13 @@ public sealed class PriceParser : IParser<decimal>
             finalText = text;
             break;
         }
-
-        if(decimal.TryParse(finalText, out decimal result))
+        
+        if(decimal.TryParse(finalText, CultureInfo.InvariantCulture, out decimal result))
             return result;
 
-        finalText = finalText.Replace(MoneyChar, "");
+        finalText = finalText.Replace(GryvnyaChar, "");
         
-        if(decimal.TryParse(finalText, out result))
+        if(decimal.TryParse(finalText, CultureInfo.InvariantCulture, out result))
             return result;
         
         throw new PriceElementNoFoundException();
