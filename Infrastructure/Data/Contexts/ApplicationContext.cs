@@ -15,7 +15,7 @@ public class ApplicationContext : IdentityDbContext<User, UserRole, Guid>
     public DbSet<Tag> Tag { get; set; } = null!;
     public DbSet<UserGameOwnership> UserGameOwnerships { get; set; } = null!;
     public DbSet<Screenshot> Screenshots { get; set; } = null!;
-    public DbSet<Like> Likes { get; set; } = null!;
+    public DbSet<Vote> Votes { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
     
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
@@ -60,14 +60,13 @@ public class ApplicationContext : IdentityDbContext<User, UserRole, Guid>
         modelBuilder.Entity<Comment>()
             .HasKey(g => g.CommentId);
         
-        modelBuilder.Entity<Like>()
-            .HasKey(g => g.LikeId);
-
-        modelBuilder.Entity<Developer>().Navigation(d => d.Games).AutoInclude();
+        modelBuilder.Entity<Vote>()
+            .HasKey(g => g.VoteId);
     }
 
     private static void AddAutoIncludes(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Developer>().Navigation(d => d.Games).AutoInclude();
         modelBuilder.Entity<Screenshot>().Navigation(screenshot => screenshot.Game).AutoInclude();
         modelBuilder.Entity<GameTag>().Navigation(gameTag => gameTag.Game).AutoInclude();
         modelBuilder.Entity<GameTag>().Navigation(gameTag => gameTag.Tag).AutoInclude();
@@ -75,9 +74,9 @@ public class ApplicationContext : IdentityDbContext<User, UserRole, Guid>
         modelBuilder.Entity<Game>().Navigation(game => game.Publisher).AutoInclude();
         modelBuilder.Entity<UserGameOwnership>().Navigation(ownership => ownership.Game).AutoInclude();
         modelBuilder.Entity<UserGameOwnership>().Navigation(ownership => ownership.User).AutoInclude();
-        modelBuilder.Entity<GameTag>().Navigation(screenshot => screenshot.Game).AutoInclude();
-        modelBuilder.Entity<GameTag>().Navigation(screenshot => screenshot.Tag).AutoInclude();
+        modelBuilder.Entity<GameTag>().Navigation(gameTag => gameTag.Game).AutoInclude();
+        modelBuilder.Entity<GameTag>().Navigation(gameTag => gameTag.Tag).AutoInclude();
         modelBuilder.Entity<Price>().Navigation(price => price.Game).AutoInclude();
-        modelBuilder.Entity<Like>().Navigation(like => like.Comment).AutoInclude();
+        modelBuilder.Entity<Vote>().Navigation(vote => vote.Comment).AutoInclude();
     }
 }

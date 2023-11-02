@@ -10,18 +10,18 @@ public sealed class ExamplePageController : Controller
 {
     private readonly IRepository<Game> _gamesRepository;
     private readonly IRepository<Comment> _commentRepository;
-    private readonly IRepository<Like> _likeRepository;
+    private readonly IRepository<Vote> _voteRepository;
     private readonly UserManager<User> _userManager;
 
     public ExamplePageController(
         IRepository<Game> gamesRepository,
         IRepository<Comment> commentRepository,
-        IRepository<Like> likeRepository, 
+        IRepository<Vote> voteRepository, 
         UserManager<User> userManager)
     {
         _gamesRepository = gamesRepository;
         _commentRepository = commentRepository;
-        _likeRepository = likeRepository;
+        _voteRepository = voteRepository;
         _userManager = userManager;
     }
 
@@ -33,9 +33,9 @@ public sealed class ExamplePageController : Controller
 
     private async Task<ExamplePageDto> CreateDto()
     {
-        var game = await _gamesRepository.GetEntityByIdAsync(Guid.Parse("a3d822d7-0812-40b4-8e0f-48fc13af1396"));
+        var game = (await _gamesRepository.GetAllEntitiesAsync()).First();
         List<Comment> allComments = await _commentRepository.GetAllEntitiesAsync();
-        game.Comments = (ICollection<Comment>)allComments
+        game.Comments = allComments
             .Where(x => x.GameId == game.GameId && x.ParentCommentId is null)
             .ToList();
 
@@ -66,12 +66,12 @@ public sealed class ExamplePageController : Controller
     }
 
     private async Task<int> GetCommentLikesCount(Comment comment) =>
-        (await _likeRepository.GetAllEntitiesAsync())
+        (await _voteRepository.GetAllEntitiesAsync())
         .Where(x => x.IsLike)
         .Count(x => x.CommentId == comment.CommentId);
     
     private async Task<int> GetCommentDislikesCount(Comment comment) =>
-        (await _likeRepository.GetAllEntitiesAsync())
+        (await _voteRepository.GetAllEntitiesAsync())
         .Where(x => !x.IsLike)
         .Count(x => x.CommentId == comment.CommentId);
 
@@ -96,23 +96,23 @@ public sealed class ExamplePageController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> LikeComment(Guid commentId, bool isLike)
+    public async Task<IActionResult> VoteComment(Guid commentId, bool isLike)
     {
-        var like = new Like
+        var vote = new Vote
         {
             CommentId = commentId,
             IsLike = isLike,
             UserId = _userManager.Users.First(user => user.UserName == User.Identity!.Name).Id,
         };
 
-        var likes = await _likeRepository.GetAllEntitiesAsync();
-        Like? previousLike = likes.FirstOrDefault(x => x.UserId == like.UserId && x.CommentId == like.CommentId);
-        if(previousLike is not null)
+        var votes = await _voteRepository.GetAllEntitiesAsync();
+        Vote? previousVote = votes.FirstOrDefault(x => x.UserId == vote.UserId && x.CommentId == vote.CommentId);
+        if(previousVote is not null)
         {
-            _likeRepository.RemoveExistingEntity(previousLike);
+            _voteRepository.RemoveExistingEntity(previousVote);
         }
         
-        await _likeRepository.AddNewEntityAsync(like);
+        await _voteRepository.AddNewEntityAsync(vote);
         var dto = await CreateDto();
         return RedirectToAction("Index", dto);
     }

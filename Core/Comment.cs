@@ -12,7 +12,7 @@ namespace Core
         public Guid? ParentCommentId { get; set; } // Nullable for root comments
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public ICollection<Like> Likes { get; set; }
+        public ICollection<Vote> Votes { get; set; }
         public ICollection<Comment> Replies { get; set; } // Child comments
 
         public string AuthorName { get; set; }

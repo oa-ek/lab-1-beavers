@@ -34,14 +34,14 @@
                     @if(User.IsInRole("Administrator") || User.IsInRole("User"))
                     {
                         <!-- Like Button -->
-                        <form asp-action="LikeComment" method="post" class="d-inline">
+                        <form asp-action="VoteComment" method="post" class="d-inline">
                             <input type="hidden" name="commentId" value="@comment.CommentId"/>
                             <input type="hidden" name="isLike" value="true"/>
                             <button type="submit" class="btn btn-success btn-sm">Like</button>
                         </form>
 
                         <!-- Dislike Button -->
-                        <form asp-action="LikeComment" method="post" class="d-inline">
+                        <form asp-action="VoteComment" method="post" class="d-inline">
                             <input type="hidden" name="commentId" value="@comment.CommentId"/>
                             <input type="hidden" name="isLike" value="false"/>
                             <button type="submit" class="btn btn-danger btn-sm">Dislike</button>
@@ -82,14 +82,14 @@
                         {
                             <!-- Control Section -->
                             <!-- Like Button -->
-                            <form asp-action="LikeComment" method="post" class="d-inline">
+                            <form asp-action="VoteComment" method="post" class="d-inline">
                                 <input type="hidden" name="commentId" value="@innerComment.CommentId"/>
                                 <input type="hidden" name="isLike" value="true"/>
                                 <button type="submit" class="btn btn-success btn-sm">Like</button>
                             </form>
 
                             <!-- Dislike Button -->
-                            <form asp-action="LikeComment" method="post" class="d-inline">
+                            <form asp-action="VoteComment" method="post" class="d-inline">
                                 <input type="hidden" name="commentId" value="@innerComment.CommentId"/>
                                 <input type="hidden" name="isLike" value="false"/>
                                 <button type="submit" class="btn btn-danger btn-sm">Dislike</button>
