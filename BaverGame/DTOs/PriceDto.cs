@@ -21,7 +21,7 @@ public sealed class PriceDto
     public string StoreId { get; set; }
 
     [Required(ErrorMessage = ValidationMessages.RequiredField)]
-    [Range(0.01, double.MaxValue, ErrorMessage = ValidationMessages.InvalidNumericValue)]
+    [Range(0, double.MaxValue, ErrorMessage = ValidationMessages.InvalidNumericValue)]
     public decimal PriceValue { get; set; }
 
     [Required(ErrorMessage = ValidationMessages.RequiredField)]
