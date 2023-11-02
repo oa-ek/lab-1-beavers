@@ -9,7 +9,7 @@ public sealed class ExamplePageDto
     [Key]
     public Game Game { get; set; }
 
-    public string ParentCommentId { get; set; }
+    public string? ParentCommentId { get; set; }
     public string CommentContent { get; set; }
     public string GameId { get; set; }
 

@@ -33,7 +33,7 @@ public sealed class ExamplePageController : Controller
 
     private async Task<ExamplePageDto> CreateDto()
     {
-        var game = (await _gamesRepository.GetAllEntitiesAsync()).First();
+        var game = (await _gamesRepository.GetAllEntitiesAsync()).Last();
         List<Comment> allComments = await _commentRepository.GetAllEntitiesAsync();
         game.Comments = allComments
             .Where(x => x.GameId == game.GameId && x.ParentCommentId is null)
@@ -88,7 +88,7 @@ public sealed class ExamplePageController : Controller
             CreatedAt = DateTime.Now,
             CommentId = Guid.NewGuid(),
             AuthorName = User.Identity!.Name!,
-            ParentCommentId = Guid.Parse(dto.ParentCommentId),
+            ParentCommentId = dto.ParentCommentId is null ? null : Guid.Parse(dto.ParentCommentId),
         };
 
         await _commentRepository.AddNewEntityAsync(comment);
