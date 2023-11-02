@@ -1,4 +1,7 @@
+using System.Diagnostics;
 using System.Text.RegularExpressions;
+using BaverGame.Controllers.Parsing;
+using BaverGame.Controllers.Parsing.Core.Services;
 using BaverGame.DTOs;
 using BaverGame.DTOs.ValidationRelated;
 using Core;
@@ -57,8 +60,33 @@ public sealed partial class PriceController : Controller
 
     public async Task<IActionResult> ParseResult()
     {
-        await Task.Yield();
-        return View(new ParsingPricesResultDto(5, TimeSpan.FromSeconds(1.45)));
+        Stopwatch stopWatch = new();
+        stopWatch.Start();
+
+        List<Price> prices = await _pricesRepository.GetAllEntitiesAsync();
+        int priceParsed = 0;
+        List<Price> errorPrices = new();
+        
+        foreach(Price price in prices)
+        {
+            try
+            {
+                ParserWorker<decimal> parser = new(
+                    new PriceParser(),
+                    new PriceParserSettings(price.PriceUrl, price.Store.PriceElements.Split(';')));
+
+                price.PriceValue = await parser.StartAsync();
+                priceParsed++;
+                _pricesRepository.UpdateExistingEntity(price);
+            }
+            catch
+            {
+                errorPrices.Add(price);
+            }
+        }
+
+        stopWatch.Stop();
+        return View(new ParsingPricesResultDto(priceParsed, errorPrices, stopWatch.Elapsed));
     }
 
     public async Task<IActionResult> Delete(Guid id)

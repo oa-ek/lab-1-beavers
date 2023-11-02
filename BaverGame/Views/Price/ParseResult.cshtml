@@ -11,14 +11,27 @@
             <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Parsed prices:</th>
-                        <th>Time spent:</th>
+                        <th>Parsed prices</th>
+                        <th>Error prices</th>
+                        <th>Time spent</th>
+                        <th>Errors list</th>
                     </tr>
                 </thead>
                 <tbody>
                         <tr>
                             <td>@Model.ParsedCount</td>
+                            <td>@Model.ErrorsCount</td>
                             <td>@Model.TimeSpent</td>
+                            <td>
+                                <ul class="list-unstyled mb-0">
+                                    @foreach(var price in Model.ErrorPrices)
+                                    {
+                                        <li>
+                                            @price.PriceUrl
+                                        </li>
+                                    }
+                                </ul>
+                            </td>
                         </tr>
                 </tbody>
             </table>

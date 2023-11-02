@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using BaverGame.Controllers.Parsing.API;
+using BaverGame.Controllers.Parsing.Core.API;
 
-namespace BaverGame.Controllers.Parsing.Services;
+namespace BaverGame.Controllers.Parsing.Core.Services;
 
 internal class HtmlLoader
 {

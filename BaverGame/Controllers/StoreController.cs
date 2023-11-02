@@ -30,7 +30,8 @@ public sealed class StoreController : Controller
         return View(new StoreDto
         {
             StoreId = id.ToString(),
-            StoreName = store.StoreName
+            StoreName = store.StoreName,
+            HtmlPriceElements = store.PriceElements,
         });
     }
 
@@ -54,7 +55,8 @@ public sealed class StoreController : Controller
         
         await _storesRepository.AddNewEntityAsync(new Store
         {
-            StoreName = dto.StoreName
+            StoreName = dto.StoreName,
+            PriceElements = dto.HtmlPriceElements,
         });
 
         return RedirectToAction("Index");
@@ -71,6 +73,7 @@ public sealed class StoreController : Controller
             return NotFound();
         
         store.StoreName = dto.StoreName;
+        store.PriceElements = dto.HtmlPriceElements;
         _storesRepository.UpdateExistingEntity(store); 
         return RedirectToAction("Index");
     }
