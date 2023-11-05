@@ -79,10 +79,49 @@
                 </a>
                 @if (User.IsInRole("Administrator"))
                 {
-                    <a asp-area="" asp-controller="AdminPanel" asp-action="Index"
-                       class="nav-item nav-link">
-                        <i class="fa fa-toolbox me-2"></i>Admin panel
-                    </a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-toolbox me-2"></i>Admin-panel
+                        </a>
+                        <div class="dropdown-menu bg-transparent border-0" data-bs-popper="none">
+                            <a asp-area="" asp-controller="AdminPanel" asp-action="Index" class="nav-item nav-link">
+                                Show all sections
+                            </a>
+                            <a asp-area="" asp-controller="Developer" asp-action="Index" class="nav-item nav-link">
+                                Developers
+                            </a>
+                            <a asp-area="" asp-controller="Publisher" asp-action="Index" class="nav-item nav-link">
+                                Publishers
+                            </a>
+                            <a asp-area="" asp-controller="Tag" asp-action="Index" class="nav-item nav-link">
+                                Tags
+                            </a>
+                            <a asp-area="" asp-controller="UserRole" asp-action="Index" class="nav-item nav-link">
+                                User roles
+                            </a>
+                            <a asp-area="" asp-controller="User" asp-action="Index" class="nav-item nav-link">
+                                Users
+                            </a>
+                            <a asp-area="" asp-controller="Store" asp-action="Index" class="nav-item nav-link">
+                                Stores
+                            </a>
+                            <a asp-area="" asp-controller="Screenshot" asp-action="Index" class="nav-item nav-link">
+                                Screenshots
+                            </a>
+                            <a asp-area="" asp-controller="Price" asp-action="Index" class="nav-item nav-link">
+                                Prices
+                            </a>
+                            <a asp-area="" asp-controller="UserGameOwnership" asp-action="Index" class="nav-item nav-link">
+                                Ownerships
+                            </a>
+                            <a asp-area="" asp-controller="Game" asp-action="Index" class="nav-item nav-link">
+                                Games
+                            </a>
+                            <a asp-area="" asp-controller="GameTag" asp-action="Index" class="nav-item nav-link">
+                                Game tags
+                            </a>
+                        </div>
+                    </div>
                 }
             </div>
             <div class="navbar-nav w-100">
