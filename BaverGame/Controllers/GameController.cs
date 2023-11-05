@@ -46,7 +46,7 @@ public sealed partial class GameController : Controller
             GameId = game.GameId.ToString(),
             Name = game.Name,
             Description = game.Description,
-            SystemRequirements = game.SystemRequirements,
+            RecommendedSystemRequirements = game.MinSystemRequirements,
             PublisherId = game.PublisherId.ToString(),
             DeveloperId = game.DeveloperId.ToString(),
         };
@@ -71,7 +71,7 @@ public sealed partial class GameController : Controller
         if (!GuidRegex().IsMatch(dto.DeveloperId) || !GuidRegex().IsMatch(dto.PublisherId)
                                                   || string.IsNullOrWhiteSpace(dto.Name)
                                                   || string.IsNullOrWhiteSpace(dto.Description)
-                                                  || string.IsNullOrWhiteSpace(dto.SystemRequirements))
+                                                  || string.IsNullOrWhiteSpace(dto.RecommendedSystemRequirements))
         {
             PopulateDropdowns();
             return View(dto);
@@ -83,7 +83,7 @@ public sealed partial class GameController : Controller
             PublisherId = Guid.Parse(dto.PublisherId),
             Name = dto.Name,
             Description = dto.Description,
-            SystemRequirements = dto.SystemRequirements
+            MinSystemRequirements = dto.RecommendedSystemRequirements
         });
 
         return RedirectToAction("Index");
@@ -107,7 +107,7 @@ public sealed partial class GameController : Controller
         game.PublisherId = Guid.Parse(dto.PublisherId);
         game.Name = dto.Name;
         game.Description = dto.Description;
-        game.SystemRequirements = dto.SystemRequirements;
+        game.MinSystemRequirements = dto.RecommendedSystemRequirements;
         _gamesRepository.UpdateExistingEntity(game); 
         return RedirectToAction("Index");
     }

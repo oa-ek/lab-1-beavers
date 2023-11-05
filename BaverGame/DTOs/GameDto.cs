@@ -24,11 +24,17 @@ public sealed class GameDto
     [StringLength(255, MinimumLength = 3, ErrorMessage = ValidationMessages.InvalidValue)]
     public string Name { get; set; }
     
+    public string MainImageUrl { get; set; }
+    public string ShortDescription { get; set; }
+    
     [Required(ErrorMessage = ValidationMessages.RequiredField)]
     [StringLength(255, MinimumLength = 3, ErrorMessage = ValidationMessages.InvalidValue)]
     public string Description { get; set; }
     
     [Required(ErrorMessage = ValidationMessages.RequiredField)]
     [StringLength(255, MinimumLength = 3, ErrorMessage = ValidationMessages.InvalidValue)]
-    public string SystemRequirements { get; set; }
+    public string MinSystemRequirements { get; set; }
+    [Required(ErrorMessage = ValidationMessages.RequiredField)]
+    [StringLength(255, MinimumLength = 3, ErrorMessage = ValidationMessages.InvalidValue)]
+    public string RecommendedSystemRequirements { get; set; }
 }
