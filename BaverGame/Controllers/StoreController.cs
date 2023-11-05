@@ -32,6 +32,7 @@ public sealed class StoreController : Controller
             StoreId = id.ToString(),
             StoreName = store.StoreName,
             HtmlPriceElements = store.PriceElements,
+            MainImageUrl = store.MainImageUrl,
         });
     }
 
@@ -42,7 +43,7 @@ public sealed class StoreController : Controller
         return View(new StoreDto
         {
             StoreId = id.ToString(),
-            StoreName = store.StoreName
+            StoreName = store.StoreName,
         });
     }
 
@@ -57,6 +58,7 @@ public sealed class StoreController : Controller
         {
             StoreName = dto.StoreName,
             PriceElements = dto.HtmlPriceElements,
+            MainImageUrl = dto.MainImageUrl,
         });
 
         return RedirectToAction("Index");
@@ -74,6 +76,7 @@ public sealed class StoreController : Controller
         
         store.StoreName = dto.StoreName;
         store.PriceElements = dto.HtmlPriceElements;
+        store.MainImageUrl = dto.MainImageUrl;
         _storesRepository.UpdateExistingEntity(store); 
         return RedirectToAction("Index");
     }

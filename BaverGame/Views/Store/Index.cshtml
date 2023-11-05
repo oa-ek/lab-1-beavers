@@ -20,6 +20,7 @@
                 <thead class="thead-dark">
                 <tr>
                     <th>Store's name</th>
+                    <th>Image</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -29,6 +30,9 @@
                 {
                     <tr>
                         <td>@store.StoreName</td>
+                        <td>
+                            <img src="@store.MainImageUrl" alt="store image" style="height: 40px"/>
+                        </td>
                         <td>
                             <button type="button" class="btn btn-dark">
                                 <a class="text-decoration-none" asp-area="" asp-controller="Store" asp-route-id="@store.StoreId" asp-action="Update">Update</a>
