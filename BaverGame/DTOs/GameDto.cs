@@ -28,7 +28,7 @@ public sealed class GameDto
     public string ShortDescription { get; set; }
     
     [Required(ErrorMessage = ValidationMessages.RequiredField)]
-    [StringLength(255, MinimumLength = 3, ErrorMessage = ValidationMessages.InvalidValue)]
+    [StringLength(5000, MinimumLength = 3, ErrorMessage = ValidationMessages.InvalidValue)]
     public string Description { get; set; }
     
     [Required(ErrorMessage = ValidationMessages.RequiredField)]

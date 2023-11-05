@@ -46,9 +46,12 @@ public sealed partial class GameController : Controller
             GameId = game.GameId.ToString(),
             Name = game.Name,
             Description = game.Description,
-            RecommendedSystemRequirements = game.MinSystemRequirements,
+            RecommendedSystemRequirements = game.RecommendedSystemRequirements,
             PublisherId = game.PublisherId.ToString(),
             DeveloperId = game.DeveloperId.ToString(),
+            MainImageUrl = game.MainImageUrl,
+            MinSystemRequirements = game.MinSystemRequirements,
+            ShortDescription = game.ShortDescription,
         };
         
         return View(dto);
@@ -68,7 +71,7 @@ public sealed partial class GameController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(GameDto dto)
     {
-        if (!GuidRegex().IsMatch(dto.DeveloperId) || !GuidRegex().IsMatch(dto.PublisherId)
+        if (!GuidRegex().IsMatch(dto.DeveloperId) || !GuidRegex().IsMatch(dto.PublisherId) 
                                                   || string.IsNullOrWhiteSpace(dto.Name)
                                                   || string.IsNullOrWhiteSpace(dto.Description)
                                                   || string.IsNullOrWhiteSpace(dto.RecommendedSystemRequirements))
@@ -83,7 +86,10 @@ public sealed partial class GameController : Controller
             PublisherId = Guid.Parse(dto.PublisherId),
             Name = dto.Name,
             Description = dto.Description,
-            MinSystemRequirements = dto.RecommendedSystemRequirements
+            MinSystemRequirements = dto.MinSystemRequirements,
+            MainImageUrl = dto.MainImageUrl,
+            ShortDescription = dto.ShortDescription,
+            RecommendedSystemRequirements = dto.RecommendedSystemRequirements,
         });
 
         return RedirectToAction("Index");
@@ -106,8 +112,12 @@ public sealed partial class GameController : Controller
         game.DeveloperId = Guid.Parse(dto.DeveloperId);
         game.PublisherId = Guid.Parse(dto.PublisherId);
         game.Name = dto.Name;
+        game.MainImageUrl = dto.MainImageUrl;
         game.Description = dto.Description;
-        game.MinSystemRequirements = dto.RecommendedSystemRequirements;
+        game.ShortDescription = dto.ShortDescription;
+        game.MinSystemRequirements = dto.MinSystemRequirements;
+        game.RecommendedSystemRequirements = dto.RecommendedSystemRequirements;
+        
         _gamesRepository.UpdateExistingEntity(game); 
         return RedirectToAction("Index");
     }
