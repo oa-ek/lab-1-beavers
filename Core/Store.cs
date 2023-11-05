@@ -8,6 +8,7 @@ public sealed class Store
     public Guid StoreId { get; } = Guid.NewGuid();
     [MaxLength(255)]
     public string StoreName { get; set; }
+    public string MainImageUrl { get; set; }
     public ICollection<Price> Prices { get; set; }
     public string PriceElements { get; set; }
 }

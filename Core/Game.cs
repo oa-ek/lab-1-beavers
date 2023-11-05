@@ -10,8 +10,11 @@ public sealed class Game
     public Guid DeveloperId { get; set; }
     public Guid PublisherId { get; set; }
     public string Name { get; set; }
+    public string MainImageUrl { get; set; }
+    public string ShortDescription { get; set; }
     public string Description { get; set; }
-    public string SystemRequirements { get; set; }
+    public string MinSystemRequirements { get; set; }
+    public string RecommendedSystemRequirements { get; set; }
     public Developer Developer { get; set; }
     public Publisher Publisher { get; set; }
     public ICollection<GameTag> GameTags { get; set; }

@@ -31,15 +31,33 @@
         </div>
 
         <div class="form-group">
+            <label asp-for="MainImageUrl" class="my-2">Main image url</label>
+            <input asp-for="MainImageUrl" class="form-control w-100 my-2" required="required"/>
+            <span asp-validation-for="MainImageUrl" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ShortDescription">Game's short description</label>
+            <input asp-for="ShortDescription" class="form-control w-100 my-2" required="required" minlength="3"/>
+            <span asp-validation-for="ShortDescription" class="text-danger my-2"></span>
+        </div>
+
+        <div class="form-group">
             <label asp-for="Description">Game's description</label>
             <input asp-for="Description" class="form-control w-100 my-2" required="required" minlength="3"/>
             <span asp-validation-for="Description" class="text-danger my-2"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="SystemRequirements">Game's system requirements</label>
-            <input asp-for="SystemRequirements" class="form-control w-100 my-2" required="required" minlength="3"/>
-            <span asp-validation-for="SystemRequirements" class="text-danger my-2"></span>
+            <label asp-for="MinSystemRequirements">Game's minimal system requirements</label>
+            <input asp-for="MinSystemRequirements" class="form-control w-100 my-2" required="required" minlength="3"/>
+            <span asp-validation-for="MinSystemRequirements" class="text-danger my-2"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="RecommendedSystemRequirements">Game's recommended system requirements</label>
+            <input asp-for="RecommendedSystemRequirements" class="form-control w-100 my-2" required="required" minlength="3"/>
+            <span asp-validation-for="RecommendedSystemRequirements" class="text-danger my-2"></span>
         </div>
 
         <button type="submit" class="btn btn-primary my-2">Create</button>
