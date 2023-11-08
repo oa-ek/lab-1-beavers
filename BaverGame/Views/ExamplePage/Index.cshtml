@@ -3,18 +3,48 @@
     var game = Model.Game;
 }
 
-<div class="h-100 bg-secondary rounded p-4">
-    <h1 class="mb-0">@Model.Game.Name</h1>
-    <h2 class="mb-0">Developped by: @Model.Game.Developer.DeveloperName</h2>
-    <h3>Desciption:</h3>
-    <p class="mb-0">@Model.Game.Description</p>
-    <h3>Requirements:</h3>
-    <p class="mb-0">@Model.Game.MinSystemRequirements</p>
+<h1 class="mb-0 align-middle mx-auto mt-4">@Model.Game.Name</h1>
 
+<div class="container-fluid">
+    <div class="row g-4">
+        <!--Main Image-->
+        <div class="col-sm-12 col-xl-5 bg-light p-2">
+            <div class="bg-secondary rounded h-100 w-100 text-center">
+                <img class="h-100 w-100 align-middle text-center" style="object-fit: contain" src="@Model.Game.MainImageUrl" alt="@Model.Game.Name"/>
+            </div>
+        </div>
+        <!--Short description-->
+        <div class="col-sm-12 col-xl-7 bg-light p-2">
+            <div class="bg-secondary rounded h-100 p-2 text-start">
+                <h4 class="text-start m-1">Developed by: <a href="#">@Model.Game.Developer.DeveloperName</a></h4>
+                <h4 class="text-start m-1">Published by: <a href="#">@Model.Game.Publisher.PublisherName</a></h4>
+                <p class="pt-2">@Model.Game.ShortDescription</p>
+            </div>
+        </div>
+
+        <!--System requirements-->
+        <h2 class="mb-0 align-middle mx-auto my-4">System requirements</h2>
+
+        <div class="col-sm-12 col-xl-6 bg-light p-2">
+            <div class="bg-secondary rounded h-100 p-2 text-start">
+                <h4 class="text-center m-1">Minimal requirements</h4>
+                <p class="pt-2">@Model.Game.MinSystemRequirements</p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-6 bg-light p-2">
+            <div class="bg-secondary rounded h-100 p-2 text-start">
+                <h4 class="text-center m-1">Recommended requirements</h4>
+                <p class="pt-2">@Model.Game.RecommendedSystemRequirements</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="h-100 rounded p-4">
+    <!--Comments-->
     <div class="d-flex align-items-center justify-content-between mb-2">
         <h6 class="mb-0">Comments for @Model.Game.Name</h6>
     </div>
-
     @foreach(var comment in Model.Game.Comments)
     {
         <div class="d-flex align-items-center border-bottom py-3">
@@ -58,7 +88,8 @@
                                 <input type="hidden" name="GameId" value="@game.GameId"/>
                                 <input type="submit" value="Post Reply" class="btn btn-primary btn-sm"/>
                             </form>
-                        </div>}
+                        </div>
+                    }
                 </div>
 
             </div>
@@ -106,7 +137,8 @@
                                     <input type="hidden" asp-for="@Model.GameId" value="@game.GameId"/>
                                     <input type="submit" value="Post Comment" class="btn btn-primary"/>
                                 </form>
-                            </div>}
+                            </div>
+                        }
                     </div>
 
                 </div>
