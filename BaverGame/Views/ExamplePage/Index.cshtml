@@ -28,15 +28,39 @@
         <div class="col-sm-12 col-xl-6 bg-light p-2">
             <div class="bg-secondary rounded h-100 p-2 text-start">
                 <h4 class="text-center m-1">Minimal requirements</h4>
-                <p class="pt-2">@Model.Game.MinSystemRequirements</p>
+                <div class="pt-2">
+                    @foreach(var textPart in Model.Game.MinSystemRequirements.Split("\n"))
+                    {
+                        <p>
+                            @textPart
+                        </p>
+                    }
+                </div>
             </div>
         </div>
         <div class="col-sm-12 col-xl-6 bg-light p-2">
             <div class="bg-secondary rounded h-100 p-2 text-start">
                 <h4 class="text-center m-1">Recommended requirements</h4>
-                <p class="pt-2">@Model.Game.RecommendedSystemRequirements</p>
+                <div class="pt-2">
+                    @foreach(var textPart in Model.Game.RecommendedSystemRequirements.Split("\n"))
+                    {
+                        <p>
+                            @textPart
+                        </p>
+                    }
+                </div>
             </div>
         </div>
+
+        <div class="my-3">
+            @foreach(var descriptionPart in Model.Game.Description.Split("\n"))
+            {
+                <p>
+                    @descriptionPart
+                </p>
+            }
+        </div>
+
     </div>
 </div>
 
