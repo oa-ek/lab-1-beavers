@@ -12,41 +12,32 @@ public sealed class ExamplePageController : Controller
     private readonly IRepository<Comment> _commentRepository;
     private readonly IRepository<Vote> _voteRepository;
     private readonly UserManager<User> _userManager;
+    private readonly IRepository<Screenshot> _screenshotRepository;
+    private readonly IRepository<GameTag> _tagsRepository;
+    private readonly IRepository<Price> _priceRepository;
 
     public ExamplePageController(
         IRepository<Game> gamesRepository,
         IRepository<Comment> commentRepository,
         IRepository<Vote> voteRepository, 
-        UserManager<User> userManager)
+        UserManager<User> userManager,
+        IRepository<Screenshot> screenshotRepository,
+        IRepository<GameTag> tagsRepository,
+        IRepository<Price> priceRepository)
     {
         _gamesRepository = gamesRepository;
         _commentRepository = commentRepository;
         _voteRepository = voteRepository;
         _userManager = userManager;
+        _screenshotRepository = screenshotRepository;
+        _tagsRepository = tagsRepository;
+        _priceRepository = priceRepository;
     }
 
     public async Task<ViewResult> Index()
     {
         ExamplePageDto examplePageDto = await CreateDto();
         return View(examplePageDto);
-    }
-
-    private async Task<ExamplePageDto> CreateDto()
-    {
-        var game = (await _gamesRepository.GetAllEntitiesAsync()).Last();
-        List<Comment> allComments = await _commentRepository.GetAllEntitiesAsync();
-        game.Comments = allComments
-            .Where(x => x.GameId == game.GameId && x.ParentCommentId is null)
-            .ToList();
-
-        var examplePageDto = new ExamplePageDto
-        {
-            Game = game,
-            GameId = game.GameId.ToString(),
-        };
-
-        await GetRepliesForCollection(game.Comments, allComments, examplePageDto);
-        return examplePageDto;
     }
 
     private async Task GetRepliesForCollection(IEnumerable<Comment> comments, IReadOnlyList<Comment> allComments, ExamplePageDto dto)
@@ -63,36 +54,6 @@ public sealed class ExamplePageController : Controller
 
             await GetRepliesForCollection(replies, allComments, dto);
         }
-    }
-
-    private async Task<int> GetCommentLikesCount(Comment comment) =>
-        (await _voteRepository.GetAllEntitiesAsync())
-        .Where(x => x.IsLike)
-        .Count(x => x.CommentId == comment.CommentId);
-    
-    private async Task<int> GetCommentDislikesCount(Comment comment) =>
-        (await _voteRepository.GetAllEntitiesAsync())
-        .Where(x => !x.IsLike)
-        .Count(x => x.CommentId == comment.CommentId);
-
-    private static ICollection<Comment> GetRepliesFor(IReadOnlyList<Comment> allComments, Comment comment) =>
-        allComments.Where(x => x.ParentCommentId == comment.CommentId).ToList();
-
-    [HttpPost]
-    public async Task<IActionResult> AddComment(ExamplePageDto dto)
-    {
-        var comment = new Comment
-        {
-            GameId = Guid.Parse(dto.GameId),
-            Content = dto.CommentContent,
-            CreatedAt = DateTime.Now,
-            CommentId = Guid.NewGuid(),
-            AuthorName = User.Identity!.Name!,
-            ParentCommentId = dto.ParentCommentId is null ? null : Guid.Parse(dto.ParentCommentId),
-        };
-
-        await _commentRepository.AddNewEntityAsync(comment);
-        return RedirectToAction("Index");
     }
 
     [HttpPost]
@@ -116,4 +77,91 @@ public sealed class ExamplePageController : Controller
         var dto = await CreateDto();
         return RedirectToAction("Index", dto);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> AddComment(ExamplePageDto dto)
+    {
+        var comment = new Comment
+        {
+            GameId = Guid.Parse(dto.GameId),
+            Content = dto.CommentContent,
+            CreatedAt = DateTime.Now,
+            CommentId = Guid.NewGuid(),
+            AuthorName = User.Identity!.Name!,
+            ParentCommentId = dto.ParentCommentId is null ? null : Guid.Parse(dto.ParentCommentId),
+        };
+
+        await _commentRepository.AddNewEntityAsync(comment);
+        return RedirectToAction("Index");
+    }
+
+    private async Task<ExamplePageDto> CreateDto()
+    {
+        var game = (await _gamesRepository.GetAllEntitiesAsync()).Last();
+        List<Comment> allComments = await FillDtoWithComments(game);
+
+        await FillDtoWithScreenshots(game);
+        await FillDtoWithTags(game);
+        await FillDtoWithPrices(game);
+
+        var examplePageDto = new ExamplePageDto
+        {
+            Game = game,
+            GameId = game.GameId.ToString(),
+        };
+
+        await GetRepliesForCollection(game.Comments, allComments, examplePageDto);
+        return examplePageDto;
+    }
+
+    private async Task FillDtoWithPrices(Game game)
+    {
+        var allPrices = await _priceRepository.GetAllEntitiesAsync();
+        var prices = allPrices
+            .Where(x => x.GameId == game.GameId)
+            .ToList();
+
+        game.Prices = prices;
+    }
+
+    private async Task FillDtoWithTags(Game game)
+    {
+        var allTags = await _tagsRepository.GetAllEntitiesAsync();
+        var tags = allTags
+            .Where(x => x.GameId == game.GameId)
+            .Select(gameTag => gameTag.Tag)
+            .ToList();
+
+        game.GameTags = tags;
+    }
+
+    private async Task FillDtoWithScreenshots(Game game)
+    {
+        var allScreenshots = await _screenshotRepository.GetAllEntitiesAsync();
+        var screenshots = allScreenshots.Where(x => x.GameId == game.GameId).ToList();
+        game.Screenshots = screenshots;
+    }
+
+    private async Task<List<Comment>> FillDtoWithComments(Game game)
+    {
+        List<Comment> allComments = await _commentRepository.GetAllEntitiesAsync();
+        game.Comments = allComments
+            .Where(x => x.GameId == game.GameId && x.ParentCommentId is null)
+            .ToList();
+
+        return allComments;
+    }
+
+    private async Task<int> GetCommentLikesCount(Comment comment) =>
+        (await _voteRepository.GetAllEntitiesAsync())
+        .Where(x => x.IsLike)
+        .Count(x => x.CommentId == comment.CommentId);
+
+    private async Task<int> GetCommentDislikesCount(Comment comment) =>
+        (await _voteRepository.GetAllEntitiesAsync())
+        .Where(x => !x.IsLike)
+        .Count(x => x.CommentId == comment.CommentId);
+
+    private static ICollection<Comment> GetRepliesFor(IReadOnlyList<Comment> allComments, Comment comment) =>
+        allComments.Where(x => x.ParentCommentId == comment.CommentId).ToList();
 }

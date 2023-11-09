@@ -17,7 +17,7 @@ public sealed class Game
     public string RecommendedSystemRequirements { get; set; }
     public Developer Developer { get; set; }
     public Publisher Publisher { get; set; }
-    public ICollection<GameTag> GameTags { get; set; }
+    public ICollection<Tag> GameTags { get; set; }
     public ICollection<Price> Prices { get; set; }
     public ICollection<Screenshot> Screenshots { get; set; }
     public ICollection<Comment> Comments { get; set; }
