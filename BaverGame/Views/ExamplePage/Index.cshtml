@@ -1,4 +1,5 @@
 @using System.Dynamic
+@using Core
 @model BaverGame.DTOs.ExamplePageDto?
 @{
     var game = Model.Game;
@@ -24,6 +25,12 @@
                     <h4 class="text-start m-1">Developed by: <a href="#">@Model.Game.Developer.DeveloperName</a></h4>
                     <h4 class="text-start m-1">Published by: <a href="#">@Model.Game.Publisher.PublisherName</a></h4>
                     <p class="pt-2">@Model.Game.ShortDescription</p>
+                    <div>
+                        @foreach(var tag in Model.Game.GameTags)
+                        {
+                            <a href="#" class="btn btn-primary rounded-pill">@tag.TagName</a>
+                        }
+                    </div>
                 </div>
             </div>
 
@@ -250,8 +257,4 @@ document.getElementById(formId).style.display = 'block';
     var myCarousel = document.querySelector('#carouselExampleIndicators')
     var carousel = new bootstrap.Carousel(myCarousel)
   });
-</script>
-
-<script>
-  
 </script>
