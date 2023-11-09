@@ -3,6 +3,7 @@
 @model BaverGame.DTOs.ExamplePageDto?
 @{
     var game = Model.Game;
+    var prices = Model.Game.Prices.ToList();
 }
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -90,9 +91,10 @@
             </div>
 
             <!--System requirements-->
-            <h2 class="mb-0 align-middle mx-auto my-4">System requirements</h2>
-
-            <div class="col-sm-12 col-xl-6 bg-light p-2">
+            <div class="bg-light p-2">
+                <h2 class="mb-0 align-middle mx-auto py-2 bg-secondary mb-0 rounded">System requirements</h2>
+            </div>
+            <div class="col-sm-12 col-xl-6 bg-light p-2 mt-0">
                 <div class="bg-secondary rounded h-100 p-2 text-start">
                     <h4 class="text-center m-1">Minimal requirements</h4>
                     <div class="pt-2">
@@ -105,7 +107,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12 col-xl-6 bg-light p-2">
+            <div class="col-sm-12 col-xl-6 bg-light p-2 mt-0">
                 <div class="bg-secondary rounded h-100 p-2 text-start">
                     <h4 class="text-center m-1">Recommended requirements</h4>
                     <div class="pt-2">
@@ -119,6 +121,31 @@
                 </div>
             </div>
 
+            <!--Prices-->
+            <h2 class="mb-0 align-middle mx-auto pt-4 mb-0 rounded">Buy <a href = "#">@Model.Game.Name</a></h2>
+            
+            <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center mt-1 mb-5">
+                @for(int i = 0; i < prices.Count; i++)
+                {
+                    var current = prices[i];
+
+                    <div class="col">
+                        <div class="card h-100 bg-light rounded">
+                            <img src="@current.Store.MainImageUrl" class="card-img-top h-100" alt="@current.Store.StoreName">
+                            <div class="card-body">
+                                <h4 class="card-title">@current.Store.StoreName</h4>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-body-secondary">
+                                    <a href="@current.PriceUrl" class="btn btn-lg btn-primary m-2">
+                                        Купити за @current.PriceValue @current.CurrencyPostfix
+                                    </a>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
 
         </div>
     </div>
