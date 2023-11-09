@@ -12,17 +12,20 @@ public sealed class ExamplePageController : Controller
     private readonly IRepository<Comment> _commentRepository;
     private readonly IRepository<Vote> _voteRepository;
     private readonly UserManager<User> _userManager;
+    private readonly IRepository<Screenshot> _screenshotRepository;
 
     public ExamplePageController(
         IRepository<Game> gamesRepository,
         IRepository<Comment> commentRepository,
         IRepository<Vote> voteRepository, 
-        UserManager<User> userManager)
+        UserManager<User> userManager,
+        IRepository<Screenshot> screenshotRepository)
     {
         _gamesRepository = gamesRepository;
         _commentRepository = commentRepository;
         _voteRepository = voteRepository;
         _userManager = userManager;
+        _screenshotRepository = screenshotRepository;
     }
 
     public async Task<ViewResult> Index()
@@ -38,6 +41,10 @@ public sealed class ExamplePageController : Controller
         game.Comments = allComments
             .Where(x => x.GameId == game.GameId && x.ParentCommentId is null)
             .ToList();
+
+        var allScreenshots = await _screenshotRepository.GetAllEntitiesAsync();
+        var screenshots = allScreenshots.Where(x => x.GameId == game.GameId).ToList();
+        game.Screenshots = screenshots;
 
         var examplePageDto = new ExamplePageDto
         {
