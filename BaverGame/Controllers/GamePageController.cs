@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BaverGame.Controllers;
 
-public sealed class ExamplePageController : Controller
+public sealed class GamePageController : Controller
 {
     private readonly IRepository<Game> _gamesRepository;
     private readonly IRepository<Comment> _commentRepository;
@@ -15,15 +15,20 @@ public sealed class ExamplePageController : Controller
     private readonly IRepository<Screenshot> _screenshotRepository;
     private readonly IRepository<GameTag> _tagsRepository;
     private readonly IRepository<Price> _priceRepository;
+    private readonly IRepository<Publisher> _publisherRepository;
+    private readonly IRepository<Developer> _developerRepository;
 
-    public ExamplePageController(
+    // [ActivatorUtilitiesConstructor]
+    public GamePageController(
         IRepository<Game> gamesRepository,
         IRepository<Comment> commentRepository,
         IRepository<Vote> voteRepository, 
         UserManager<User> userManager,
         IRepository<Screenshot> screenshotRepository,
         IRepository<GameTag> tagsRepository,
-        IRepository<Price> priceRepository)
+        IRepository<Price> priceRepository, 
+        IRepository<Publisher> publisherRepository,
+        IRepository<Developer> developerRepository)
     {
         _gamesRepository = gamesRepository;
         _commentRepository = commentRepository;
@@ -32,15 +37,17 @@ public sealed class ExamplePageController : Controller
         _screenshotRepository = screenshotRepository;
         _tagsRepository = tagsRepository;
         _priceRepository = priceRepository;
+        _publisherRepository = publisherRepository;
+        _developerRepository = developerRepository;
     }
 
-    public async Task<ViewResult> Index()
+    public async Task<ViewResult> Index(Guid id)
     {
-        ExamplePageDto examplePageDto = await CreateDto();
-        return View(examplePageDto);
+        GamePageDto gamePageDto = await CreateDto(id);
+        return View(gamePageDto);
     }
 
-    private async Task GetRepliesForCollection(IEnumerable<Comment> comments, IReadOnlyList<Comment> allComments, ExamplePageDto dto)
+    private async Task GetRepliesForCollection(IEnumerable<Comment> comments, IReadOnlyList<Comment> allComments, GamePageDto dto)
     {
         foreach(var comment in comments)
         {
@@ -57,7 +64,7 @@ public sealed class ExamplePageController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> VoteComment(Guid commentId, bool isLike)
+    public async Task<IActionResult> VoteComment(Guid commentId, bool isLike, Guid id)
     {
         var vote = new Vote
         {
@@ -74,12 +81,11 @@ public sealed class ExamplePageController : Controller
         }
         
         await _voteRepository.AddNewEntityAsync(vote);
-        var dto = await CreateDto();
-        return RedirectToAction("Index", dto);
+        return RedirectToAction("Index", new { id = id });
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddComment(ExamplePageDto dto)
+    public async Task<IActionResult> AddComment(GamePageDto dto)
     {
         var comment = new Comment
         {
@@ -92,19 +98,19 @@ public sealed class ExamplePageController : Controller
         };
 
         await _commentRepository.AddNewEntityAsync(comment);
-        return RedirectToAction("Index");
+        return RedirectToAction("Index", new { id = comment.GameId });
     }
 
-    private async Task<ExamplePageDto> CreateDto()
+    private async Task<GamePageDto> CreateDto(Guid id)
     {
-        var game = (await _gamesRepository.GetAllEntitiesAsync()).Last();
+        var game = (await _gamesRepository.GetEntityByIdAsync(id));
         List<Comment> allComments = await FillDtoWithComments(game);
 
         await FillDtoWithScreenshots(game);
         await FillDtoWithTags(game);
         await FillDtoWithPrices(game);
 
-        var examplePageDto = new ExamplePageDto
+        var examplePageDto = new GamePageDto
         {
             Game = game,
             GameId = game.GameId.ToString(),
@@ -133,6 +139,33 @@ public sealed class ExamplePageController : Controller
             .ToList();
 
         game.GameTags = tags;
+    }
+    
+    public async Task<RedirectToActionResult> RedirectByTag(string tagName)
+    {
+        var allTags = await _tagsRepository.GetAllEntitiesAsync();
+        
+        var tag = allTags.First(gameTag => gameTag.Tag.TagName.ToLower().Equals(tagName.ToLower()));
+    
+        return RedirectToAction("Index", "GameCatalog", new { tagId = tag.TagId });
+    }
+    
+    public async Task<RedirectToActionResult> RedirectByPublisher(string publisherName)
+    {
+        var allPublishers = await _publisherRepository.GetAllEntitiesAsync();
+    
+        var publisher = allPublishers.First(p => p.PublisherName.ToLower().Equals(publisherName.ToLower()));
+    
+        return RedirectToAction("Index", "GameCatalog", new { publisherId = publisher.PublisherId });
+    }
+    
+    public async Task<RedirectToActionResult> RedirectByDeveloper(string developerName)
+    {
+        var allDevs = await _developerRepository.GetAllEntitiesAsync();
+    
+        var developer = allDevs.First(d => d.DeveloperName.ToLower().Equals(developerName.ToLower()));
+    
+        return RedirectToAction("Index", "GameCatalog", new { developerId = developer.DeveloperId });
     }
 
     private async Task FillDtoWithScreenshots(Game game)
