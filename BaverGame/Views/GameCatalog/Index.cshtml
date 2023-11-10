@@ -1,0 +1,66 @@
+@using Microsoft.IdentityModel.Tokens
+@using System.Reflection.Emit
+@using Core
+@model IEnumerable<Core.Game>
+
+@{
+    ViewData["Title"] = "Games";
+    var developers = ViewData["Developers"] as SelectList;
+    var publishers = ViewData["Publishers"] as SelectList;
+    var tags = ViewData["Tags"] as SelectList;
+}
+
+<div class="mx-4 h-auto my-4 w-fit text-center">
+    <h1>Games</h1>
+    <form asp-controller="GameCatalog" asp-action="Index" method="get">
+        <div class="h-auto my-4 py-4 w-100 text-center d-flex flex-column border rounded-pill align-items-center justify-content-center">
+            <h2 class="h4 my-2">Filters & Sorting</h2>
+            <div class="d-flex flex-row justify-content-between align-items-center">
+                <div class="form-group mx-3">
+                    <label>Developers</label>
+                    <select name="DeveloperId" class="form-select w-100 my-2">
+                        <option value="">Select value</option>
+                        @foreach (var developer in developers)
+                        {
+                            <option value="@developer.Value">@developer.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group mx-3">
+                    <label>Publishers</label>
+                    <select name="PublisherId" class="form-select w-100 my-2">
+                        <option value="">Select value</option>
+                        @foreach (var publisher in publishers)
+                        {
+                            <option value="@publisher.Value">@publisher.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group mx-3">
+                    <label>Tags</label>
+                    <select name="TagId" class="form-select w-100 my-2">
+                        <option value="">Select value</option>
+                        @foreach (var tag in tags)
+                        {
+                            <option value="@tag.Value">@tag.Text</option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
+    <div class="h-auto my-4 py-4 mx-5 my-1 d-flex flex-wrap justify-content-around">
+        @foreach (var game in Model)
+        {
+            <div class="card col-md-3 col-sm-6 col-12 my-4 mx-4" style="width: 18rem;">
+                <img class="card-img-top" src="@game.MainImageUrl" alt="Card image cap">
+                <div class="card-body bg-dark rounded-bottom">
+                    <h5 class="card-title">@game.Name</h5>
+                    <p class="d-block card-text text-truncate" style="max-width: 550px;">@game.ShortDescription</p>
+                    <a asp-controller="GamePage" asp-action="Index" asp-route-id="@game.GameId" class="btn btn-primary">More info</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
