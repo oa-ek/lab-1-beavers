@@ -68,8 +68,6 @@ public class ApplicationContext : IdentityDbContext<User, UserRole, Guid>
     {
         modelBuilder.Entity<Developer>().Navigation(d => d.Games).AutoInclude();
         modelBuilder.Entity<Screenshot>().Navigation(screenshot => screenshot.Game).AutoInclude();
-        modelBuilder.Entity<GameTag>().Navigation(gameTag => gameTag.Game).AutoInclude();
-        modelBuilder.Entity<GameTag>().Navigation(gameTag => gameTag.Tag).AutoInclude();
         modelBuilder.Entity<Game>().Navigation(game => game.Developer).AutoInclude();
         modelBuilder.Entity<Game>().Navigation(game => game.Publisher).AutoInclude();
         modelBuilder.Entity<Game>().Navigation(game => game.Screenshots).AutoInclude();
