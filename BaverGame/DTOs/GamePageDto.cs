@@ -4,7 +4,7 @@ using Core;
 
 namespace BaverGame.DTOs;
 
-public sealed class ExamplePageDto
+public sealed class GamePageDto
 {
     [Key]
     public Game Game { get; set; }
@@ -13,8 +13,8 @@ public sealed class ExamplePageDto
     public string CommentContent { get; set; }
     public string GameId { get; set; }
 
-    public Dictionary<string, int> CommentsLikesCount = new Dictionary<string, int>();
-    public Dictionary<string, int> CommentsDislikesCount = new Dictionary<string, int>();
+    public Dictionary<string, int> CommentsLikesCount = new();
+    public Dictionary<string, int> CommentsDislikesCount = new();
 
     public int GetLikesFor(string commentId) =>
         CommentsLikesCount.TryGetValue(commentId, out var result)

@@ -44,6 +44,7 @@
 
   <ItemGroup>
     <AdditionalFiles Include="Views\Developer\Index.cshtml" />
+    <AdditionalFiles Include="Views\GameCatalog\Index.cshtml" />
     <AdditionalFiles Include="Views\GameTag\Index.cshtml" />
     <AdditionalFiles Include="Views\Game\Create.cshtml" />
     <AdditionalFiles Include="Views\Game\Delete.cshtml" />
