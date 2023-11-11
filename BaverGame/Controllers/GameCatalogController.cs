@@ -4,6 +4,7 @@ using BaverGame.DTOs.ValidationRelated;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
@@ -12,17 +13,20 @@ namespace BaverGame.Controllers;
 
 public sealed class GameCatalogController : Controller
 {
+    private readonly UserManager<User> _userManager;
     private readonly ILogger<HomeController> _logger;
     private readonly IRepository<Game> _gamesRepository;
     private readonly IRepository<GameTag> _gameTags;
     private readonly IRepository<Tag> _tags;
     private readonly IRepository<Publisher> _publisherRepository;
     private readonly IRepository<Developer> _developersRepository;
+    private readonly IRepository<UserGameOwnership> _ownershipRepository;
     
     public GameCatalogController(
         IRepository<Game> gamesRepository, IRepository<Publisher> publisherRepository,
         IRepository<Developer> developersRepository, ILogger<HomeController> logger,
-        IRepository<GameTag> gameTags, IRepository<Tag> tags)
+        IRepository<GameTag> gameTags, IRepository<Tag> tags, UserManager<User> userManager,
+        IRepository<UserGameOwnership> ownershipRepository)
     {
         _gamesRepository = gamesRepository;
         _publisherRepository = publisherRepository;
@@ -30,9 +34,12 @@ public sealed class GameCatalogController : Controller
         _logger = logger;
         _gameTags = gameTags;
         _tags = tags;
+        _userManager = userManager;
+        _ownershipRepository = ownershipRepository;
     }
 
-    public async Task<IActionResult> Index(Guid? developerId, Guid? publisherId, Guid? tagId)
+    public async Task<IActionResult> Index(Guid? developerId, Guid? publisherId,
+        Guid? tagId, string ownedGamesOption)
     {
         PopulateDropdowns();
 
@@ -56,6 +63,16 @@ public sealed class GameCatalogController : Controller
                 tag => tag.GameId == game.GameId) is not null).ToList();
 
             games = result;
+        }
+
+        if (!ownedGamesOption.IsNullOrEmpty())
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
+            var ownerships = (await _ownershipRepository.GetAllEntitiesAsync())
+                .Where(ownership => ownership.UserId == user.Id);
+
+            games = games.Where(game => ownerships.SingleOrDefault(
+                ownership => game.GameId == ownership.GameId) is null).ToList();
         }
 
         return View(games);
