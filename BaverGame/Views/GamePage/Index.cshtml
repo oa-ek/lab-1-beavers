@@ -32,6 +32,12 @@
                             <a class="btn btn-primary rounded-pill" href="@Url.Action("RedirectByTag", "GamePage", new { tagName = tag.TagName })">@tag.TagName</a>
                         }
                     </div>
+                    @if (Model.IsOwnedByUser != true)
+                    {
+                        <form method="post" asp-action="CreateNewGameOwnership" asp-route-gameId="@Model.GameId">
+                            <button type="submit" class="btn btn-dark my-3 border border-white">I own this game</button>
+                        </form>
+                    }
                 </div>
             </div>
 

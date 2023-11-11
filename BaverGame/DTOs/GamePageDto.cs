@@ -12,6 +12,7 @@ public sealed class GamePageDto
     public string? ParentCommentId { get; set; }
     public string CommentContent { get; set; }
     public string GameId { get; set; }
+    public bool IsOwnedByUser { get; set; }
 
     public Dictionary<string, int> CommentsLikesCount = new();
     public Dictionary<string, int> CommentsDislikesCount = new();
