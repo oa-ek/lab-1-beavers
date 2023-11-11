@@ -120,14 +120,19 @@ public sealed class GamePageController : Controller
 
         await GetRepliesForCollection(game.Comments, allComments, examplePageDto);
 
-        var ownerships = await _ownershipRepository.GetAllEntitiesAsync();
+        if (User.Identity.IsAuthenticated)
+        {
+            var ownerships = await _ownershipRepository.GetAllEntitiesAsync();
 
-        var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
+            var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
 
-        examplePageDto.IsOwnedByUser = ownerships.SingleOrDefault(
-            ownership => ownership.GameId == Guid.Parse(examplePageDto.GameId)
-                         && ownership.UserId == user.Id) is not null;
-        
+            examplePageDto.IsOwnedByUser = ownerships.SingleOrDefault(
+                ownership => ownership.GameId == Guid.Parse(examplePageDto.GameId)
+                             && ownership.UserId == user.Id) is not null;
+        }
+        else
+            examplePageDto.IsOwnedByUser = false;
+
         return examplePageDto;
     }
 
@@ -151,6 +156,19 @@ public sealed class GamePageController : Controller
             UserId = user.Id,
             GameId = game.GameId
         });
+
+        return RedirectToAction("Index", new {id = game.GameId});
+    }
+    
+    public async Task<RedirectToActionResult> RemoveGameOwnership(string gameId)
+    {
+        var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
+        var game = await _gamesRepository.GetEntityByIdAsync(Guid.Parse(gameId));
+
+        var ownership = (await _ownershipRepository.GetAllEntitiesAsync()).Single(gameOwnership =>
+            gameOwnership.GameId == game.GameId && gameOwnership.UserId == user.Id);
+        
+        _ownershipRepository.RemoveExistingEntity(ownership);
 
         return RedirectToAction("Index", new {id = game.GameId});
     }
