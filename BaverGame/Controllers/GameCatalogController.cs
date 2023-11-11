@@ -1,9 +1,6 @@
-using System.Text.RegularExpressions;
 using BaverGame.DTOs;
-using BaverGame.DTOs.ValidationRelated;
 using Core;
 using Infrastructure.Repository.Common.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -43,13 +40,28 @@ public sealed class GameCatalogController : Controller
     {
         PopulateDropdowns();
 
+        var dto = new GameCatalogDto
+        {
+            Games = new List<Game>(),
+            DeveloperId = developerId,
+            PublisherId = publisherId,
+            TagId = tagId,
+            OwnershipOption = ownedGamesOption
+        };
+
         var games = await _gamesRepository.GetAllEntitiesAsync();
 
         if (developerId.HasValue)
+        {
             games = games.Where(game => game.DeveloperId == developerId).ToList();
-        
+            dto.DeveloperId = developerId;
+        }
+
         if (publisherId.HasValue)
+        {
             games = games.Where(game => game.PublisherId == publisherId).ToList();
+            dto.PublisherId = publisherId;
+        }
         
         if (tagId.HasValue)
         {
@@ -63,6 +75,8 @@ public sealed class GameCatalogController : Controller
                 tag => tag.GameId == game.GameId) is not null).ToList();
 
             games = result;
+
+            dto.TagId = tagId;
         }
 
         if (!ownedGamesOption.IsNullOrEmpty())
@@ -73,9 +87,13 @@ public sealed class GameCatalogController : Controller
 
             games = games.Where(game => ownerships.SingleOrDefault(
                 ownership => game.GameId == ownership.GameId) is null).ToList();
+
+            dto.OwnershipOption = ownedGamesOption;
         }
 
-        return View(games);
+        dto.Games = games;
+        
+        return View(dto);
     }
 
     private void PopulateDropdowns()
