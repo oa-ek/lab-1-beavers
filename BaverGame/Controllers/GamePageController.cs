@@ -17,8 +17,8 @@ public sealed class GamePageController : Controller
     private readonly IRepository<Price> _priceRepository;
     private readonly IRepository<Publisher> _publisherRepository;
     private readonly IRepository<Developer> _developerRepository;
-
-    // [ActivatorUtilitiesConstructor]
+    private readonly IRepository<UserGameOwnership> _ownershipRepository;
+    
     public GamePageController(
         IRepository<Game> gamesRepository,
         IRepository<Comment> commentRepository,
@@ -28,7 +28,8 @@ public sealed class GamePageController : Controller
         IRepository<GameTag> tagsRepository,
         IRepository<Price> priceRepository, 
         IRepository<Publisher> publisherRepository,
-        IRepository<Developer> developerRepository)
+        IRepository<Developer> developerRepository,
+        IRepository<UserGameOwnership> ownershipRepository)
     {
         _gamesRepository = gamesRepository;
         _commentRepository = commentRepository;
@@ -39,6 +40,7 @@ public sealed class GamePageController : Controller
         _priceRepository = priceRepository;
         _publisherRepository = publisherRepository;
         _developerRepository = developerRepository;
+        _ownershipRepository = ownershipRepository;
     }
 
     public async Task<ViewResult> Index(Guid id)
@@ -117,6 +119,15 @@ public sealed class GamePageController : Controller
         };
 
         await GetRepliesForCollection(game.Comments, allComments, examplePageDto);
+
+        var ownerships = await _ownershipRepository.GetAllEntitiesAsync();
+
+        var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
+
+        examplePageDto.IsOwnedByUser = ownerships.SingleOrDefault(
+            ownership => ownership.GameId == Guid.Parse(examplePageDto.GameId)
+                         && ownership.UserId == user.Id) is not null;
+        
         return examplePageDto;
     }
 
@@ -128,6 +139,20 @@ public sealed class GamePageController : Controller
             .ToList();
 
         game.Prices = prices;
+    }
+    
+    public async Task<RedirectToActionResult> CreateNewGameOwnership(string gameId)
+    {
+        var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
+        var game = await _gamesRepository.GetEntityByIdAsync(Guid.Parse(gameId));
+
+        await _ownershipRepository.AddNewEntityAsync(new UserGameOwnership
+        {
+            UserId = user.Id,
+            GameId = game.GameId
+        });
+
+        return RedirectToAction("Index", new {id = game.GameId});
     }
 
     private async Task FillDtoWithTags(Game game)
