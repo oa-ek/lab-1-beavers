@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using BaverGame.Domain;
 using BaverGame.Domain.Entities;
 
 namespace BaverGame.Application.DTOs;
