@@ -1,0 +1,30 @@
+@model BaverGame.Application.DTOs.UserGameOwnershipDto
+
+@{
+    ViewBag.Title = "Create new ownership";
+}
+
+<div class="mx-4 h-auto my-4 w-100 text-center d-flex flex-column justify-content-center align-items-center">
+    <h1>Create a new ownership</h1>
+
+    <form asp-action="Create">
+        <div class="form-group">
+            <label asp-for="UserId">User</label>
+            <select asp-for="UserId" asp-items="@(ViewData["Users"] as SelectList)" class="form-select w-100 my-2" required="required">
+                <option value="">Select value</option>
+            </select>
+            <span asp-validation-for="UserId" class="text-danger my-2"></span>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="GameId">Game</label>
+            <select asp-for="GameId" asp-items="@(ViewData["Games"] as SelectList)" class="form-select w-100 my-2" required="required">
+                <option value="">Select value</option>
+            </select>
+            <span asp-validation-for="GameId" class="text-danger my-2"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary my-2">Create</button>
+    </form>
+    <a asp-action="Index" class="mt-2">Back to List</a>
+</div>

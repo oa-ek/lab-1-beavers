@@ -1,0 +1,60 @@
+@using Microsoft.IdentityModel.Tokens
+@model IEnumerable<BaverGame.Domain.Entities.Price>
+
+@{
+    ViewData["Title"] = "Prices";
+}
+
+<div class="mx-4 h-auto my-4 w-100 text-center">
+    <h1>Prices</h1>
+
+    <div class="mt-3">
+        <div class="flex-row mb-2">
+            <button type="button" class="btn btn-dark m-2">
+                <a class="text-decoration-none" asp-area="" asp-controller="Price" asp-action="Create">Create</a>
+            </button>
+            <button type="button" class="btn btn-dark m-2">
+                <a class="text-decoration-none" asp-area="" asp-controller="Price" asp-action="ParseResult">Parse all prices</a>
+            </button>
+        </div>
+        @if (!Model.IsNullOrEmpty())
+        {
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Game's name</th>
+                        <th>Price</th>
+                        <th>URL</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var price in Model)
+                    {
+                        <tr>
+                            <td>@price.Game.Name</td>
+                            <td>@price.PriceValue @price.CurrencyPostfix</td>
+                            <td>@price.PriceUrl</td>
+                            <td>
+                                <button type="button" class="btn btn-dark">
+                                    <a class="text-decoration-none" asp-area="" asp-controller="Price" asp-route-id="@price.PriceId" asp-action="Update">Update</a>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-dark">
+                                    <a class="text-decoration-none" asp-area="" asp-controller="Price" asp-route-id="@price.PriceId" asp-action="Delete">Delete</a>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No prices were found!</p>
+        }
+    </div>
+    <a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>
+</div>

@@ -1,0 +1,28 @@
+@model BaverGame.Application.DTOs.TagDto
+
+@{
+    ViewData["Title"] = "Update particular tag";
+}
+
+<div class="mx-4 h-auto my-4 w-100 text-center d-flex flex-column justify-content-center align-items-center">
+    <h1>Update particular tag</h1>
+
+    <form asp-action="Update" method="post">
+
+        <div class="form-group" hidden="hidden">
+            <label asp-for="TagId">Tag's ID</label>
+            <input type="text" asp-for="TagId" class="form-control w-100 my-2" required="required"/>
+            <span asp-validation-for="TagId" class="text-danger my-2"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TagName" class="my-2">Tag's name</label>
+            <input asp-for="TagName" class="form-control w-100 my-2" required="required" minlength="3"/>
+            <span asp-validation-for="TagName" class="text-danger my-2"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary my-2">Save</button>
+    </form>
+
+    <a asp-action="Index" class="mt-2">Back to List</a>
+</div>

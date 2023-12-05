@@ -1,0 +1,136 @@
+@using Microsoft.IdentityModel.Tokens
+@model BaverGame.Application.DTOs.GameCatalogDto
+
+@{
+    ViewData["Title"] = "Games";
+    var developers = ViewData["Developers"] as SelectList;
+    var publishers = ViewData["Publishers"] as SelectList;
+    var tags = ViewData["Tags"] as SelectList;
+}
+
+<div class="mx-4 h-auto my-4 w-fit text-center">
+    <h1>Games</h1>
+    <form asp-controller="GameCatalog" asp-action="Index" method="get" class="my-3">
+        <div class="h-auto my-4 py-4 w-100 text-center d-flex flex-column border rounded-pill align-items-center justify-content-center">
+            <h2 class="h4 my-2">Filters & Sorting</h2>
+            <div class="d-flex flex-row justify-content-between align-items-center">
+                <div class="form-group mx-3">
+                    <label>Developers</label>
+                    <select name="DeveloperId" class="form-select w-100 my-2">
+                        @if (Model.DeveloperId is null)
+                        {
+                            <option value="" selected="selected">Select value</option>
+                        }
+                        @if (Model.DeveloperId is not null)
+                        {
+                            <option value="">Select value</option>
+                        }
+                        @foreach (var developer in developers)
+                        {
+                            @if (Model.DeveloperId == Guid.Parse(developer.Value))
+                            {
+                                <option value="@developer.Value" selected="selected">@developer.Text</option>
+                            }
+                            @if (Model.DeveloperId != Guid.Parse(developer.Value))
+                            {
+                                <option value="@developer.Value">@developer.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group mx-3">
+                    <label>Publishers</label>
+                    <select name="PublisherId" class="form-select w-100 my-2">
+                        @if (Model.PublisherId is null)
+                        {
+                            <option value="" selected="selected">Select value</option>
+                        }
+                        @if (Model.PublisherId is not null)
+                        {
+                            <option value="">Select value</option>
+                        }
+                        @foreach (var publisher in publishers)
+                        {
+                            @if (Model.PublisherId == Guid.Parse(publisher.Value))
+                            {
+                                <option value="@publisher.Value" selected="selected">@publisher.Text</option>
+                            }
+                            @if (Model.PublisherId != Guid.Parse(publisher.Value))
+                            {
+                                <option value="@publisher.Value">@publisher.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group mx-3">
+                    <label>Tags</label>
+                    <select name="TagId" class="form-select w-100 my-2">
+                        @if (Model.TagId is null)
+                        {
+                            <option value="" selected="selected">Select value</option>
+                        }
+                        @if (Model.TagId is not null)
+                        {
+                            <option value="">Select value</option>
+                        }
+                        @foreach (var tag in tags)
+                        {
+                            @if (Model.TagId == Guid.Parse(tag.Value))
+                            {
+                                <option value="@tag.Value" selected="selected">@tag.Text</option>
+                            }
+                            @if (Model.TagId != Guid.Parse(tag.Value))
+                            {
+                                <option value="@tag.Value">@tag.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                @if (User.IsInRole("Administrator") || User.IsInRole("User"))
+                {
+                    <div class="form-group mx-3">
+                        <label>Show all games</label>
+                        <select name="ownedGamesOption" class="form-select w-100 my-2">
+                            @if (Model.OwnershipOption.IsNullOrEmpty())
+                            {
+                                <option value="" selected="selected">Yes</option>
+                                <option value="unpurchased">Only unpurchased</option>
+                            }
+                            @if (!Model.OwnershipOption.IsNullOrEmpty() && Model.OwnershipOption.Equals("unpurchased"))
+                            {
+                                <option value="">Yes</option>
+                                <option value="unpurchased" selected="selected">Only unpurchased</option>
+                            }
+                        </select>
+                    </div>
+                }
+            </div>
+            <button type="submit" class="btn btn-primary mt-2 w-25">Filter</button>
+            @if (Model.DeveloperId is not null || Model.PublisherId is not null 
+                 || Model.TagId is not null || !Model.OwnershipOption.IsNullOrEmpty())
+            {
+                <a asp-action="Index" class="btn btn-dark mt-2 w-25">Clear filters</a>
+            }
+        </div>
+    </form>
+    <div class="h-auto my-4 py-4 mx-5 my-1 d-flex flex-wrap justify-content-around">
+        @if (Model.Games.Any())
+        {
+            @foreach (var game in Model.Games)
+            {
+                <div class="card col-md-3 col-sm-6 col-12 my-4 mx-4" style="width: 18rem;">
+                    <img class="card-img-top" src="@game.MainImageUrl" alt="Card image cap">
+                    <div class="card-body bg-dark rounded-bottom">
+                        <h5 class="card-title">@game.Name</h5>
+                        <p class="d-block card-text text-truncate" style="max-width: 550px;">@game.ShortDescription</p>
+                        <a asp-controller="GamePage" asp-action="Index" asp-route-id="@game.GameId" class="btn btn-primary">More info</a>
+                    </div>
+                </div>
+            }
+        }
+        @if (!Model.Games.Any())
+        {
+            <h2 class="h2 my-2">Nothing was found!</h2>
+        }
+    </div>
+</div>

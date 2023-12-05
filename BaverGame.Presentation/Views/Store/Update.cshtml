@@ -1,0 +1,38 @@
+@model BaverGame.Application.DTOs.StoreDto
+
+@{
+    ViewData["Title"] = "Update particular store";
+}
+
+<div class="mx-4 h-auto my-4 w-100 text-center d-flex flex-column justify-content-center align-items-center">
+    <h1>Update particular store</h1>
+
+    <form asp-action="Update" method="post">
+        <div class="form-group" hidden="hidden">
+            <label asp-for="StoreId">Store's ID</label>
+            <input type="text" asp-for="StoreId" class="form-control w-100 my-2" required="required" value="@Model.StoreId"/>
+            <span asp-validation-for="StoreId" class="text-danger my-2"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="StoreName" class="my-2">Store's name</label>
+            <input asp-for="StoreName" class="form-control w-100 my-2" required="required" minlength="3"/>
+            <span asp-validation-for="StoreName" class="text-danger my-2"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MainImageUrl" class="my-2">Main image url</label>
+            <input asp-for="MainImageUrl" class="form-control w-100 my-2" required="required"/>
+            <span asp-validation-for="MainImageUrl" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HtmlPriceElements" class="my-2">Html price elements(divide by ';')</label>
+            <input asp-for="HtmlPriceElements" class="form-control w-100 my-2" required="required" minlength="1"/>
+        </div>
+
+        <button type="submit" class="btn btn-primary my-2">Save</button>
+    </form>
+
+    <a asp-action="Index" class="mt-2">Back to List</a>
+</div>

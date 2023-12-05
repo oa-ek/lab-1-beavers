@@ -1,0 +1,53 @@
+@using Microsoft.IdentityModel.Tokens
+@model IEnumerable<BaverGame.Domain.Entities.Developer>
+
+@{
+    ViewData["Title"] = "Developers";
+}
+
+<div class="mx-4 h-auto my-4 w-100 text-center">
+    <h1>Developers</h1>
+    
+    <div class="mt-3">
+        <div class="flex-row mb-2">
+            <button type="button" class="btn btn-dark m-2">
+                <a class="text-decoration-none" asp-area="" asp-controller="Developer" asp-action="Create">Create</a>
+            </button>
+        </div>
+        @if (!Model.IsNullOrEmpty())
+        {
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Developer's name</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var developer in Model)
+                {
+                    <tr>
+                        <td>@developer.DeveloperName</td>
+                        <td>
+                            <button type="button" class="btn btn-dark">
+                                <a class="text-decoration-none" asp-area="" asp-controller="Developer" asp-route-id="@developer.DeveloperId" asp-action="Update">Update</a>
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-dark">
+                                <a class="text-decoration-none" asp-area="" asp-controller="Developer" asp-route-id="@developer.DeveloperId" asp-action="Delete">Delete</a>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No developers were found!</p>
+        }
+    </div>
+    <a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>
+</div>
