@@ -1,0 +1,29 @@
+@model BaverGame.Application.DTOs.ScreenshotDto
+
+@{
+    ViewBag.Title = "Create new screenshot";
+}
+
+<div class="mx-4 h-auto my-4 w-100 text-center d-flex flex-column justify-content-center align-items-center">
+    <h1>Create a new screenshot</h1>
+
+    <form asp-action="Create">
+        <div class="form-group">
+            <label asp-for="GameId" class="my-2">Game</label>
+            <select asp-for="GameId" asp-items="@(ViewData["Games"] as SelectList)" class="form-select w-100 my-2" required="required">
+                <option value="">Select value</option>
+            </select>
+            <span asp-validation-for="GameId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ImageUrl" class="my-2">Image url</label>
+            <input asp-for="ImageUrl" class="form-control w-100 my-2" required="required"/>
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary my-2">Create</button>
+    </form>
+
+    <a asp-action="Index" class="mt-2">Back to List</a>
+</div>

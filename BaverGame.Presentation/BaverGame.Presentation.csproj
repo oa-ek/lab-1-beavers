@@ -1,0 +1,73 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>BaverGame</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="BaverGame\bin\Debug\net7.0\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\bin\Debug\net7.0\appsettings.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\bin\Debug\net7.0\BaverGame.deps.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\bin\Debug\net7.0\BaverGame.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\bin\Debug\net7.0\BaverGame.staticwebassets.runtime.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\BaverGame.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\Debug\net7.0\staticwebassets.build.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\Debug\net7.0\staticwebassets.development.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\Debug\net7.0\staticwebassets.pack.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="BaverGame\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Pages\Developer\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\RoleAssign\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\RoleAssign\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\RoleAssign\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\RoleAssign\Update.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="1.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Views\Developer\Index.cshtml" />
+    <AdditionalFiles Include="Views\GameCatalog\Index.cshtml" />
+    <AdditionalFiles Include="Views\GameTag\Index.cshtml" />
+    <AdditionalFiles Include="Views\Game\Create.cshtml" />
+    <AdditionalFiles Include="Views\Game\Delete.cshtml" />
+    <AdditionalFiles Include="Views\Game\Update.cshtml" />
+    <AdditionalFiles Include="Views\Publisher\Create.cshtml" />
+    <AdditionalFiles Include="Views\Screenshot\Create.cshtml" />
+    <AdditionalFiles Include="Views\Screenshot\Delete.cshtml" />
+    <AdditionalFiles Include="Views\Screenshot\Index.cshtml" />
+    <AdditionalFiles Include="Views\Screenshot\Update.cshtml" />
+    <AdditionalFiles Include="Views\Store\Index.cshtml" />
+    <AdditionalFiles Include="Views\Tag\Create.cshtml" />
+    <AdditionalFiles Include="Views\Tag\Delete.cshtml" />
+    <AdditionalFiles Include="Views\Tag\Update.cshtml" />
+    <AdditionalFiles Include="Views\UserGameOwnership\Create.cshtml" />
+    <AdditionalFiles Include="Views\UserGameOwnership\Delete.cshtml" />
+    <AdditionalFiles Include="Views\UserGameOwnership\Index.cshtml" />
+    <AdditionalFiles Include="Views\UserGameOwnership\Update.cshtml" />
+    <AdditionalFiles Include="Views\UserRole\Index.cshtml" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BaverGame.Application\BaverGame.Application.csproj" />
+    <ProjectReference Include="..\BaverGame.Persistence\BaverGame.Persistence.csproj" />
+  </ItemGroup>
+
+
+
+
+</Project>

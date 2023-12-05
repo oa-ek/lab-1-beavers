@@ -1,0 +1,18 @@
+@model BaverGame.Application.DTOs.PublisherDto
+
+@{
+    ViewBag.Title = "Create new publisher";
+}
+
+<div class="mx-4 h-auto my-4 w-100 text-center d-flex flex-column justify-content-center align-items-center">
+    <h1>Create a new publisher</h1>
+    <form asp-action="Create">
+        <div class="form-group">
+            <label asp-for="PublisherName" class="my-2">Publisher's name</label>
+            <input asp-for="PublisherName" class="form-control w-100 my-2" required="required" minlength="3"/>
+            <span asp-validation-for="PublisherName" class="text-danger my-2"></span>
+        </div>
+        <button type="submit" class="btn btn-primary my-2">Create</button>
+    </form>
+    <a asp-action="Index" class="mt-2">Back to List</a>
+</div>

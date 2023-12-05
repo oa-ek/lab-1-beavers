@@ -1,0 +1,27 @@
+@model BaverGame.Application.DTOs.UserRoleDto
+
+@{
+    ViewData["Title"] = "Update particular user role";
+}
+
+<div class="mx-4 h-auto my-4 w-100 text-center d-flex flex-column justify-content-center align-items-center">
+    <h1>Update particular user role</h1>
+
+    <form asp-action="Update" method="post">
+        <div class="form-group" hidden="hidden">
+            <label asp-for="RoleId" class="my-2">Role's ID</label>
+            <input type="text" asp-for="RoleId" class="form-control w-50 my-2" required="required" value="@Model.RoleId"/>
+            <span asp-validation-for="RoleId" class="text-danger my-2"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="RoleName" class="my-2">Role's name</label>
+            <input asp-for="RoleName" class="form-control w-100 my-2" required="required" minlength="3"/>
+            <span asp-validation-for="RoleName" class="text-danger my-2"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Save</button>
+    </form>
+
+    <a asp-action="Index" class="mt-2">Back to List</a>
+</div>

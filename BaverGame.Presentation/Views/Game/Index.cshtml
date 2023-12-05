@@ -1,0 +1,61 @@
+@using Microsoft.IdentityModel.Tokens
+@model IEnumerable<BaverGame.Domain.Entities.Game>
+
+@{
+    ViewData["Title"] = "Games";
+}
+
+<div class="mx-4 h-auto my-4 w-100 text-center">
+    <h1>Games</h1>
+
+    <div class="mt-3">
+        <div class="flex-row mb-2">
+            <button type="button" class="btn btn-dark">
+                <a class="text-decoration-none" asp-area="" asp-controller="Game" asp-action="Create">Create</a>
+            </button>
+        </div>
+        @if (!Model.IsNullOrEmpty())
+        {
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Game's name</th>
+                        <th>Image</th>
+                        <th>Developer's name</th>
+                        <th>Publisher's name</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var game in Model)
+                    {
+                        <tr>
+                            <td>@game.Name</td>
+                            <td>
+                                <img src="@game.MainImageUrl" alt="game image" class="w-25"/>
+                            </td>
+                            <td>@game.Developer.DeveloperName</td>
+                            <td>@game.Publisher.PublisherName</td>
+                            <td>
+                                <button type="button" class="btn btn-dark">
+                                    <a class="text-decoration-none" asp-area="" asp-controller="Game" asp-route-id="@game.GameId" asp-action="Update">Update</a>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-dark">
+                                    <a class="text-decoration-none" asp-area="" asp-controller="Game" asp-route-id="@game.GameId" asp-action="Delete">Delete</a>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No games were found!</p>
+        }
+    </div>
+    <a asp-controller="AdminPanel" asp-action="Index" class="mt-2">Back to admin-panel</a>
+</div>
