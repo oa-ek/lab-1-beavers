@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using BaverGame.Domain.Contracts;
 using BaverGame.Domain.Entities;
 using BaverGame.Persistence.Data.Contexts;
@@ -22,6 +23,9 @@ public class Program
             .AddEntityFrameworkStores<ApplicationContext>()
             .AddDefaultTokenProviders();
 
+        builder.Services.AddControllers().AddJsonOptions(x =>
+            x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+        
         AddRepositories(builder);
 
         var app = builder.Build();
