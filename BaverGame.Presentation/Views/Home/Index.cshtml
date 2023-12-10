@@ -3,7 +3,31 @@
     Layout = "_BeaverGamesLayout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-4">
+    <h1 class="display-3 fw-bold">Welcome to Beaver Games</h1>
+    <p class="lead">Explore a world of games at unbeatable prices!</p>
+</div>
+
+<div class="container mb-5"> <!-- Added bottom margin here -->
+    <div id="gameCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://th.bing.com/th/id/R.87fd3376ab04820baa51c3c9771fc08d?rik=UzprhlgK%2f7RojQ&pid=ImgRaw&r=0" class="d-block w-100" alt="Game Image 1" style="object-fit: cover; height: 500px;"> <!-- Fixed height and object-fit -->
+            </div>
+            <div class="carousel-item">
+                <img src="https://th.bing.com/th/id/R.80e52e537441851eb050b293350e8feb?rik=wWGB8vj%2blajrSQ&pid=ImgRaw&r=0" class="d-block w-100" alt="Game Image 2" style="object-fit: cover; height: 500px;"> <!-- Fixed height and object-fit -->
+            </div>
+            <div class="carousel-item">
+                <img src="https://media.wired.com/photos/627da1085d49787abdf713b4/191:100/w_1280,c_limit/Pakistani-Gamers-Want-a-Seat-at-the-Table-Culture-shutterstock_1949862841.jpg" class="d-block w-100" alt="Game Image 3" style="object-fit: cover; height: 500px;"> <!-- Fixed height and object-fit -->
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#gameCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#gameCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
 </div>
