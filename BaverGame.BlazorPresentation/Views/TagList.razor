@@ -1,0 +1,126 @@
+@page "/tags"
+@using BaverGame.BlazorPresentation.Models
+@using BaverGame.BlazorPresentation.Services
+@inject TagService TagService
+@inject NavigationManager NavigationManager
+
+<h3>Tags</h3>
+
+@if (tags == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <button class="btn btn-primary" @onclick="ShowAddForm">Add Tag</button>
+
+    if (showAddForm)
+    {
+        <EditForm Model="@newTag" OnValidSubmit="HandleAdd">
+            <p>
+                <label>Name: </label>
+                <InputText @bind-Value="newTag.TagName" />
+            </p>
+            <button type="submit" class="btn btn-success">Add</button>
+            <button class="btn btn-secondary" @onclick="HideAddForm">Cancel</button>
+        </EditForm>
+    }
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var tag in tags)
+        {
+            <tr>
+                <td>
+                    @if (editTagId == tag.TagId && !showAddForm)
+                    {
+                        <EditForm Model="@editTag" OnValidSubmit="() => HandleSave(tag.TagId)">
+                            <InputText @bind-Value="editTag.TagName" />
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button class="btn btn-secondary" @onclick="HideEditForm">Cancel</button>
+                        </EditForm>
+                    }
+                    else
+                    {
+                        @tag.TagName
+                    }
+                </td>
+                <td>
+                    @if (editTagId != tag.TagId)
+                    {
+                        <button class="btn btn-info" @onclick="() => ShowEditForm(tag)">Edit</button>
+                    }
+                    <button class="btn btn-danger" @onclick="() => DeleteTag(tag.TagId)">Delete</button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Tag> tags;
+    private Tag newTag = new Tag();
+    private Tag editTag = new Tag();
+    private bool showAddForm = false;
+    private Guid editTagId = Guid.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tags = await TagService.GetTagsAsync();
+    }
+
+    private void ShowAddForm()
+    {
+        newTag = new Tag();
+        showAddForm = true;
+    }
+
+    private void HideAddForm()
+    {
+        showAddForm = false;
+    }
+
+    private async Task HandleAdd()
+    {
+        await TagService.AddTagAsync(newTag);
+        tags = await TagService.GetTagsAsync();
+        showAddForm = false;
+        NavigationManager.NavigateTo("/tags");
+    }
+
+    private void ShowEditForm(Tag tag)
+    {
+        editTagId = tag.TagId;
+        editTag = new Tag { TagId = tag.TagId, TagName = tag.TagName };
+        showAddForm = false;
+    }
+
+    private async Task HandleSave(Guid tagId)
+    {
+        await TagService.UpdateTagAsync(tagId, editTag);
+        var index = tags.FindIndex(t => t.TagId == tagId);
+        if (index != -1)
+        {
+            tags[index] = new Tag { TagId = editTag.TagId, TagName = editTag.TagName };
+        }
+        editTagId = Guid.Empty;
+    }
+
+    private void HideEditForm()
+    {
+        editTagId = Guid.Empty;
+    }
+
+    private async Task DeleteTag(Guid tagId)
+    {
+        await TagService.DeleteTagAsync(tagId);
+        tags.RemoveAll(t => t.TagId == tagId);
+    }
+}
