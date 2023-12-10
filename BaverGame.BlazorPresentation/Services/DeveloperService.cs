@@ -1,3 +1,4 @@
+using System.Text.Json;
 using BaverGame.BlazorPresentation.Models;
 
 namespace BaverGame.BlazorPresentation.Services;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 public class DeveloperService
 {
     private readonly HttpClient _httpClient;
+    private const string ApiUrl = "https://localhost:8001";
 
     public DeveloperService(HttpClient httpClient)
     {
@@ -17,15 +19,17 @@ public class DeveloperService
     }
 
     // Get all developers
+    // ПРИКЛАД ЯК РОБИТИ 💪💪💪💪💪💪💪💪💪💪💪💪💪💪💪💪💪💪💪💪💪💪
     public async Task<List<Developer>> GetDevelopersAsync()
     {
-        return await _httpClient.GetFromJsonAsync<List<Developer>>("/api/Developer");
+        var items = await _httpClient.GetAsync(ApiUrl + "/api/DeveloperApi");
+        return (await items.Content.ReadFromJsonAsync<List<Developer>>())!;
     }
 
     // Get a single developer by ID
     public async Task<Developer> GetDeveloperByIdAsync(Guid id)
     {
-        return await _httpClient.GetFromJsonAsync<Developer>($"/api/Developer/{id}");
+        return (await _httpClient.GetFromJsonAsync<Developer>($"/api/Developer/{id}"))!;
     }
 
     // Add a new developer
@@ -35,7 +39,7 @@ public class DeveloperService
         response.EnsureSuccessStatusCode();
 
         // Deserialize and return the new developer
-        return await response.Content.ReadFromJsonAsync<Developer>();
+        return (await response.Content.ReadFromJsonAsync<Developer>())!;
     }
 
     // Update an existing developer
