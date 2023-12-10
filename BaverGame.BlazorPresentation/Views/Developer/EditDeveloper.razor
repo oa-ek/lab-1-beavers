@@ -1,0 +1,56 @@
+@page "/edit-developer/{DeveloperId}"
+@using BaverGame.BlazorPresentation.Models
+@using BaverGame.BlazorPresentation.Services
+@inject DeveloperService DeveloperService
+@inject NavigationManager NavigationManager
+
+<h3>Edit Developer</h3>
+
+@if (developer == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model="@developer" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <InputText id="name" class="form-control" @bind-Value="developer.DeveloperName" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Update Developer</button>
+    </EditForm>
+}
+<p class="text-success">@message</p>
+
+
+@code {
+    [Parameter]
+    public Guid DeveloperId { get; set; }
+
+    private Developer developer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        developer = await DeveloperService.GetDeveloperByIdAsync(DeveloperId);
+    }
+
+    private string message = "";
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await DeveloperService.UpdateDeveloperAsync(DeveloperId, developer);
+            message = "Developer updated successfully!";
+            NavigationManager.NavigateTo("/developers"); // Redirect to the developers list
+        }
+        catch (Exception ex)
+        {
+            message = $"Error: {ex.Message}";
+        }
+    }
+}

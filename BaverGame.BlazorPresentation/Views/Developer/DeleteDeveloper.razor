@@ -1,0 +1,47 @@
+@page "/delete-developer/{DeveloperId}"
+@using BaverGame.BlazorPresentation.Services
+@using BaverGame.BlazorPresentation.Models
+@inject DeveloperService DeveloperService
+@inject NavigationManager NavigationManager
+
+<h3>Delete Developer</h3>
+
+@if (developer != null)
+{
+    <p>Are you sure you want to delete @developer.DeveloperName?</p>
+
+    <button class="btn btn-danger" @onclick="Delete">Delete</button>
+    
+
+}
+
+    <p class="text-success">@message</p>
+
+
+@code {
+    [Parameter]
+    public Guid DeveloperId { get; set; }
+
+    private Developer developer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        developer = await DeveloperService.GetDeveloperByIdAsync(DeveloperId);
+    }
+
+    private string message = "";
+
+    private async Task Delete()
+    {
+        try
+        {
+            await DeveloperService.DeleteDeveloperAsync(DeveloperId);
+            message = "Developer deleted successfully!";
+            NavigationManager.NavigateTo("/developers"); // Redirect to the developers list
+        }
+        catch (Exception ex)
+        {
+            message = $"Error: {ex.Message}";
+        }
+    }
+}

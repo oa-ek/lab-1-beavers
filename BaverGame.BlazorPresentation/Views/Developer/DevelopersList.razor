@@ -1,0 +1,30 @@
+@page "/developers"
+@using BaverGame.BlazorPresentation.Services
+@using BaverGame.BlazorPresentation.Models
+@inject DeveloperService DeveloperService
+
+<h3>Developers</h3>
+
+@if (developers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var developer in developers)
+        {
+            <li>@developer.DeveloperName</li>
+        }
+    </ul>
+}
+
+
+@code {
+    private List<Developer> developers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        developers = await DeveloperService.GetDevelopersAsync();
+    }
+}
