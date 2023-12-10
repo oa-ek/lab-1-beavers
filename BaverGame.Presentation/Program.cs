@@ -25,6 +25,14 @@ public class Program
 
         builder.Services.AddControllers().AddJsonOptions(x =>
             x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+        builder.Services.AddCors(option =>
+        {
+            option.AddPolicy("ApplicationCorsPolicy", policy =>
+            {
+                policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+            });
+        });
         
         AddRepositories(builder);
 
@@ -38,6 +46,7 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
+        app.UseCors("ApplicationCorsPolicy");
         app.UseRouting();
         app.UseAuthorization();
 

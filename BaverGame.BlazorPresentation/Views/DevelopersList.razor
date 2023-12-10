@@ -1,0 +1,126 @@
+@page "/developers"
+@using BaverGame.BlazorPresentation.Models
+@using BaverGame.BlazorPresentation.Services
+@inject DeveloperService DeveloperService
+@inject NavigationManager NavigationManager
+
+<h3>Developers</h3>
+
+@if (developers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <button class="btn btn-primary" @onclick="ShowAddForm">Add Developer</button>
+
+    if (showAddForm)
+    {
+        <EditForm Model="@newDeveloper" OnValidSubmit="HandleAdd">
+            <p>
+                <label>Name: </label>
+                <InputText @bind-Value="newDeveloper.DeveloperName" />
+            </p>
+            <button type="submit" class="btn btn-success">Add</button>
+            <button class="btn btn-secondary" @onclick="HideAddForm">Cancel</button>
+        </EditForm>
+    }
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var developer in developers)
+        {
+            <tr>
+                <td>
+                    @if (editDeveloperId == developer.DeveloperId && !showAddForm)
+                    {
+                        <EditForm Model="@editDeveloper" OnValidSubmit="() => HandleSave(developer.DeveloperId)">
+                            <InputText @bind-Value="editDeveloper.DeveloperName" />
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button class="btn btn-secondary" @onclick="HideEditForm">Cancel</button>
+                        </EditForm>
+                    }
+                    else
+                    {
+                        @developer.DeveloperName
+                    }
+                </td>
+                <td>
+                    @if (editDeveloperId != developer.DeveloperId)
+                    {
+                        <button class="btn btn-info" @onclick="() => ShowEditForm(developer)">Edit</button>
+                    }
+                    <button class="btn btn-danger mx-2" @onclick="() => DeleteDeveloper(developer.DeveloperId)">Delete</button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Developer> developers;
+    private Developer newDeveloper = new Developer();
+    private Developer editDeveloper = new Developer();
+    private bool showAddForm = false;
+    private Guid editDeveloperId = Guid.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        developers = await DeveloperService.GetDevelopersAsync();
+    }
+
+    private void ShowAddForm()
+    {
+        newDeveloper = new Developer();
+        showAddForm = true;
+    }
+
+    private void HideAddForm()
+    {
+        showAddForm = false;
+    }
+
+    private async Task HandleAdd()
+    {
+        await DeveloperService.AddDeveloperAsync(newDeveloper);
+        developers = await DeveloperService.GetDevelopersAsync();
+        showAddForm = false;
+        NavigationManager.NavigateTo("/developers");
+    }
+
+    private void ShowEditForm(Developer developer)
+    {
+        editDeveloperId = developer.DeveloperId;
+        editDeveloper = new Developer { DeveloperId = developer.DeveloperId, DeveloperName = developer.DeveloperName };
+        showAddForm = false; // Ensures add form is hidden when showing edit form
+    }
+
+    private async Task HandleSave(Guid developerId)
+    {
+        await DeveloperService.UpdateDeveloperAsync(developerId, editDeveloper);
+        var index = developers.FindIndex(d => d.DeveloperId == developerId);
+        if (index != -1)
+        {
+            developers[index] = new Developer { DeveloperId = editDeveloper.DeveloperId, DeveloperName = editDeveloper.DeveloperName };
+        }
+        editDeveloperId = Guid.Empty;
+    }
+
+    private void HideEditForm()
+    {
+        editDeveloperId = Guid.Empty;
+    }
+
+    private async Task DeleteDeveloper(Guid developerId)
+    {
+        await DeveloperService.DeleteDeveloperAsync(developerId);
+        developers.RemoveAll(d => d.DeveloperId == developerId);
+    }
+}

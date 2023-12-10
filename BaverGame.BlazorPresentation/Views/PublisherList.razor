@@ -1,0 +1,126 @@
+@page "/publishers"
+@using BaverGame.BlazorPresentation.Models
+@using BaverGame.BlazorPresentation.Services
+@inject PublisherService PublisherService
+@inject NavigationManager NavigationManager
+
+<h3>Publishers</h3>
+
+@if (publishers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <button class="btn btn-primary" @onclick="ShowAddForm">Add Publisher</button>
+
+    if (showAddForm)
+    {
+        <EditForm Model="@newPublisher" OnValidSubmit="HandleAdd">
+            <p>
+                <label>Name: </label>
+                <InputText @bind-Value="newPublisher.PublisherName" />
+            </p>
+            <button type="submit" class="btn btn-success">Add</button>
+            <button class="btn btn-secondary" @onclick="HideAddForm">Cancel</button>
+        </EditForm>
+    }
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var publisher in publishers)
+        {
+            <tr>
+                <td>
+                    @if (editPublisherId == publisher.PublisherId && !showAddForm)
+                    {
+                        <EditForm Model="@editPublisher" OnValidSubmit="() => HandleSave(publisher.PublisherId)">
+                            <InputText @bind-Value="editPublisher.PublisherName" />
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button class="btn btn-secondary" @onclick="HideEditForm">Cancel</button>
+                        </EditForm>
+                    }
+                    else
+                    {
+                        @publisher.PublisherName
+                    }
+                </td>
+                <td>
+                    @if (editPublisherId != publisher.PublisherId)
+                    {
+                        <button class="btn btn-info" @onclick="() => ShowEditForm(publisher)">Edit</button>
+                    }
+                    <button class="btn btn-danger mx-2" @onclick="() => DeletePublisher(publisher.PublisherId)">Delete</button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Publisher> publishers;
+    private Publisher newPublisher = new Publisher();
+    private Publisher editPublisher = new Publisher();
+    private bool showAddForm = false;
+    private Guid editPublisherId = Guid.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        publishers = await PublisherService.GetPublishersAsync();
+    }
+
+    private void ShowAddForm()
+    {
+        newPublisher = new Publisher();
+        showAddForm = true;
+    }
+
+    private void HideAddForm()
+    {
+        showAddForm = false;
+    }
+
+    private async Task HandleAdd()
+    {
+        await PublisherService.AddPublisherAsync(newPublisher);
+        publishers = await PublisherService.GetPublishersAsync();
+        showAddForm = false;
+        NavigationManager.NavigateTo("/publishers");
+    }
+
+    private void ShowEditForm(Publisher publisher)
+    {
+        editPublisherId = publisher.PublisherId;
+        editPublisher = new Publisher { PublisherId = publisher.PublisherId, PublisherName = publisher.PublisherName };
+        showAddForm = false; // Ensures add form is hidden when showing edit form
+    }
+
+    private async Task HandleSave(Guid publisherId)
+    {
+        await PublisherService.UpdatePublisherAsync(publisherId, editPublisher);
+        var index = publishers.FindIndex(p => p.PublisherId == publisherId);
+        if (index != -1)
+        {
+            publishers[index] = new Publisher { PublisherId = editPublisher.PublisherId, PublisherName = editPublisher.PublisherName };
+        }
+        editPublisherId = Guid.Empty;
+    }
+
+    private void HideEditForm()
+    {
+        editPublisherId = Guid.Empty;
+    }
+
+    private async Task DeletePublisher(Guid publisherId)
+    {
+        await PublisherService.DeletePublisherAsync(publisherId);
+        publishers.RemoveAll(p => p.PublisherId == publisherId);
+    }
+}
