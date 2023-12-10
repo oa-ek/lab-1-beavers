@@ -16,14 +16,14 @@ namespace BaverGame.Controllers
             _developersRepository = developersRepository;
         }
 
-        // GET: api/Developer
+        // GET: api/DeveloperApi
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _developersRepository.GetAllEntitiesAsync());
         }
 
-        // GET: api/Developer/{id}
+        // GET: api/DeveloperApi/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
@@ -34,7 +34,7 @@ namespace BaverGame.Controllers
             return Ok(developer);
         }
 
-        // POST: api/Developer
+        // POST: api/DeveloperApi
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] DeveloperDto developerDto)
         {
@@ -50,7 +50,7 @@ namespace BaverGame.Controllers
             return CreatedAtAction(nameof(Get), new { id = developer.DeveloperId }, developer);
         }
 
-        // PUT: api/Developer/{id}
+        // PUT: api/DeveloperApi/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] DeveloperDto developerDto)
         {
@@ -67,7 +67,7 @@ namespace BaverGame.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Developer/{id}
+        // DELETE: api/DeveloperApi/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
